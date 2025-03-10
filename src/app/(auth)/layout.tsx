@@ -1,3 +1,7 @@
+'use client';
+
+import { withoutAuth } from '../withoutAuth';
+
 import Image from 'next/image';
 import React from 'react';
 
@@ -22,4 +26,4 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-export default AuthLayout;
+export default withoutAuth(AuthLayout);
