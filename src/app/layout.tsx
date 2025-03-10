@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
 import { metaDataOptions } from '@/lib/metadata';
+import { Toaster } from '@/components/ui/sonner';
+
 import StoreProvider from './store-provider';
 
 import './globals.css';
@@ -29,6 +31,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={`${figtree.variable} antialiased`}>
 				<StoreProvider>{children}</StoreProvider>
+				<Toaster position='top-right' richColors />
 			</body>
 		</html>
 	);
