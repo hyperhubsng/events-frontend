@@ -12,7 +12,7 @@ const figtree = Figtree({
 export const metadata: Metadata = {
 	title: {
 		default: 'HyperHubs Admin App',
-		template: '%s| HyperHubs Admin',
+		template: '%s | HyperHubs Admin',
 	},
 	description: 'This is the hyperhubs events admin app',
 	...metaDataOptions,
