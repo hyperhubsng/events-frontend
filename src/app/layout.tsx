@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
 import './globals.css';
+import { metaDataOptions } from '@/lib/metadata';
 
 const figtree = Figtree({
 	variable: '--font-figtree',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 		template: '%s| HyperHubs Admin',
 	},
 	description: 'This is the hyperhubs events admin app',
+	...metaDataOptions,
 };
 
 export default function RootLayout({
@@ -23,9 +25,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${figtree.variable} antialiased`}>
-				<main>{children}</main>
-			</body>
+			<body className={`${figtree.variable} antialiased`}>{children}</body>
 		</html>
 	);
 }
