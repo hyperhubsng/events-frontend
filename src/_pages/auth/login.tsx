@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '@/lib/hooks';
+import { useLoginMutation } from '@/features/auth/authApi';
+import { setUser } from '@/features/auth/authSlice';
+import { setUserToken } from '@/lib/session';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -14,11 +20,16 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff } from 'lucide-react';
+import { toast } from 'sonner';
+
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import LoadingButton from '@/components/loading-button';
 
 const Login = () => {
+	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
+
+	const dispatch = useAppDispatch();
 
 	const formSchema = z.object({
 		email: z.string().email(),
@@ -35,8 +46,25 @@ const Login = () => {
 		},
 	});
 
+	const [loginUser, { isLoading }] = useLoginMutation();
+
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
-		console.log(data);
+		try {
+			const res = await loginUser({
+				email: data.email,
+				password: data.password,
+			}).unwrap();
+
+			await setUserToken('access-token', res?.data?.token);
+
+			const userClone = { ...res?.data };
+			delete userClone?.token;
+
+			dispatch(setUser(userClone));
+			router.push('/');
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
 	};
 
 	return (
@@ -117,9 +145,9 @@ const Login = () => {
 						)}
 					/>
 
-					<Button variant='primary' className='mt-6'>
+					<LoadingButton loading={isLoading} variant='primary' className='mt-6'>
 						Sign In
-					</Button>
+					</LoadingButton>
 				</form>
 			</Form>
 		</div>
