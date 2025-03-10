@@ -8,6 +8,8 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '@/lib/constants';
 import { deleteUserToken, getUserToken } from '@/lib/session';
+import { logOut } from '../auth/authSlice';
+import { toast } from 'sonner';
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: BASE_URL,
@@ -34,7 +36,8 @@ const baseQueryWithReauth: BaseQueryFn<
 
 	if (result?.error && result?.error?.status === 401) {
 		deleteUserToken('access-token');
-		// api.dispatch(logOut())
+		api.dispatch(logOut());
+		toast.info('Your session has expired, please log in again.');
 	}
 
 	return result;
