@@ -1,0 +1,47 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+	BaseQueryFn,
+	FetchArgs,
+	FetchBaseQueryError,
+	createApi,
+	fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
+import { BASE_URL } from '@/lib/constants';
+import { deleteUserToken, getUserToken } from '@/lib/session';
+
+const baseQuery = fetchBaseQuery({
+	baseUrl: BASE_URL,
+	async prepareHeaders(headers) {
+		const token = await getUserToken('access-token');
+
+		headers.set('Content-Type', 'application/json');
+		headers.set('Accept', 'application/json');
+
+		if (token) {
+			headers.set('Authorization', `Bearer ${token}`);
+		}
+
+		return headers;
+	},
+});
+
+const baseQueryWithReauth: BaseQueryFn<
+	string | FetchArgs,
+	unknown,
+	FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+	const result = await baseQuery(args, api, extraOptions);
+
+	if (result?.error && result?.error?.status === 401) {
+		deleteUserToken('access-token');
+		// api.dispatch(logOut())
+	}
+
+	return result;
+};
+
+export const apiSlice = createApi({
+	baseQuery: baseQueryWithReauth,
+	endpoints: (builder) => ({}),
+	tagTypes: [],
+});
