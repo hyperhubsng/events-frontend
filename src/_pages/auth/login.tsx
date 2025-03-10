@@ -1,4 +1,44 @@
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
 const Login = () => {
+	const [showPassword, setShowPassword] = useState(false);
+
+	const formSchema = z.object({
+		email: z.string().email(),
+		password: z.string().min(4, {
+			message: 'This field is required',
+		}),
+	});
+
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+	});
+
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		console.log(data);
+	};
+
 	return (
 		<div>
 			<div className='border-b border-solid border-b-[#E8E8E8] py-3 mt-4'>
@@ -6,6 +46,82 @@ const Login = () => {
 					Welcome Admin
 				</h1>
 			</div>
+
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className='flex flex-col gap-4 mt-6'>
+					<FormField
+						control={form.control}
+						name='email'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel className='text-black-950 text-base font-semibold'>
+									Email Address
+								</FormLabel>
+								<FormControl>
+									<Input
+										placeholder='username@hyperhubs.com'
+										{...field}
+										className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+                    focus-visible:ring-0
+                    '
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='password'
+						render={({ field }) => (
+							<FormItem>
+								<div className='flex items-center justify-between'>
+									<FormLabel className='text-black-950 text-base font-semibold'>
+										Password
+									</FormLabel>
+									<Link
+										href='/forgot-password'
+										className='
+                        text-blue-50 text-base font-semibold 
+                        relative
+                        before:absolute before:bottom-0 before:w-full before:h-[1.5px] before:bg-blue-50'>
+										Forgot Password?
+									</Link>
+								</div>
+								<FormControl>
+									<div className='relative flex items-center'>
+										<Input
+											placeholder='xxxxx'
+											{...field}
+											className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+                    focus-visible:ring-0
+                    '
+											type={!showPassword ? 'password' : 'text'}
+										/>
+										<button
+											type='button'
+											className='absolute right-3'
+											onClick={() => setShowPassword(!showPassword)}>
+											{!showPassword ? (
+												<Eye color='#606060' />
+											) : (
+												<EyeOff color='#606060' />
+											)}
+										</button>
+									</div>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<Button variant='primary' className='mt-6'>
+						Sign In
+					</Button>
+				</form>
+			</Form>
 		</div>
 	);
 };
