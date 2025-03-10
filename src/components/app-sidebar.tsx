@@ -28,7 +28,6 @@ export function AppSidebar() {
 
 	const { toggleSidebar, open } = useSidebar();
 	const [showSub, setShowSub] = useState(false);
-
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader className='flex items-center justify-between flex-row p-4'>

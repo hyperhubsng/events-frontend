@@ -8,7 +8,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<SidebarProvider>
 			<AppSidebar />
-			<main>{children}</main>
+			<main>
+				<div className='app-container'>{children}</div>
+			</main>
 		</SidebarProvider>
 	);
 };
