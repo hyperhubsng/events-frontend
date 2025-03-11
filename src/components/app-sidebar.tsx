@@ -42,12 +42,14 @@ export function AppSidebar() {
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader className='flex items-center justify-between flex-row p-4'>
-				<Image
-					src='/icons/favicon.svg'
-					width={32}
-					height={32}
-					alt='hyperhubs logo'
-				/>
+				{open && (
+					<Image
+						src='/icons/favicon.svg'
+						width={32}
+						height={32}
+						alt='hyperhubs logo'
+					/>
+				)}
 				<button onClick={toggleSidebar}>
 					<svg
 						width='24'
