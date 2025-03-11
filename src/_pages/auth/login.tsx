@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/lib/hooks';
 import { useLoginMutation } from '@/features/auth/authApi';
@@ -26,7 +25,6 @@ import Link from 'next/link';
 import LoadingButton from '@/components/loading-button';
 
 const Login = () => {
-	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
 
 	const dispatch = useAppDispatch();
@@ -60,8 +58,9 @@ const Login = () => {
 			const userClone = { ...res?.data };
 			delete userClone?.token;
 
+			window.location.reload();
+
 			dispatch(setUser(userClone));
-			router.push('/');
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}

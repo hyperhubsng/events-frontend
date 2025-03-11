@@ -1,6 +1,9 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useAppDispatch } from '@/lib/hooks';
+import { logOut } from '@/features/auth/authSlice';
+import { deleteUserToken } from '@/lib/session';
 import {
 	Sidebar,
 	SidebarContent,
@@ -24,10 +27,17 @@ import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
 export function AppSidebar() {
-	const pathname = usePathname();
-
-	const { toggleSidebar, open } = useSidebar();
 	const [showSub, setShowSub] = useState(false);
+	const { toggleSidebar, open } = useSidebar();
+
+	const pathname = usePathname();
+	const dispatch = useAppDispatch();
+
+	const handleLogout = async () => {
+		await deleteUserToken('access-token');
+		dispatch(logOut());
+	};
+
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader className='flex items-center justify-between flex-row p-4'>
@@ -238,7 +248,8 @@ export function AppSidebar() {
 				<SidebarMenu className='pt-6 border-t-[#E8E8E8] border-solid border-t'>
 					<SidebarMenuButton
 						className='text-blue-100 transition-colors group
-           duration-300 ease-in-out py-[1.25rem]'>
+           duration-300 ease-in-out py-[1.25rem]'
+						onClick={handleLogout}>
 						<svg
 							width='24'
 							height='24'
