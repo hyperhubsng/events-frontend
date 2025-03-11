@@ -30,7 +30,8 @@ const Navbar = () => {
 			<div className='app-container'>
 				<nav className='flex items-center justify-between'>
 					<h1 className='text-black-900 text-base lg:text-[1.25rem] font-medium hidden md:block'>
-						{getTimeBasedGreeting()}, Emmanuel 👋🏼
+						{getTimeBasedGreeting()},{' '}
+						<span className='capitalize'>{user?.firstName}</span> 👋🏼
 					</h1>
 
 					<button
