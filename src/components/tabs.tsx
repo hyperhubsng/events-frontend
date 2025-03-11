@@ -1,11 +1,4 @@
 import { cn } from '@/lib/utils';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
 
 type TabsProps = {
 	selected: string;

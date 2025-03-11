@@ -44,6 +44,7 @@
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) + 4px);
 	--font-figtree: var(--font-figtree);
+	--color-black-600: var(--black-600);
 	--color-black-700: var(--black-700);
 	--color-black-900: var(--black-900);
 	--color-black-950: var(--black-950);
@@ -86,6 +87,7 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
+	--black-600: #808080;
 	--black-700: #4d4d4d;
 	--black-900: #202020;
 	--black-950: #040404;
@@ -198,5 +200,14 @@ textarea {
 	}
 	body {
 		@apply bg-background text-foreground;
+	}
+}
+
+.aria-selected\:bg-primary[aria-selected='true'] {
+	@apply bg-blue-50;
+}
+.select-chevron {
+	.lucide-chevron-down {
+		opacity: 1;
 	}
 }
