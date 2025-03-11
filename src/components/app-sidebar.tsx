@@ -25,6 +25,7 @@ import { CollapsibleContent, CollapsibleTrigger } from '@radix-ui/react-collapsi
 import { ChevronDown } from 'lucide-react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function AppSidebar() {
 	const [showSub, setShowSub] = useState(false);
@@ -75,8 +76,8 @@ export function AppSidebar() {
 											<SidebarMenuButton
 												asChild
 												isActive={link.href === pathname}
-												className='transition-colors duration-300 ease-in-out mb-3'>
-												<a
+												className='transition-colors duration-300 ease-in-out mb-1'>
+												<Link
 													href={link.href}
 													className='py-[1.25rem] text-blue-100 data-[active=true]:font-semibold group/trigger'>
 													{link.name === 'Events' ? (
@@ -151,7 +152,7 @@ export function AppSidebar() {
 														link.icon && <link.icon />
 													)}
 													<span className={cn('text-base')}>{link.name}</span>
-												</a>
+												</Link>
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 									) : (
@@ -160,7 +161,7 @@ export function AppSidebar() {
 												<CollapsibleTrigger
 													asChild
 													onClick={() => setShowSub(!showSub)}>
-													<SidebarMenuButton className='py-[1.25rem] text-blue-100 -mt-3 relative'>
+													<SidebarMenuButton className='py-[1.25rem] text-blue-100 mb-1 relative'>
 														<svg
 															width='24'
 															height='24'
@@ -226,13 +227,13 @@ export function AppSidebar() {
 																	asChild
 																	isActive={sublink.href === pathname}
 																	className='transition-colors duration-300 ease-in-out'>
-																	<a
+																	<Link
 																		href={sublink.href}
 																		className='py-[1.25rem] text-blue-100 data-[active=true]:font-semibold'>
 																		<span className={cn('text-base')}>
 																			{sublink.name}
 																		</span>
-																	</a>
+																	</Link>
 																</SidebarMenuButton>
 															</SidebarMenuItem>
 														))}
