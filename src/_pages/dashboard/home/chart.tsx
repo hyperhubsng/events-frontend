@@ -27,18 +27,20 @@ const Chart = () => {
 	const times = ['This Week', 'Last Week', 'Two weeks ago'];
 
 	return (
-		<div className='bg-white rounded-[4px] md:rounded-[8px] pt-5 px-6 pb-6 mt-4'>
-			<div className='flex items-center justify-between'>
+		<div className='bg-white rounded-[4px] md:rounded-[8px] pt-3 md:pt-5 px-3 md:px-6 pb-6 mt-4'>
+			<div className='flex items-center justify-between flex-col gap-6 md:flex-row'>
 				<Tabs
 					selected={selected}
 					setSelected={setSelected}
 					items={['Revenue', 'Commission']}
 				/>
 
-				<div className='flex items-center gap-4'>
+				<div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-fit'>
 					<Popover>
 						<PopoverTrigger asChild>
-							<button className='flex items-center justify-center gap-4 border border-white-300 border-solid rounded-[4px] px-3 h-8'>
+							<button
+								className='flex items-center justify-between md:gap-4 border text-sm text-black-950
+              border-white-300 border-solid rounded-[4px] px-3 h-8 w-full md:w-fit'>
 								{date?.from ? (
 									date.to ? (
 										<>
@@ -62,15 +64,15 @@ const Chart = () => {
 								defaultMonth={date?.from}
 								selected={date}
 								onSelect={setDate}
-								numberOfMonths={2}
+								numberOfMonths={1}
 							/>
 						</PopoverContent>
 					</Popover>
 
 					<Select defaultValue={time} onValueChange={(e) => setTime(e)}>
 						<SelectTrigger
-							className='focus-visible:ring-0 focus-visible:outline-none 
-             shadow-none h-8 border-white-300 focus-visible:border-white-300 select-chevron'>
+							className='focus-visible:ring-0 focus-visible:outline-none text-sm text-black-950
+             shadow-none h-8 border-white-300 focus-visible:border-white-300 select-chevron w-full md:w-fit'>
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent className='w-full'>

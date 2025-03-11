@@ -29,14 +29,14 @@ const Navbar = () => {
      before:h-full before:w-20 before:left-0 before:-z-[1] py-3 px-4 md:py-4'>
 			<div className='app-container'>
 				<nav className='flex items-center justify-between'>
-					<h1 className='text-black-900 text-base lg:text-[1.25rem] font-medium hidden md:block'>
+					<h1 className='text-black-900 text-base lg:text-[1.25rem] font-medium hidden lg:block'>
 						{getTimeBasedGreeting()},{' '}
 						<span className='capitalize'>{user?.firstName}</span> 👋🏼
 					</h1>
 
 					<button
 						aria-describedby='click to open sidebar on mobile'
-						className='md:hidden'
+						className='lg:hidden'
 						onClick={toggleSidebar}>
 						<Image
 							src='/icons/hamburger.svg'
@@ -51,11 +51,11 @@ const Navbar = () => {
 						width={32}
 						height={32}
 						alt='hyperhubs logo'
-						className='md:hidden'
+						className='lg:hidden'
 					/>
 
 					<div className='flex items-center gap-3'>
-						<h2 className='text-black-950 text-base capitalize hidden md:block'>{`${user?.firstName} ${user?.lastName}`}</h2>
+						<h2 className='text-black-950 text-base capitalize hidden lg:block'>{`${user?.firstName} ${user?.lastName}`}</h2>
 						<svg
 							width='32'
 							height='32'
