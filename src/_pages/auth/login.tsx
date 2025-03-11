@@ -68,7 +68,7 @@ const Login = () => {
 
 	return (
 		<div>
-			<div className='border-b border-solid border-b-[#E8E8E8] py-3 mt-4'>
+			<div className='border-b border-solid border-b-[#E8E8E8] py-2 mt-4'>
 				<h1 className='text-[#101010] text-2xl md:text-[1.75rem] text-center font-semibold'>
 					Welcome Admin
 				</h1>
@@ -83,7 +83,7 @@ const Login = () => {
 						name='email'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className='text-black-950 text-base font-semibold'>
+								<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
 									Email Address
 								</FormLabel>
 								<FormControl>
@@ -105,13 +105,13 @@ const Login = () => {
 						render={({ field }) => (
 							<FormItem>
 								<div className='flex items-center justify-between'>
-									<FormLabel className='text-black-950 text-base font-semibold'>
+									<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
 										Password
 									</FormLabel>
 									<Link
 										href='/forgot-password'
 										className='
-                        text-blue-50 text-base font-semibold 
+                        text-blue-50 text-sm md:text-base font-semibold 
                         relative
                         before:absolute before:bottom-0 before:w-full before:h-[1.5px] before:bg-blue-50'>
 										Forgot Password?
