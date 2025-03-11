@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			<AppSidebar />
 			<main>
 				<Navbar />
-				<div className='app-container'>{children}</div>
+				<div className='app-container p-4'>{children}</div>
 			</main>
 		</SidebarProvider>
 	);
