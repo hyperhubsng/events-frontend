@@ -52,6 +52,7 @@
 	--color-white-300: var(--white-300);
 	--color-blue-50: var(--blue-50);
 	--color-blue-100: var(--blue-100);
+	--color-yellow-800: var(--yellow-800);
 }
 
 :root {
@@ -96,6 +97,7 @@
 	--white-300: #c4c4c4;
 	--blue-50: #003366;
 	--blue-100: #f2f5f7;
+	--yellow-800: #5c6418;
 }
 
 .dark {
@@ -226,4 +228,10 @@ textarea {
 	.recharts-cartesian-grid
 	line[stroke='#ccc'] {
 	stroke: var(--color-white-200);
+}
+.recharts-legend-wrapper div {
+	@apply text-black-950;
+}
+.recharts-legend-wrapper div .h-2.w-2 {
+	border-radius: 50%;
 }
