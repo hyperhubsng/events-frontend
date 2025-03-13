@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 		template: '%s | HyperHubs Admin',
 	},
 	description: 'This is the hyperhubs events admin app',
+	metadataBase: new URL('https://main.d1hpcnrwcj0f1c.amplifyapp.com'),
 	...metaDataOptions,
 };
 
