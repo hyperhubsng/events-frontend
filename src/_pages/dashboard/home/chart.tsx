@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import {
 	Select,
 	SelectContent,
@@ -31,6 +32,8 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const Chart = () => {
+	const match = useMediaQuery('(max-width: 769px)');
+
 	const [selected, setSelected] = useState('Revenue');
 	const [date, setDate] = useState<DateRange | undefined>({
 		from: new Date(2025, 2, 1),
@@ -129,7 +132,7 @@ const Chart = () => {
 							axisLine={false}
 							tickMargin={8}
 							tickFormatter={(value) => value.slice(0, 6)}
-							interval={1}
+							{...(match && { interval: 1 })}
 						/>
 						<YAxis />
 						<ChartTooltip cursor={false} content={<CustomTooltip />} />
