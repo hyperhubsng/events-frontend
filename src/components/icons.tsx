@@ -139,8 +139,78 @@ const TOrgs = () => {
 	);
 };
 
+const Events = () => {
+	return (
+		<svg
+			width='120'
+			height='120'
+			viewBox='0 0 120 120'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'>
+			<rect width='120' height='120' rx='16' fill='#F2F5F7' />
+			<path
+				d='M87.5 35H32.5C31.1193 35 30 36.1193 30 37.5V82.5C30 83.8807 31.1193 85 32.5 85H87.5C88.8807 85 90 83.8807 90 82.5V37.5C90 36.1193 88.8807 35 87.5 35Z'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M60 35V85'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M30 45H90'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M30 75H90'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M45 35V45'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M75 35V45'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M45 75V85'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M75 75V85'
+				stroke='#003366'
+				strokeWidth='5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</svg>
+	);
+};
+
 export const icons = {
 	TRev: <TRev />,
 	TEvents: <TEvents />,
 	TOrgs: <TOrgs />,
+	Events: <Events />,
 };

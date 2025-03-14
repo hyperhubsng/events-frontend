@@ -1,7 +1,11 @@
-import React from 'react';
+import EmptyEvents from './empty-events';
 
 const Events = () => {
-	return <div>Events</div>;
+	return (
+		<div className='h-full'>
+			<EmptyEvents />
+		</div>
+	);
 };
 
 export default Events;
