@@ -2,7 +2,7 @@ import EmptyEvents from './empty-events';
 
 const Events = () => {
 	return (
-		<div className='h-full'>
+		<div className='h-full p-4'>
 			<EmptyEvents />
 		</div>
 	);

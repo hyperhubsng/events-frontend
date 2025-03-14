@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			<AppSidebar />
 			<main>
 				<Navbar />
-				<div className='app-container p-4 w-full flex-1'>{children}</div>
+				<div className='app-container w-full flex-1'>{children}</div>
 			</main>
 		</SidebarProvider>
 	);

@@ -1,10 +1,11 @@
 import { icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const EmptyEvents = () => {
 	return (
 		<div
-			className='h-full bg-white flex flex-col justify-center 
+			className='h-full bg-white flex flex-col justify-center
     items-center rounded-[8px] md:rounded-2xl'>
 			<div className='max-w-[20rem] w-full flex flex-col items-center text-center'>
 				{icons.Events}
@@ -14,9 +15,11 @@ const EmptyEvents = () => {
 				<p className='text-black-700 text-sm md:text-base'>
 					Events created will appear here
 				</p>
-				<Button variant='primary' className='w-full mt-[1.25rem]'>
-					+ Create Event
-				</Button>
+				<Link href='/events/create-event' className='w-full'>
+					<Button variant='primary' className='w-full mt-[1.25rem]'>
+						+ Create Event
+					</Button>
+				</Link>
 			</div>
 		</div>
 	);

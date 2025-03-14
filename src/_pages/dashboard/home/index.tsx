@@ -1,6 +1,5 @@
 'use client';
 
-import { useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
 import Cards from './cards';
@@ -9,10 +8,8 @@ import Organizers from './organizers';
 import Events from './events';
 
 const Dashboard = () => {
-	const {} = useSidebar();
-
 	return (
-		<div>
+		<div className='p-4'>
 			<Cards />
 			<Chart />
 			<div className={cn('grid md:grid-cols-2 mt-4 gap-4')}>
