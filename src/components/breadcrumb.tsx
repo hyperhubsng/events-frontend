@@ -12,7 +12,7 @@ const BreadcrumbWrapper = ({
 }) => {
 	return (
 		<>
-			<div className='w-full bg-white py-2 px-4'>
+			<div className='w-full bg-white py-2 px-4 sticky top-16'>
 				<ul className='flex items-center gap-2'>
 					{items.map((item, i) => (
 						<Fragment key={item}>

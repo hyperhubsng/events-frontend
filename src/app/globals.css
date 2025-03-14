@@ -237,3 +237,9 @@ textarea {
 .recharts-legend-wrapper div .h-2.w-2 {
 	border-radius: 50%;
 }
+.rdp-button[aria-selected='true'] {
+	@apply bg-blue-50;
+}
+.data-\[placeholder\]\:text-muted-foreground[data-placeholder] {
+	@apply text-white-300;
+}
