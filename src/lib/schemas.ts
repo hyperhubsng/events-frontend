@@ -25,6 +25,6 @@ export const CreateEventSchema = z.object({
 		message,
 	}),
 	about: z.string().min(20, {
-		message,
+		message: 'Field must be 20 characters long',
 	}),
 });

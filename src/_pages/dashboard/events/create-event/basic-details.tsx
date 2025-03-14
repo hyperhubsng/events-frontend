@@ -28,10 +28,9 @@ import { Textarea } from '@/components/ui/textarea';
 type FormData = z.infer<typeof CreateEventSchema>;
 
 type Props = {
-	setActive: (e: number) => void;
 	form: UseFormReturn<FormData>;
 };
-const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
+const BasicDetails: React.FC<Props> = ({ form }) => {
 	const router = useRouter();
 
 	return (
@@ -41,12 +40,15 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				name='event_name'
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+						<FormLabel
+							className='text-black-950 text-sm md:text-base font-semibold'
+							htmlFor='event_name'>
 							Event Name
 						</FormLabel>
 						<FormControl>
 							<Input
 								{...field}
+								id='event_name'
 								placeholder='ex. Detty December 2025'
 								className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
@@ -64,17 +66,19 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 					name='start_date'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+							<FormLabel
+								className='text-black-950 text-sm md:text-base font-semibold'
+								htmlFor='start_date'>
 								Start Date
 							</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild>
-									<FormControl>
+									<FormControl id='start_date'>
 										<Button
 											variant='outline'
 											size='lg'
 											className='w-full flex items-center justify-between px-3 border-white-300 h-[44px]
-											bg-transparent hover:bg-transparent
+											bg-transparent hover:bg-transparent text-black-950
 											'>
 											{field?.value ? (
 												format(field.value, 'dd-MM-yyyy')
@@ -107,12 +111,15 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 					name='start_time'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+							<FormLabel
+								className='text-black-950 text-sm md:text-base font-semibold'
+								htmlFor='start_time'>
 								Start Time
 							</FormLabel>
 							<FormControl>
 								<Input
 									{...field}
+									id='start_time'
 									placeholder='HH:MM:SS'
 									className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
@@ -130,12 +137,15 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				name='event_address'
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+						<FormLabel
+							className='text-black-950 text-sm md:text-base font-semibold'
+							htmlFor='event_address'>
 							Event Address
 						</FormLabel>
 						<FormControl>
 							<Input
 								{...field}
+								id='event_address'
 								placeholder='Enter Event Address'
 								className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
@@ -152,7 +162,9 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				name='landmark'
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+						<FormLabel
+							className='text-black-950 text-sm md:text-base font-semibold'
+							htmlFor='landmark'>
 							Location Landmark
 						</FormLabel>
 						<FormControl>
@@ -165,6 +177,7 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 								<Input
 									{...field}
 									placeholder=''
+									id='landmark'
 									className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0 pl-8
 										'
@@ -180,8 +193,10 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				control={form.control}
 				name='event_type'
 				render={({ field }) => (
-					<FormItem>
-						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+					<FormItem id='event_type'>
+						<FormLabel
+							className='text-black-950 text-sm md:text-base font-semibold'
+							htmlFor='event_type'>
 							Event Type
 						</FormLabel>
 						<FormControl>
@@ -214,8 +229,10 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				control={form.control}
 				name='organization'
 				render={({ field }) => (
-					<FormItem>
-						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+					<FormItem id='organization'>
+						<FormLabel
+							className='text-black-950 text-sm md:text-base font-semibold'
+							htmlFor='organization'>
 							Organization
 						</FormLabel>
 						<FormControl>
@@ -249,7 +266,9 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				name='about'
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
+						<FormLabel
+							className='text-black-950 text-sm md:text-base font-semibold'
+							htmlFor='about'>
 							About Event
 						</FormLabel>
 						<FormControl>
@@ -259,6 +278,7 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 								className='text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0 h-[120px]
 										'
+								id='about'
 							/>
 						</FormControl>
 						<FormMessage />
@@ -270,10 +290,12 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 				<Button
 					variant='primary'
 					type='button'
-					onClick={() => setActive(1)}
-					disabled={!form.formState.isValid}>
+					disabled={!form.formState.isValid}
+					className='w-full'
+					onClick={() => router.push('/events/create-event?tab=media')}>
 					Continue
 				</Button>
+
 				<Button variant='outline' type='button' onClick={() => router.back()}>
 					Go Back
 				</Button>
