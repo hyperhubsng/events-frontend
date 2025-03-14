@@ -77,7 +77,7 @@ export function AppSidebar() {
 										<SidebarMenuItem>
 											<SidebarMenuButton
 												asChild
-												isActive={link.href === pathname}
+												isActive={pathname.includes(link.name.toLowerCase())}
 												className='transition-colors duration-300 ease-in-out mb-1'>
 												<Link
 													href={link.href}
@@ -91,7 +91,8 @@ export function AppSidebar() {
 															xmlns='http://www.w3.org/2000/svg'
 															className={cn(
 																' group-hover/trigger:fill-none',
-																link.href !== pathname && 'fill-current'
+																!pathname.includes(link.name.toLowerCase()) &&
+																	'fill-current'
 															)}>
 															<path
 																d='M20.25 4.5H3.75C3.33579 4.5 3 4.83579 3 5.25V18.75C3 19.1642 3.33579 19.5 3.75 19.5H20.25C20.6642 19.5 21 19.1642 21 18.75V5.25C21 4.83579 20.6642 4.5 20.25 4.5Z'
@@ -227,7 +228,9 @@ export function AppSidebar() {
 															<SidebarMenuItem key={sublink.name}>
 																<SidebarMenuButton
 																	asChild
-																	isActive={sublink.href === pathname}
+																	isActive={pathname.includes(
+																		sublink.name.toLowerCase()
+																	)}
 																	className='transition-colors duration-300 ease-in-out'>
 																	<Link
 																		href={sublink.href}

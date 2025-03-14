@@ -33,6 +33,7 @@ type Props = {
 };
 const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 	const router = useRouter();
+
 	return (
 		<div className='flex flex-col gap-4 mt-6'>
 			<FormField
@@ -64,7 +65,7 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
-								Date of Birth
+								Start Date
 							</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild>
@@ -245,7 +246,7 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 
 			<FormField
 				control={form.control}
-				name='event_address'
+				name='about'
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
@@ -266,7 +267,11 @@ const BasicDetails: React.FC<Props> = ({ form, setActive }) => {
 			/>
 
 			<div className='grid gap-4 sm:grid-cols-2 w-full'>
-				<Button variant='primary' type='button' onClick={() => setActive(1)}>
+				<Button
+					variant='primary'
+					type='button'
+					onClick={() => setActive(1)}
+					disabled={!form.formState.isValid}>
 					Continue
 				</Button>
 				<Button variant='outline' type='button' onClick={() => router.back()}>

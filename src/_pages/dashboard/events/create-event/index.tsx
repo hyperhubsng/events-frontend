@@ -17,6 +17,15 @@ const CreateEvent = () => {
 
 	const form = useForm<z.infer<typeof CreateEventSchema>>({
 		resolver: zodResolver(CreateEventSchema),
+		defaultValues: {
+			about: '',
+			event_address: '',
+			event_name: '',
+			event_type: '',
+			landmark: '',
+			organization: '',
+			start_time: '',
+		},
 	});
 
 	const components = [
