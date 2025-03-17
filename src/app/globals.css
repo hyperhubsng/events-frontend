@@ -50,6 +50,7 @@
 	--color-black-950: var(--black-950);
 	--color-white-200: var(--white-200);
 	--color-white-300: var(--white-300);
+	--color-white-400: var(--white-400);
 	--color-blue-50: var(--blue-50);
 	--color-blue-100: var(--blue-100);
 	--color-yellow-800: var(--yellow-800);
@@ -95,6 +96,7 @@
 	--black-950: #040404;
 	--white-200: #e0e0e0;
 	--white-300: #c4c4c4;
+	--white-400: #606060;
 	--blue-50: #003366;
 	--blue-100: #f2f5f7;
 	--yellow-800: #5c6418;

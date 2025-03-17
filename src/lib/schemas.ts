@@ -27,4 +27,16 @@ export const CreateEventSchema = z.object({
 	about: z.string().min(20, {
 		message: 'Field must be 20 characters long',
 	}),
+	thumbnail: z.instanceof(File, {
+		message: 'Please select an image',
+	}),
+	event_img_1: z.instanceof(File, {
+		message: 'Please select an image',
+	}),
+	event_img_2: z.instanceof(File, {
+		message: 'Please select an image',
+	}),
+	event_img_3: z.instanceof(File, {
+		message: 'Please select an image',
+	}),
 });

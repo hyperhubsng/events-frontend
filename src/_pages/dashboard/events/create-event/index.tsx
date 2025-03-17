@@ -55,7 +55,7 @@ const CreateEvent = () => {
 							{!tab ? (
 								<BasicDetails form={form} />
 							) : tab === 'media' ? (
-								<Media />
+								<Media form={form} />
 							) : (
 								<TicketCategory />
 							)}
