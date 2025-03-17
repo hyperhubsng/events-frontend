@@ -43,7 +43,9 @@ const CreateEvent = () => {
 								? 'Basic Details'
 								: tab === 'media'
 								? 'Media'
-								: 'Ticket Category'}
+								: tab === 'ticket'
+								? 'Ticket Category'
+								: ''}
 						</h2>
 						<h3 className='text-sm md:text-base text-black-950 font-bold'>
 							{!tab ? 1 : tab === 'media' ? 2 : 3}/3
@@ -56,9 +58,9 @@ const CreateEvent = () => {
 								<BasicDetails form={form} />
 							) : tab === 'media' ? (
 								<Media form={form} />
-							) : (
+							) : tab === 'ticket' ? (
 								<TicketCategory />
-							)}
+							) : null}
 						</form>
 					</Form>
 				</div>

@@ -167,6 +167,7 @@ button,
 [role='button'] {
 	cursor: pointer;
 	outline: none;
+	@apply focus-within:ring-0 ring-0;
 }
 
 a {
