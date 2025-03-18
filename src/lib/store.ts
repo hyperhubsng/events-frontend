@@ -1,5 +1,6 @@
 import { apiSlice } from '@/features/api/apiSlice';
 import { authReducer } from '@/features/auth/authSlice';
+import { ticketsReducer } from '@/features/tickets/ticketsSlice';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 
@@ -14,6 +15,7 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
 	auth: authReducer,
+	tickets: ticketsReducer,
 	[apiSlice.reducerPath]: apiSlice.reducer,
 });
 
