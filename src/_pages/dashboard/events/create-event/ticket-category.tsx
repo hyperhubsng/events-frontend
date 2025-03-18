@@ -91,7 +91,7 @@ const TicketCategory = () => {
 
 				<Dialog open={openModal} onOpenChange={setOpenModal}>
 					<DialogTrigger asChild className='max-w-[19.125rem] mx-auto text-center'>
-						<Button variant={'outline'} className='w-full mt-4'>
+						<Button variant={'outline'} className='w-full mt-4' type='button'>
 							+ Add Ticket
 						</Button>
 					</DialogTrigger>

@@ -64,7 +64,7 @@ const Media = ({ form }: Props) => {
 					type='button'
 					disabled={!form.formState.isValid}
 					className='w-full'
-					onClick={() => router.push('/events/create-event?tab=media')}>
+					onClick={() => router.push('/events/create-event?tab=ticket')}>
 					Continue
 				</Button>
 

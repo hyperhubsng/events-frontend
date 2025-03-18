@@ -24,6 +24,7 @@ import { format } from 'date-fns';
 import { icons } from '@/components/icons';
 import { MapPin } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { useEffect, useState } from 'react';
 
 type FormData = z.infer<typeof CreateEventSchema>;
 
@@ -32,6 +33,22 @@ type Props = {
 };
 const BasicDetails: React.FC<Props> = ({ form }) => {
 	const router = useRouter();
+
+	const [err, setErr] = useState(false);
+
+	const formValues = form.watch();
+
+	useEffect(() => {
+		for (const key in form.getValues()) {
+			const value = form.getValues()[key as keyof FormData];
+			if (value === '' || value === null) {
+				setErr(true);
+				break;
+			} else {
+				setErr(false);
+			}
+		}
+	}, [formValues, form]);
 
 	return (
 		<div className='flex flex-col gap-4 mt-6'>
@@ -290,7 +307,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 				<Button
 					variant='primary'
 					type='button'
-					disabled={!form.formState.isValid}
+					disabled={err || form.getValues('about').length < 20}
 					className='w-full'
 					onClick={() => router.push('/events/create-event?tab=media')}>
 					Continue
