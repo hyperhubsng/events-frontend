@@ -1,11 +1,13 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '@/lib/hooks';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
 import { Form } from '@/components/ui/form';
-import { useSearchParams } from 'next/navigation';
+import { setPreviewEvent } from '@/features/tickets/ticketsSlice';
 
 import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';
@@ -15,6 +17,9 @@ import TicketCategory from './ticket-category';
 const CreateEvent = () => {
 	const params = useSearchParams();
 	const tab = params.get('tab');
+
+	const dispatch = useAppDispatch();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof CreateEventSchema>>({
 		resolver: zodResolver(CreateEventSchema),
@@ -30,7 +35,8 @@ const CreateEvent = () => {
 	});
 
 	const onSubmit = async (data: z.infer<typeof CreateEventSchema>) => {
-		console.log(data);
+		dispatch(setPreviewEvent(data));
+		router.push('/events/preview');
 	};
 
 	return (

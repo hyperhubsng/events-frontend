@@ -110,10 +110,9 @@ const TicketCategory = () => {
 			<div className='absolute -bottom-[9rem] md:-bottom-[7rem] grid gap-4 sm:grid-cols-2 w-full'>
 				<Button
 					variant='primary'
-					type='button'
 					className='w-full'
 					disabled={ticketCategories.length === 0}>
-					Continue
+					Preview Event
 				</Button>
 
 				<Button variant='outline' type='button' onClick={() => router.back()}>

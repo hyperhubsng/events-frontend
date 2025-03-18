@@ -246,3 +246,8 @@ textarea {
 .data-\[placeholder\]\:text-muted-foreground[data-placeholder] {
 	@apply text-white-300;
 }
+
+button[name='next-month'],
+button[name='previous-month'] {
+	width: 48px;
+}
