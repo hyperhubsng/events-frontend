@@ -19,7 +19,9 @@ const BreadcrumbWrapper = ({
 							<li
 								className={cn(
 									'text-xs',
-									i === 0 ? 'text-blue-50 font-medium' : 'text-black-600'
+									i !== items.length - 1
+										? 'text-blue-50 font-medium'
+										: 'text-black-600'
 								)}>
 								{item}
 							</li>
