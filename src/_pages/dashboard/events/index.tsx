@@ -7,6 +7,7 @@ import { icons } from '@/components/icons';
 
 import EmptyEvents from './empty-events';
 import Tabs from '@/components/tabs';
+import Event from '../event';
 
 const Events = () => {
 	const events = [1];
@@ -74,12 +75,28 @@ const Events = () => {
 					/>
 
 					{/* empty selected event */}
-					<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
-						{icons.Events}
-						<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
-							No {selected} {selected === 'Draft' ? 'Saved' : 'Event'}
-						</h3>
-					</div>
+					{events.length === 0 ? (
+						<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
+							{icons.Events}
+							<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
+								No {selected} {selected === 'Draft' ? 'Saved' : 'Event'}
+							</h3>
+						</div>
+					) : (
+						<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
+							{Array(8)
+								.fill({
+									img: '/images/event-img.png',
+									name: 'Deety December Summer 2025 Tour!',
+									start_date: 'DD/MM/YYYY',
+									start_time: '09:00AM',
+									location: '123, Location avenue, VI, Lagos',
+								})
+								.map((event, i) => (
+									<Event {...event} key={i} id={`event-${i + 1}`} />
+								))}
+						</ul>
+					)}
 				</div>
 			)}
 		</div>
