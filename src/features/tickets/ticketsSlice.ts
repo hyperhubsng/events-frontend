@@ -10,7 +10,22 @@ interface TicketCategory {
 
 interface TicketsState {
 	ticketCategories: TicketCategory[];
-	previewEvent: null;
+	previewEvent: PreviewEvent | null;
+}
+
+interface PreviewEvent {
+	event_name: string;
+	start_date: Date | undefined;
+	start_time: string;
+	event_address: string;
+	landmark: string;
+	event_type: string;
+	organization: string;
+	about: string;
+	thumbnail: File | undefined;
+	event_img_1: File | undefined;
+	event_img_2: File | undefined;
+	event_img_3: File | undefined;
 }
 
 const initialState: TicketsState = {

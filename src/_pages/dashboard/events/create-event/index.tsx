@@ -2,12 +2,15 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
 import { Form } from '@/components/ui/form';
-import { setPreviewEvent } from '@/features/tickets/ticketsSlice';
+import {
+	selectPreviewEvent,
+	setPreviewEvent,
+} from '@/features/tickets/ticketsSlice';
 
 import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';
@@ -21,16 +24,23 @@ const CreateEvent = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 
+	const previewEvent = useAppSelector(selectPreviewEvent);
+
 	const form = useForm<z.infer<typeof CreateEventSchema>>({
 		resolver: zodResolver(CreateEventSchema),
 		defaultValues: {
-			about: '',
-			event_address: '',
-			event_name: '',
-			event_type: '',
-			landmark: '',
-			organization: '',
-			start_time: '',
+			about: previewEvent?.about ?? '',
+			event_address: previewEvent?.event_address ?? '',
+			event_name: previewEvent?.event_name ?? '',
+			event_type: previewEvent?.event_type ?? '',
+			landmark: previewEvent?.landmark ?? '',
+			organization: previewEvent?.organization ?? '',
+			start_time: previewEvent?.start_time ?? '',
+			start_date: previewEvent?.start_date ?? undefined,
+			thumbnail: previewEvent?.thumbnail ?? undefined,
+			event_img_1: previewEvent?.event_img_1 ?? undefined,
+			event_img_2: previewEvent?.event_img_2 ?? undefined,
+			event_img_3: previewEvent?.event_img_3 ?? undefined,
 		},
 	});
 

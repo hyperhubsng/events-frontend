@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { UseFormReturn } from 'react-hook-form';
 import { CreateEventSchema } from '@/lib/schemas';
@@ -99,6 +99,14 @@ type PreviewProps = {
 const Preview = ({ form, name, label }: PreviewProps) => {
 	const [preview, setPreview] = useState('');
 
+	useEffect(() => {
+		const file = form.watch(name);
+		if (file instanceof File) {
+			const imageUrl = URL.createObjectURL(file);
+			setPreview(imageUrl);
+		}
+	}, [form, name]);
+
 	return (
 		<FormField
 			control={form.control}
@@ -119,7 +127,7 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 							className='absolute left-0 top-0 opacity-0 w-full h-full cursor-pointer'
 							onChange={(e) => {
 								const file = e.target.files?.[0];
-								if (file) {
+								if (file instanceof File) {
 									const imageUrl = URL.createObjectURL(file);
 									setPreview(imageUrl);
 									onChange(file);
