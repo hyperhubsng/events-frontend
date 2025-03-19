@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks';
 import {
 	selectPreviewEvent,
@@ -8,12 +10,15 @@ import {
 } from '@/features/tickets/ticketsSlice';
 import { Button } from '@/components/ui/button';
 
-import BreadcrumbWrapper from '@/components/breadcrumb';
 import Gallery from './gallery';
+import Details from './details';
+import BreadcrumbWrapper from '@/components/breadcrumb';
 
 const PreviewEvent = () => {
-	const event = useAppSelector(selectPreviewEvent);
+	const event: any = useAppSelector(selectPreviewEvent);
 	const eventTickets = useAppSelector(selectTicketCategories);
+
+	const router = useRouter();
 
 	const [galleryImages, setGalleryImages] = useState<string[]>([]);
 
@@ -25,29 +30,38 @@ const PreviewEvent = () => {
 					setGalleryImages((prev) => [...prev, imageUrl]);
 				}
 			});
+		} else {
+			router.replace('/events/create-event');
 		}
-	}, [event]);
+	}, [event, router]);
 
-	return (
-		<BreadcrumbWrapper items={['Events', 'Create Event', 'Event Details']}>
-			<div className='h-full p-4'>
-				<div className='bg-white rounded-[4px] md:rounded-[8px] h-full p-4'>
-					<div className='flex items-center justify-between'>
-						<h2 className='text-base sm:text-2xl text-black-950 font-bold'>
-							Preview Event
-						</h2>
+	if (event) {
+		return (
+			<BreadcrumbWrapper items={['Events', 'Create Event', 'Event Details']}>
+				<div className='h-full p-4'>
+					<div className='bg-white rounded-[4px] md:rounded-[8px] h-full p-4'>
+						<div className='flex items-center justify-between'>
+							<h2 className='text-base sm:text-2xl text-black-950 font-bold'>
+								Preview Event
+							</h2>
 
-						<div className='flex items-center gap-4'>
-							<Button variant={'outline'}>Save Draft</Button>
-							<Button variant={'primary'}>Publish Event</Button>
+							<div className='flex items-center gap-4'>
+								<Button variant={'outline'}>Save Draft</Button>
+								<Button variant={'primary'}>Publish Event</Button>
+							</div>
 						</div>
-					</div>
 
-					<Gallery images={galleryImages} />
+						<Gallery images={galleryImages.slice(0, 3)} />
+						<section
+							className='grid md:grid-cols-2 
+	lg:grid-cols-[1.25fr_0.75fr] mt-6 gap-20'>
+							<Details {...event} />
+						</section>
+					</div>
 				</div>
-			</div>
-		</BreadcrumbWrapper>
-	);
+			</BreadcrumbWrapper>
+		);
+	}
 };
 
 export default PreviewEvent;

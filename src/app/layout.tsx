@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Figtree } from 'next/font/google';
+import { Figtree, Modak } from 'next/font/google';
 import { metaDataOptions } from '@/lib/metadata';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -11,6 +11,12 @@ const figtree = Figtree({
 	variable: '--font-figtree',
 	subsets: ['latin'],
 	weight: ['300', '400', '500', '600', '700', '800'],
+});
+
+const modak = Modak({
+	variable: '--font-modak',
+	weight: ['400'],
+	subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +36,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${figtree.variable} antialiased`}>
+			<body className={`${figtree.variable} ${modak.variable} antialiased`}>
 				<StoreProvider>{children}</StoreProvider>
 				<Toaster position='top-right' richColors />
 			</body>
