@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
@@ -99,6 +100,7 @@ const TicketCategory = () => {
 						<DialogHeader>
 							<DialogTitle>Ticket Category 1</DialogTitle>
 						</DialogHeader>
+
 						<TicketModal
 							setOpenModal={setOpenModal}
 							ticket={ticket}
@@ -164,6 +166,9 @@ const TicketModal = ({
 
 	const handleSubmit = () => {
 		if (!ticket) {
+			if (!formData.limit && !formData.name && !formData.price && !formData.quantity)
+				return;
+
 			const findTicket = ticketCategories.find(
 				(_ticket) => _ticket.name.toLowerCase() === formData?.name?.toLowerCase()
 			);
@@ -179,58 +184,53 @@ const TicketModal = ({
 					id: new Date().toISOString(),
 				})
 			);
+			setOpenModal(false);
 		} else {
-			if (!formData.name || !formData.limit || !formData.quantity) {
-				return;
-			}
 			dispatch(editTicketCategory({ ...formData, id: ticket.id }));
 			setTicket(null);
+			setOpenModal(false);
 		}
-
-		setOpenModal(false);
 	};
 
 	return (
 		<div className='mt-2'>
-			<div className='grid sm:grid-cols-2 gap-4'>
-				<FormItem>
-					<FormLabel
-						className='text-black-950 text-sm md:text-base font-semibold'
-						htmlFor='name'>
-						Ticket Category Name
-					</FormLabel>
-					<Input
-						id='name'
-						name='name'
-						placeholder='ex. Early Bird'
-						className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+			<FormItem>
+				<FormLabel
+					className='text-black-950 text-sm md:text-base font-semibold'
+					htmlFor='name'>
+					Ticket Category Name
+				</FormLabel>
+				<Input
+					id='name'
+					name='name'
+					placeholder='ex. Early Bird'
+					className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 														focus-visible:ring-0
 														'
-						value={formData.name}
-						onChange={handleChange}
-						required
-					/>
-				</FormItem>
+					value={formData.name}
+					onChange={handleChange}
+					required
+				/>
+			</FormItem>
 
-				<FormItem>
-					<FormLabel
-						className='text-black-950 text-sm md:text-base font-semibold'
-						htmlFor='price'>
-						Price
-					</FormLabel>
-					<Input
-						id='price'
-						name='price'
-						placeholder='Price'
-						className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+			<FormItem className='mt-4'>
+				<FormLabel
+					className='text-black-950 text-sm md:text-base font-semibold'
+					htmlFor='price'>
+					Price
+				</FormLabel>
+				<Input
+					id='price'
+					name='price'
+					placeholder='Price'
+					className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 														focus-visible:ring-0
 														'
-						value={formData.price}
-						onChange={handleChange}
-						required
-					/>
-				</FormItem>
-			</div>
+					value={formData.price}
+					onChange={handleChange}
+					required
+				/>
+			</FormItem>
 
 			<div className='grid sm:grid-cols-2 gap-4 mt-4'>
 				<FormItem>
@@ -277,7 +277,9 @@ const TicketModal = ({
 					className='mt-8 w-[19.15rem]'
 					type='button'
 					onClick={handleSubmit}>
-					Create Ticket Category
+					<DialogDescription className='text-white'>
+						Create Ticket Category
+					</DialogDescription>
 				</Button>
 			</div>
 		</div>
