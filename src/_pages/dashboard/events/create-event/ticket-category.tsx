@@ -130,6 +130,7 @@ type TicketProps = {
 	name: string;
 	quantity: string;
 	limit: string;
+	price: string;
 };
 
 const TicketModal = ({
@@ -148,6 +149,7 @@ const TicketModal = ({
 		name: ticket?.name ?? '',
 		quantity: ticket?.quantity ?? '',
 		limit: ticket?.limit ?? '',
+		price: ticket?.price ?? '',
 	});
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,24 +192,45 @@ const TicketModal = ({
 
 	return (
 		<div className='mt-2'>
-			<FormItem>
-				<FormLabel
-					className='text-black-950 text-sm md:text-base font-semibold'
-					htmlFor='name'>
-					Ticket Category Name
-				</FormLabel>
-				<Input
-					id='name'
-					name='name'
-					placeholder='ex. Early Bird'
-					className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+			<div className='grid sm:grid-cols-2 gap-4'>
+				<FormItem>
+					<FormLabel
+						className='text-black-950 text-sm md:text-base font-semibold'
+						htmlFor='name'>
+						Ticket Category Name
+					</FormLabel>
+					<Input
+						id='name'
+						name='name'
+						placeholder='ex. Early Bird'
+						className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 														focus-visible:ring-0
 														'
-					value={formData.name}
-					onChange={handleChange}
-					required
-				/>
-			</FormItem>
+						value={formData.name}
+						onChange={handleChange}
+						required
+					/>
+				</FormItem>
+
+				<FormItem>
+					<FormLabel
+						className='text-black-950 text-sm md:text-base font-semibold'
+						htmlFor='price'>
+						Price
+					</FormLabel>
+					<Input
+						id='price'
+						name='price'
+						placeholder='Price'
+						className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+														focus-visible:ring-0
+														'
+						value={formData.price}
+						onChange={handleChange}
+						required
+					/>
+				</FormItem>
+			</div>
 
 			<div className='grid sm:grid-cols-2 gap-4 mt-4'>
 				<FormItem>
@@ -247,6 +270,7 @@ const TicketModal = ({
 					/>
 				</FormItem>
 			</div>
+
 			<div className='flex items-center justify-center'>
 				<Button
 					variant={'primary'}

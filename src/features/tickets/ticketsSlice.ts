@@ -5,6 +5,7 @@ interface TicketCategory {
 	quantity: string;
 	limit: string;
 	id: string;
+	price: string;
 }
 
 interface TicketsState {

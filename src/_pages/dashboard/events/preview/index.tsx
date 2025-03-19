@@ -4,19 +4,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks';
-import {
-	selectPreviewEvent,
-	selectTicketCategories,
-} from '@/features/tickets/ticketsSlice';
+import { selectPreviewEvent } from '@/features/tickets/ticketsSlice';
 import { Button } from '@/components/ui/button';
 
 import Gallery from './gallery';
 import Details from './details';
 import BreadcrumbWrapper from '@/components/breadcrumb';
+import Tickets from './tickets';
 
 const PreviewEvent = () => {
 	const event: any = useAppSelector(selectPreviewEvent);
-	const eventTickets = useAppSelector(selectTicketCategories);
 
 	const router = useRouter();
 
@@ -54,8 +51,9 @@ const PreviewEvent = () => {
 						<Gallery images={galleryImages.slice(0, 3)} />
 						<section
 							className='grid md:grid-cols-2 
-	lg:grid-cols-[1.25fr_0.75fr] mt-6 gap-20'>
+	lg:grid-cols-[1.25fr_0.85fr] mt-6 gap-6'>
 							<Details {...event} />
+							<Tickets />
 						</section>
 					</div>
 				</div>
