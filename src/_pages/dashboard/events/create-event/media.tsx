@@ -153,7 +153,7 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 								width={580}
 								height={150}
 								alt={label}
-								className='absolute top-0 left-0 w-full h-full pointer-events-none rounded-[inherit] object-cover'
+								className='absolute top-0 left-0 w-full h-full pointer-events-none rounded-[inherit] object-cover object-top'
 							/>
 						)}
 					</div>

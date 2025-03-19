@@ -160,9 +160,7 @@ const TicketModal = ({
 		});
 	};
 
-	const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
+	const handleSubmit = () => {
 		if (!ticket) {
 			const findTicket = ticketCategories.find(
 				(_ticket) => _ticket.name.toLowerCase() === formData?.name?.toLowerCase()
@@ -180,6 +178,9 @@ const TicketModal = ({
 				})
 			);
 		} else {
+			if (!formData.name || !formData.limit || !formData.quantity) {
+				return;
+			}
 			dispatch(editTicketCategory({ ...formData, id: ticket.id }));
 			setTicket(null);
 		}
@@ -188,7 +189,7 @@ const TicketModal = ({
 	};
 
 	return (
-		<form className='mt-2' onSubmit={handleSubmit}>
+		<div className='mt-2'>
 			<FormItem>
 				<FormLabel
 					className='text-black-950 text-sm md:text-base font-semibold'
@@ -247,11 +248,15 @@ const TicketModal = ({
 				</FormItem>
 			</div>
 			<div className='flex items-center justify-center'>
-				<Button variant={'primary'} className='mt-8 w-[19.15rem]'>
+				<Button
+					variant={'primary'}
+					className='mt-8 w-[19.15rem]'
+					type='button'
+					onClick={handleSubmit}>
 					Create Ticket Category
 				</Button>
 			</div>
-		</form>
+		</div>
 	);
 };
 
@@ -289,8 +294,12 @@ const Ticket = ({
 					</h5>
 				</div>
 				<div className='flex items-center gap-6'>
-					<button onClick={openModal}>{icons.Edit}</button>
-					<button onClick={() => dispatch(deleteTicketCategory(ticket.id))}>
+					<button onClick={openModal} type='button'>
+						{icons.Edit}
+					</button>
+					<button
+						onClick={() => dispatch(deleteTicketCategory(ticket.id))}
+						type='button'>
 						{icons.Delete}
 					</button>
 				</div>

@@ -249,5 +249,16 @@ textarea {
 
 button[name='next-month'],
 button[name='previous-month'] {
-	width: 48px;
+	width: 32px;
+	max-height: 32px !important;
+}
+.embla {
+	overflow: hidden;
+}
+.embla__container {
+	display: flex;
+}
+.embla__slide {
+	flex: 0 0 100%;
+	min-width: 0;
 }

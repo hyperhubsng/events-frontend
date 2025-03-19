@@ -36,7 +36,7 @@ const CreateEvent = () => {
 
 	const onSubmit = async (data: z.infer<typeof CreateEventSchema>) => {
 		dispatch(setPreviewEvent(data));
-		router.push('/events/preview');
+		router.push('/events/create-event/preview');
 	};
 
 	return (

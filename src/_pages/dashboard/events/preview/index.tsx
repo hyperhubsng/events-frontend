@@ -1,17 +1,32 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/lib/hooks';
 import {
 	selectPreviewEvent,
 	selectTicketCategories,
 } from '@/features/tickets/ticketsSlice';
-import BreadcrumbWrapper from '@/components/breadcrumb';
 import { Button } from '@/components/ui/button';
+
+import BreadcrumbWrapper from '@/components/breadcrumb';
+import Gallery from './gallery';
 
 const PreviewEvent = () => {
 	const event = useAppSelector(selectPreviewEvent);
 	const eventTickets = useAppSelector(selectTicketCategories);
-	// console.log(eventTickets);
+
+	const [galleryImages, setGalleryImages] = useState<string[]>([]);
+
+	useEffect(() => {
+		if (event) {
+			Object.keys(event).forEach((item) => {
+				if (item.includes('event_img')) {
+					const imageUrl = URL.createObjectURL(event[item]);
+					setGalleryImages((prev) => [...prev, imageUrl]);
+				}
+			});
+		}
+	}, [event]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event', 'Event Details']}>
@@ -27,6 +42,8 @@ const PreviewEvent = () => {
 							<Button variant={'primary'}>Publish Event</Button>
 						</div>
 					</div>
+
+					<Gallery images={galleryImages} />
 				</div>
 			</div>
 		</BreadcrumbWrapper>
