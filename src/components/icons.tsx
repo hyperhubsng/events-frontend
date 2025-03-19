@@ -146,7 +146,8 @@ const Events = () => {
 			height='120'
 			viewBox='0 0 120 120'
 			fill='none'
-			xmlns='http://www.w3.org/2000/svg'>
+			xmlns='http://www.w3.org/2000/svg'
+			className='h-[64px] md:h-[120px]'>
 			<rect width='120' height='120' rx='16' fill='#F2F5F7' />
 			<path
 				d='M87.5 35H32.5C31.1193 35 30 36.1193 30 37.5V82.5C30 83.8807 31.1193 85 32.5 85H87.5C88.8807 85 90 83.8807 90 82.5V37.5C90 36.1193 88.8807 35 87.5 35Z'

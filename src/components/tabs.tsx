@@ -4,11 +4,12 @@ type TabsProps = {
 	selected: string;
 	setSelected: (e: string) => void;
 	items: string[];
+	className?: string;
 };
 
-const Tabs: React.FC<TabsProps> = ({ items, selected, setSelected }) => {
+const Tabs: React.FC<TabsProps> = ({ items, selected, setSelected, className }) => {
 	return (
-		<ul className='flex items-center gap-3'>
+		<ul className={cn('flex items-center gap-3', className)}>
 			{items.map((item) => (
 				<li
 					key={item}
