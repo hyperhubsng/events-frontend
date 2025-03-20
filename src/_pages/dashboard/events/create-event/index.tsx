@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -17,7 +18,7 @@ import BasicDetails from './basic-details';
 import Media from './media';
 import TicketCategory from './ticket-category';
 
-const CreateEvent = () => {
+const CreateEvent = ({ edit }: { edit?: boolean }) => {
 	const params = useSearchParams();
 	const tab = params.get('tab');
 
@@ -48,6 +49,29 @@ const CreateEvent = () => {
 		dispatch(setPreviewEvent(data));
 		router.push('/events/create-event/preview');
 	};
+
+	useEffect(() => {
+		const mounted = true;
+
+		if (edit && mounted) {
+			form.setValue('event_name', 'Detty December 2025');
+			form.setValue('start_date', new Date());
+			form.setValue('start_time', '07:00PM');
+			form.setValue('event_address', '123, Lorem Ispum street, VI, Lagos State.');
+			form.setValue('landmark', 'Opposite, Pizza Hut');
+			form.setValue('event_type', 'paid');
+			form.setValue('organization', 'XYZ Corp');
+			form.setValue(
+				'about',
+				`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam. 
+
+Cras feugiat vehicula justo, ut vestibulum purus consectetur vel.
+Pellentesque euismod dapibus sem, sit amet faucibus felis convallis et. Aliquam et tellus eu felis sagittis vulputate vel id justo. Nam viverra ligula nec sapien fringilla, vel volutpat ipsum interdum. Suspendisse potenti.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam.`
+			);
+		}
+	}, [edit, form]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>

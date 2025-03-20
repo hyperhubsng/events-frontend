@@ -8,6 +8,7 @@ import { icons } from '@/components/icons';
 import EmptyEvents from './empty-events';
 import Tabs from '@/components/tabs';
 import Event from '../event';
+import Link from 'next/link';
 
 const Events = () => {
 	const events = [1];
@@ -61,9 +62,11 @@ const Events = () => {
 								/>
 							</div>
 
-							<Button variant={'primary'} className='!h-[40px] md:h-[48px]'>
-								+ Create Event
-							</Button>
+							<Link href='/events/create-event'>
+								<Button variant={'primary'} className='!h-[40px] md:h-[48px]'>
+									+ Create Event
+								</Button>
+							</Link>
 						</div>
 					</div>
 

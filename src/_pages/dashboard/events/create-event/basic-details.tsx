@@ -134,14 +134,37 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 								Start Time
 							</FormLabel>
 							<FormControl>
-								<Input
-									{...field}
-									id='start_time'
-									placeholder='HH:MM:SS'
-									className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+								<div className='relative'>
+									<Input
+										{...field}
+										id='start_time'
+										placeholder='HH:MM:SS'
+										className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
 										'
-								/>
+									/>
+									<svg
+										width='24'
+										height='24'
+										viewBox='0 0 24 24'
+										fill='none'
+										xmlns='http://www.w3.org/2000/svg'
+										className='absolute right-4 top-2'>
+										<path
+											d='M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z'
+											stroke='#808080'
+											strokeWidth='1.5'
+											strokeMiterlimit='10'
+										/>
+										<path
+											d='M12 6.75V12H17.25'
+											stroke='#808080'
+											strokeWidth='1.5'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+										/>
+									</svg>
+								</div>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
