@@ -17,7 +17,7 @@ export type Event = {
 	};
 	createdAt: string;
 	updatedAt: string;
-	organizationData: {
+	ownerIdData: {
 		_id: string;
 		email: string;
 		firstName: string;
@@ -66,4 +66,15 @@ export type EventsParams = {
 	page?: number;
 	q?: string;
 	owner?: string;
+};
+
+export type CreateEventPayload = {
+	title: string;
+	description: string;
+	venue: string;
+	startDate: string;
+	endDate: string;
+	eventType: string;
+	ownerId: string;
+	files: File[];
 };

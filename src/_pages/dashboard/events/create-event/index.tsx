@@ -30,15 +30,15 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 	const form = useForm<z.infer<typeof CreateEventSchema>>({
 		resolver: zodResolver(CreateEventSchema),
 		defaultValues: {
-			about: previewEvent?.about ?? '',
-			event_address: previewEvent?.event_address ?? '',
-			event_name: previewEvent?.event_name ?? '',
-			event_type: previewEvent?.event_type ?? '',
-			landmark: previewEvent?.landmark ?? '',
-			organization: previewEvent?.organization ?? '',
+			description: previewEvent?.description ?? '',
+			venue: previewEvent?.venue ?? '',
+			title: previewEvent?.title ?? '',
+			eventType: previewEvent?.eventType ?? '',
+			coordinates: previewEvent?.coordinates ?? '',
+			ownerId: previewEvent?.ownerId ?? '',
 			start_time: previewEvent?.start_time ?? '',
-			start_date: previewEvent?.start_date ?? undefined,
-			thumbnail: previewEvent?.thumbnail ?? undefined,
+			startDate: previewEvent?.startDate ?? undefined,
+			// thumbnail: previewEvent?.thumbnail ?? undefined,
 			event_img_1: previewEvent?.event_img_1 ?? undefined,
 			event_img_2: previewEvent?.event_img_2 ?? undefined,
 			event_img_3: previewEvent?.event_img_3 ?? undefined,
@@ -51,26 +51,23 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 	};
 
 	useEffect(() => {
-		const mounted = true;
-
-		if (edit && mounted) {
-			form.setValue('event_name', 'Detty December 2025');
-			form.setValue('start_date', new Date());
-			form.setValue('start_time', '07:00PM');
-			form.setValue('event_address', '123, Lorem Ispum street, VI, Lagos State.');
-			form.setValue('landmark', 'Opposite, Pizza Hut');
-			form.setValue('event_type', 'paid');
-			form.setValue('organization', 'XYZ Corp');
-			form.setValue(
-				'about',
-				`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam. 
-
-Cras feugiat vehicula justo, ut vestibulum purus consectetur vel.
-Pellentesque euismod dapibus sem, sit amet faucibus felis convallis et. Aliquam et tellus eu felis sagittis vulputate vel id justo. Nam viverra ligula nec sapien fringilla, vel volutpat ipsum interdum. Suspendisse potenti.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam.`
-			);
-		}
+		// 		const mounted = true;
+		// 		if (edit && mounted) {
+		// 			form.setValue('event_name', 'Detty December 2025');
+		// 			form.setValue('startDate', new Date());
+		// 			form.setValue('start_time', '07:00PM');
+		// 			form.setValue('venue', '123, Lorem Ispum street, VI, Lagos State.');
+		// 			form.setValue('coordinates', 'Opposite, Pizza Hut');
+		// 			form.setValue('eventType', 'paid');
+		// 			form.setValue('ownerId', 'XYZ Corp');
+		// 			form.setValue(
+		// 				'about',
+		// 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam.
+		// Cras feugiat vehicula justo, ut vestibulum purus consectetur vel.
+		// Pellentesque euismod dapibus sem, sit amet faucibus felis convallis et. Aliquam et tellus eu felis sagittis vulputate vel id justo. Nam viverra ligula nec sapien fringilla, vel volutpat ipsum interdum. Suspendisse potenti.
+		// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam.`
+		// 			);
+		// 		}
 	}, [edit, form]);
 
 	return (

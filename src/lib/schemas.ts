@@ -3,33 +3,31 @@ import { z } from 'zod';
 const message = 'This field is required';
 
 export const CreateEventSchema = z.object({
-	event_name: z.string().min(2, {
+	title: z.string().min(2, {
 		message,
 	}),
-	start_date: z.date({
+	startDate: z.date({
 		required_error: message,
 	}),
 	start_time: z.string().min(2, {
 		message,
 	}),
-	event_address: z.string().min(2, {
+	venue: z.string().min(2, {
 		message,
 	}),
-	landmark: z.string().min(2, {
+	coordinates: z.string().optional(),
+	eventType: z.string().min(2, {
 		message,
 	}),
-	event_type: z.string().min(2, {
+	ownerId: z.string().min(2, {
 		message,
 	}),
-	organization: z.string().min(2, {
-		message,
-	}),
-	about: z.string().min(20, {
+	description: z.string().min(20, {
 		message: 'Field must be 20 characters long',
 	}),
-	thumbnail: z.instanceof(File, {
-		message: 'Please select an image',
-	}),
+	// thumbnail: z.instanceof(File, {
+	// 	message: 'Please select an image',
+	// }),
 	event_img_1: z.instanceof(File, {
 		message: 'Please select an image',
 	}),

@@ -1,5 +1,6 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Event as EventProps } from '@/features/events/types';
+import { format } from 'date-fns';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,8 +44,8 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
 					{title}
 				</h3>
 				<div className='mt-3'>
-					<p className='text-sm text-black-700'>{startDate}</p>
-					<p className='text-sm text-black-700'>{startDate}</p>
+					<p className='text-sm text-black-700'>{format(startDate, 'dd/MM/yyyy')}</p>
+					<p className='text-sm text-black-700'>{format(startDate, 'k:maa')}</p>
 					<p className='text-sm text-black-700'>{venue}</p>
 				</div>
 			</div>

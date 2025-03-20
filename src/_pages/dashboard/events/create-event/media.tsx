@@ -20,24 +20,24 @@ const Media = ({ form }: Props) => {
 
 	const images: {
 		name:
-			| 'event_name'
-			| 'start_date'
+			| 'title'
+			| 'startDate'
 			| 'start_time'
-			| 'event_address'
-			| 'landmark'
-			| 'event_type'
-			| 'organization'
-			| 'about'
-			| 'thumbnail'
+			| 'venue'
+			| 'coordinates'
+			| 'eventType'
+			| 'ownerId'
+			| 'description'
+			// | 'thumbnail'
 			| 'event_img_1'
 			| 'event_img_2'
 			| 'event_img_3';
 		label: string;
 	}[] = [
-		{
-			label: 'Event Thumbnail',
-			name: 'thumbnail',
-		},
+		// {
+		// 	label: 'Event Thumbnail',
+		// 	name: 'thumbnail',
+		// },
 		{
 			label: 'Event Img 01',
 			name: 'event_img_1',
@@ -64,7 +64,7 @@ const Media = ({ form }: Props) => {
 					type='button'
 					disabled={!form.formState.isValid}
 					className='w-full'
-					onClick={() => router.push('/events/create-event?tab=ticket')}>
+					onClick={() => router.push('/events/create-event/preview')}>
 					Continue
 				</Button>
 
@@ -81,15 +81,15 @@ export default Media;
 type PreviewProps = {
 	form: UseFormReturn<FormData>;
 	name:
-		| 'event_name'
-		| 'start_date'
+		| 'title'
+		| 'startDate'
 		| 'start_time'
-		| 'event_address'
-		| 'landmark'
-		| 'event_type'
-		| 'organization'
-		| 'about'
-		| 'thumbnail'
+		| 'venue'
+		| 'coordinates'
+		| 'eventType'
+		| 'ownerId'
+		| 'description'
+		// | 'thumbnail'
 		| 'event_img_1'
 		| 'event_img_2'
 		| 'event_img_3';
@@ -115,7 +115,7 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 				<FormItem>
 					<FormLabel
 						className='text-black-950 text-sm md:text-base font-semibold'
-						htmlFor='start_date'>
+						htmlFor='startDate'>
 						{label}
 					</FormLabel>
 					<div

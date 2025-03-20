@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import { EventsData, EventsParams } from './types';
+import { CreateEventPayload, EventsData, EventsParams } from './types';
 
 export const eventsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -10,7 +10,16 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 			}),
 			providesTags: ['events'],
 		}),
+		createEvent: builder.mutation({
+			query: (body: CreateEventPayload) => ({
+				url: '/events',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['events'],
+		}),
 	}),
+	overrideExisting: true,
 });
 
-export const { useGetEventsQuery } = eventsApiSlice;
+export const { useGetEventsQuery, useCreateEventMutation } = eventsApiSlice;

@@ -18,19 +18,19 @@ const Details: React.FC<PreviewEventProps> = ({ ...event }) => {
 							className='flex items-center justify-center bg-[#F2F2F2] rounded-t-[4px] 
 						md:rounded-t-[8px] h-[40%]'>
 							<span className='text-[12px] md:text-base text-black-950 uppercase'>
-								{format(event.start_date, 'LLL')}
+								{format(event.startDate, 'LLL')}
 							</span>
 						</div>
 						<div className='flex items-center justify-center h-[60%]'>
 							<span className='text-[10px] md:text-[1.25rem] text-black-950 font-bold'>
-								{format(event.start_date, 'MM')}
+								{format(event.startDate, 'MM')}
 							</span>
 						</div>
 					</div>
 
 					<div>
 						<h3 className='text-black-950 text-base md:text-2xl font-medium'>
-							{format(event.start_date, 'EEEE, LLLL dd, yyyy')}
+							{format(event.startDate, 'EEEE, LLLL dd, yyyy')}
 						</h3>
 						<p className='text-[#4D4D4D] text-sm md:text-[1.25rem] '>
 							{event.start_time}
@@ -70,7 +70,7 @@ const Details: React.FC<PreviewEventProps> = ({ ...event }) => {
 
 					<div>
 						<h3 className='text-black-950 text-base md:text-2xl font-medium'>
-							{event.event_address}
+							{event.venue}
 						</h3>
 						<p className='text-[#4D4D4D] text-sm md:text-[1.25rem]'>City, State.</p>
 					</div>

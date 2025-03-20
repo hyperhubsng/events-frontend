@@ -54,18 +54,18 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 		<div className='flex flex-col gap-4 mt-6'>
 			<FormField
 				control={form.control}
-				name='event_name'
+				name='title'
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='event_name'>
+							htmlFor='title'>
 							Event Name
 						</FormLabel>
 						<FormControl>
 							<Input
 								{...field}
-								id='event_name'
+								id='title'
 								placeholder='ex. Detty December 2025'
 								className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
@@ -80,22 +80,22 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 			<div className='grid sm:grid-cols-2 gap-4'>
 				<FormField
 					control={form.control}
-					name='start_date'
+					name='startDate'
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel
 								className='text-black-950 text-sm md:text-base font-semibold'
-								htmlFor='start_date'>
+								htmlFor='startDate'>
 								Start Date
 							</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild>
-									<FormControl id='start_date'>
+									<FormControl id='startDate'>
 										<Button
 											variant='outline'
 											size='lg'
-											className='w-full flex items-center justify-between px-3 border-white-300 h-[44px]
-											bg-transparent hover:bg-transparent text-black-950
+											className='w-full flex items-center justify-between px-3 border-white-300
+											bg-transparent hover:bg-transparent text-black-950 !h-[44px]
 											'>
 											{field?.value ? (
 												format(field.value, 'dd-MM-yyyy')
@@ -174,18 +174,18 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 			<FormField
 				control={form.control}
-				name='event_address'
+				name='venue'
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='event_address'>
+							htmlFor='venue'>
 							Event Address
 						</FormLabel>
 						<FormControl>
 							<Input
 								{...field}
-								id='event_address'
+								id='venue'
 								placeholder='Enter Event Address'
 								className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
@@ -199,12 +199,12 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 			<FormField
 				control={form.control}
-				name='landmark'
+				name='coordinates'
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='landmark'>
+							htmlFor='coordinates'>
 							Location Landmark
 						</FormLabel>
 						<FormControl>
@@ -217,7 +217,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 								<Input
 									{...field}
 									placeholder=''
-									id='landmark'
+									id='coordinates'
 									className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0 pl-8
 										'
@@ -231,12 +231,12 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 			<FormField
 				control={form.control}
-				name='event_type'
+				name='eventType'
 				render={({ field }) => (
-					<FormItem id='event_type'>
+					<FormItem id='eventType'>
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='event_type'>
+							htmlFor='eventType'>
 							Event Type
 						</FormLabel>
 						<FormControl>
@@ -267,12 +267,12 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 			<FormField
 				control={form.control}
-				name='organization'
+				name='ownerId'
 				render={({ field }) => (
-					<FormItem id='organization'>
+					<FormItem id='ownerId'>
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='organization'>
+							htmlFor='ownerId'>
 							Organization
 						</FormLabel>
 						<FormControl>
@@ -286,12 +286,12 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 									<SelectItem
 										value='org1'
 										className='w-full cursor-pointer bg-transparent'>
-										Organization 1
+										ownerId 1
 									</SelectItem>
 									<SelectItem
 										value='org2'
 										className='w-full cursor-pointer bg-transparent'>
-										Organization 2
+										ownerId 2
 									</SelectItem>
 								</SelectContent>
 							</Select>
@@ -303,12 +303,12 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 			<FormField
 				control={form.control}
-				name='about'
+				name='description'
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='about'>
+							htmlFor='description'>
 							About Event
 						</FormLabel>
 						<FormControl>
@@ -318,7 +318,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 								className='text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0 h-[120px]
 										'
-								id='about'
+								id='description'
 							/>
 						</FormControl>
 						<FormMessage />
@@ -330,7 +330,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 				<Button
 					variant='primary'
 					type='button'
-					disabled={err || form.getValues('about').length < 20}
+					disabled={err || form.getValues('description').length < 20}
 					className='w-full'
 					onClick={() => router.push('/events/create-event?tab=media')}>
 					Continue
