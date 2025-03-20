@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useGetEventsQuery } from '@/features/events/eventsApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { icons } from '@/components/icons';
@@ -9,15 +10,20 @@ import EmptyEvents from './empty-events';
 import Tabs from '@/components/tabs';
 import Event from '../event';
 import Link from 'next/link';
+import Pulse from '@/components/pulse';
 
 const Events = () => {
-	const events = [1];
-
 	const [selected, setSelected] = useState('Active');
+
+	const { data: events, isLoading } = useGetEventsQuery({
+		// ...(selected !== 'Draft' && { status: selected.toLowerCase() }),
+	});
 
 	return (
 		<div className='h-full p-4'>
-			{events?.length === 0 ? (
+			{isLoading ? (
+				<Pulse />
+			) : events?.data?.length === 0 ? (
 				<EmptyEvents />
 			) : (
 				<div className='h-full bg-white rounded-[8px] md:rounded-2xl p-4 sm:p-6'>
@@ -71,14 +77,14 @@ const Events = () => {
 					</div>
 
 					<Tabs
-						items={['Active', 'Draft', 'Past']}
+						items={['Active', 'Upcoming', 'Past', 'Draft']}
 						selected={selected}
 						setSelected={setSelected}
 						className='mt-4'
 					/>
 
 					{/* empty selected event */}
-					{events.length === 0 ? (
+					{events?.data?.length === 0 ? (
 						<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
 							{icons.Events}
 							<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
@@ -87,17 +93,9 @@ const Events = () => {
 						</div>
 					) : (
 						<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
-							{Array(8)
-								.fill({
-									img: '/images/event-img.png',
-									name: 'Deety December Summer 2025 Tour!',
-									start_date: 'DD/MM/YYYY',
-									start_time: '09:00AM',
-									location: '123, Location avenue, VI, Lagos',
-								})
-								.map((event, i) => (
-									<Event {...event} key={i} id={`event-${i + 1}`} />
-								))}
+							{events?.data.map((event) => (
+								<Event {...event} key={event?._id} />
+							))}
 						</ul>
 					)}
 				</div>

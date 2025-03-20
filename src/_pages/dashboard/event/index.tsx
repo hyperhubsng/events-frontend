@@ -1,41 +1,26 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Event as EventProps } from '@/features/events/types';
 
 import Image from 'next/image';
 import Link from 'next/link';
 
-type EventProps = {
-	id: string;
-	img: string;
-	name: string;
-	start_date: string;
-	start_time: string;
-	location: string;
-};
-
-const Event: React.FC<EventProps> = ({
-	img,
-	id,
-	name,
-	start_date,
-	start_time,
-	location,
-}) => {
+const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) => {
 	const links = [
 		{
 			name: 'Edit Event',
-			link: `/events/${id}/edit`,
+			link: `/events/${_id}/edit`,
 		},
 		{
 			name: 'Discount Code',
-			link: `/events/${id}/discount-code`,
+			link: `/events/${_id}/discount-code`,
 		},
 		{
 			name: 'Sales',
-			link: `/events/${id}/sales`,
+			link: `/events/${_id}/sales`,
 		},
 		{
 			name: 'Guest Check-in',
-			link: `/events/${id}/check-in`,
+			link: `/events/${_id}/check-in`,
 		},
 	];
 
@@ -45,22 +30,22 @@ const Event: React.FC<EventProps> = ({
                  rounded-[4px] md:rounded-[8px] relative'>
 			<figure>
 				<Image
-					src={img}
+					src={images ? images[0] : '/images/event-img.png'}
 					width={264}
 					height={160}
-					alt={`thumbnail image for ${name}`}
+					alt={`thumbnail image for ${title}`}
 					className='rounded-t-[4px] md:rounded-t-[8px] w-full'
 				/>
 			</figure>
 
 			<div className='p-3'>
 				<h3 className='text-[1.125rem] text-black-950 font-bold leading-[1]'>
-					{name}
+					{title}
 				</h3>
 				<div className='mt-3'>
-					<p className='text-sm text-black-700'>{start_date}</p>
-					<p className='text-sm text-black-700'>{start_time}</p>
-					<p className='text-sm text-black-700'>{location}</p>
+					<p className='text-sm text-black-700'>{startDate}</p>
+					<p className='text-sm text-black-700'>{startDate}</p>
+					<p className='text-sm text-black-700'>{venue}</p>
 				</div>
 			</div>
 

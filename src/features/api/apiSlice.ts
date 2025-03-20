@@ -35,9 +35,9 @@ const baseQueryWithReauth: BaseQueryFn<
 	const result = await baseQuery(args, api, extraOptions);
 
 	if (result?.error && result?.error?.status === 401) {
-		// deleteUserToken('access-token');
-		// api.dispatch(logOut());
-		// toast.info('Your session has expired, please log in again.');
+		deleteUserToken('access-token');
+		api.dispatch(logOut());
+		toast.info('Your session has expired, please log in again.');
 	}
 
 	return result;
@@ -46,5 +46,5 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
 	baseQuery: baseQueryWithReauth,
 	endpoints: (builder) => ({}),
-	tagTypes: [],
+	tagTypes: ['events'],
 });
