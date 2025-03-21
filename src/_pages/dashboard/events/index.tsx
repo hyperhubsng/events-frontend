@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useGetEventsQuery } from '@/features/events/eventsApi';
+import { useAppSelector } from '@/lib/hooks';
+import { selectEvents } from '@/features/events/eventsSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { icons } from '@/components/icons';
@@ -18,6 +20,8 @@ const Events = () => {
 	const { data: events, isLoading } = useGetEventsQuery({
 		// ...(selected !== 'Draft' && { status: selected.toLowerCase() }),
 	});
+
+	const draftEvents = useAppSelector(selectEvents);
 
 	return (
 		<div className='h-full p-4'>
@@ -84,19 +88,41 @@ const Events = () => {
 					/>
 
 					{/* empty selected event */}
-					{events?.data?.length === 0 ? (
-						<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
-							{icons.Events}
-							<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
-								No {selected} {selected === 'Draft' ? 'Saved' : 'Event'}
-							</h3>
-						</div>
+
+					{selected !== 'Draft' ? (
+						<>
+							{events?.data?.length === 0 ? (
+								<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
+									{icons.Events}
+									<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
+										No {selected} Event
+									</h3>
+								</div>
+							) : (
+								<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
+									{events?.data.map((event) => (
+										<Event {...event} key={event?._id} />
+									))}
+								</ul>
+							)}
+						</>
 					) : (
-						<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
-							{events?.data.map((event) => (
-								<Event {...event} key={event?._id} />
-							))}
-						</ul>
+						<>
+							{draftEvents?.length === 0 ? (
+								<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
+									{icons.Events}
+									<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
+										No {selected} Saved
+									</h3>
+								</div>
+							) : (
+								<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
+									{draftEvents.map((event) => (
+										<Event {...event} key={event?._id} />
+									))}
+								</ul>
+							)}
+						</>
 					)}
 				</div>
 			)}

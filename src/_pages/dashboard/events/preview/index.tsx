@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useGetEventQuery } from '@/features/events/eventsApi';
+import { useAppDispatch } from '@/lib/hooks';
+import { addEventToDraft } from '@/features/events/eventsSlice';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -23,6 +25,7 @@ const PreviewEvent = () => {
 	const router = useRouter();
 	const [openModal, setOpenModal] = useState(false);
 	const searchParams = useSearchParams();
+	const dispatch = useAppDispatch();
 
 	const { data: event, isLoading } = useGetEventQuery(searchParams.get('eventId')!);
 
@@ -36,7 +39,11 @@ const PreviewEvent = () => {
 						</h2>
 
 						<div className='flex items-center gap-4'>
-							<Button variant={'outline'}>Save Draft</Button>
+							<Button
+								variant={'outline'}
+								onClick={() => dispatch(addEventToDraft(event?.data))}>
+								Save Draft
+							</Button>
 							<Dialog open={openModal} onOpenChange={setOpenModal}>
 								<DialogTrigger asChild>
 									<Button variant={'primary'}>Publish Event</Button>
