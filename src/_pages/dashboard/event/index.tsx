@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Event as EventProps } from '@/features/events/types';
 import { format } from 'date-fns';
@@ -32,12 +31,11 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
                  rounded-[4px] md:rounded-[8px] relative'>
 			<figure>
 				<Image
-					// images ? images[0] :
-					src={'/images/event-img.png'}
+					src={images ? images[0] : '/images/event-img.png'}
 					width={264}
 					height={160}
 					alt={`thumbnail image for ${title}`}
-					className='rounded-t-[4px] md:rounded-t-[8px] w-full'
+					className='rounded-t-[4px] md:rounded-t-[8px] w-full h-[10rem] object-cover object-top'
 				/>
 			</figure>
 

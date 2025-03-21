@@ -28,8 +28,8 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
 						{images?.map((img, i) => (
 							<figure key={i} className='embla__slide'>
 								<Image
-									// src={img}
-									src='/images/event-img.png'
+									src={img}
+									// src='/images/event-img.png'
 									width={1120}
 									height={510}
 									alt='gallery image'
