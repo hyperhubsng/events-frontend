@@ -45,7 +45,7 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
 				</h3>
 				<div className='mt-3'>
 					<p className='text-sm text-black-700'>{format(startDate, 'dd/MM/yyyy')}</p>
-					<p className='text-sm text-black-700'>{format(startDate, 'k:maa')}</p>
+					<p className='text-sm text-black-700'>{format(startDate, 'K:mmaa')}</p>
 					<p className='text-sm text-black-700'>{venue}</p>
 				</div>
 			</div>

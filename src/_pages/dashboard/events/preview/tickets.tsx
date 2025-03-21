@@ -1,19 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useRef, useState } from 'react';
-import { useAppSelector } from '@/lib/hooks';
 import { UseOutsideClick } from '@/hooks/useOutsideClick';
-import { selectTicketCategories } from '@/features/tickets/ticketsSlice';
+import { Ticket as TicketProps } from '@/features/events/types';
 
-const Tickets = () => {
-	const eventTickets: any = useAppSelector(selectTicketCategories);
-
+const Tickets = ({ tickets }: { tickets: TicketProps[] }) => {
 	return (
 		<aside className='bg-[#F7F7F7] rounded-[12px] md:rounded-[24px] p-6 h-max'>
 			<div className='flex flex-col gap-4'>
-				{eventTickets.map((ticket: any) => (
-					<Ticket {...ticket} key={ticket.name} />
+				{tickets?.map((ticket) => (
+					<Ticket {...ticket} key={ticket._id} />
 				))}
 			</div>
 
@@ -34,15 +30,7 @@ const Tickets = () => {
 
 export default Tickets;
 
-type TicketProps = {
-	id: string;
-	limit: string;
-	name: string;
-	quantity: string;
-	price: string;
-};
-
-const Ticket: React.FC<TicketProps> = ({ limit, name, price }) => {
+const Ticket: React.FC<TicketProps> = ({ orderLimit, title, price }) => {
 	const [showOptions, setShowOptions] = useState(false);
 
 	const selectedRef = useRef<number>(0);
@@ -61,14 +49,14 @@ const Ticket: React.FC<TicketProps> = ({ limit, name, price }) => {
 			<div className='flex items-center justify-between'>
 				<div className='flex flex-col gap-2'>
 					<h3 className='text-[#4D4D4D] text-base'>
-						<span className={`${name === 'vip' ? 'uppercase' : 'capitalize'}`}>
-							{name}
+						<span className={`${title === 'vip' ? 'uppercase' : 'capitalize'}`}>
+							{title}
 						</span>
 						<span> tickets</span>
 					</h3>
 
 					<h4 className='text-black-950 text-base md:text-2xl font-bold'>
-						N{Number(price.split(',').join('')).toLocaleString()}
+						N{price.toLocaleString()}
 					</h4>
 					{/* {!early_bird_price ? (
 					) : (
@@ -124,7 +112,7 @@ const Ticket: React.FC<TicketProps> = ({ limit, name, price }) => {
 								style={{
 									maxHeight: showOptions ? optionsRef.current?.scrollHeight : '',
 								}}>
-								{Array(+limit)
+								{Array(+orderLimit)
 									.fill({})
 									.map((_, i) => (
 										<li

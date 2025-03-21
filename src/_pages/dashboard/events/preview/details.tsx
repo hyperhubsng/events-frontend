@@ -1,12 +1,13 @@
+import { Event } from '@/features/events/types';
 import { format } from 'date-fns';
 
-const Details: React.FC<PreviewEventProps> = ({ ...event }) => {
+const Details: React.FC<Event> = ({ ...event }) => {
 	// console.log(event);
 
 	return (
 		<article className='flex flex-col gap-8 md:gap-10'>
-			<h2 className='text-[2rem] sm:text-4xl lg:text-[4rem] text-[#1F1F1F] font-modak max-w-658'>
-				{event?.event_name}
+			<h2 className='text-[2rem] sm:text-4xl lg:text-[3rem] text-[#1F1F1F] font-modak max-w-658'>
+				{event?.title}
 			</h2>
 
 			<div>
@@ -23,7 +24,7 @@ const Details: React.FC<PreviewEventProps> = ({ ...event }) => {
 						</div>
 						<div className='flex items-center justify-center h-[60%]'>
 							<span className='text-[10px] md:text-[1.25rem] text-black-950 font-bold'>
-								{format(event.startDate, 'MM')}
+								{format(event.startDate, 'dd')}
 							</span>
 						</div>
 					</div>
@@ -33,7 +34,7 @@ const Details: React.FC<PreviewEventProps> = ({ ...event }) => {
 							{format(event.startDate, 'EEEE, LLLL dd, yyyy')}
 						</h3>
 						<p className='text-[#4D4D4D] text-sm md:text-[1.25rem] '>
-							{event.start_time}
+							{format(event.startDate, 'K:mmaa')}
 						</p>
 					</div>
 				</div>
@@ -85,7 +86,9 @@ const Details: React.FC<PreviewEventProps> = ({ ...event }) => {
 				</div>
 
 				<div className='flex flex-col gap-4 mt-[1.125rem] pr-4'>
-					<p className='text-base text-black-950 leading-[1.25]'>{event.about}</p>
+					<p className='text-base text-black-950 leading-[1.25]'>
+						{event.description}
+					</p>
 				</div>
 			</div>
 		</article>
