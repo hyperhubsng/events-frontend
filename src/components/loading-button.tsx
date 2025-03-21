@@ -7,6 +7,8 @@ type ButtonProps = {
 	className?: string;
 	children: React.ReactNode;
 	variant: 'primary' | 'secondary';
+	type?: 'button' | 'submit' | 'reset' | undefined;
+	onClick?: () => void;
 };
 
 const LoadingButton: React.FC<ButtonProps> = ({
@@ -15,9 +17,16 @@ const LoadingButton: React.FC<ButtonProps> = ({
 	className,
 	children,
 	variant,
+	type,
+	onClick,
 }) => {
 	return (
-		<Button className={className} variant={variant} disabled={loading || disabled}>
+		<Button
+			className={className}
+			variant={variant}
+			disabled={loading || disabled}
+			type={type}
+			onClick={onClick}>
 			{loading && <Loader2 className='animate-spin' />}
 			{children}
 		</Button>

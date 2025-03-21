@@ -1,5 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import {
+	useCreateTicketMutation,
+	useGetEventTicketsQuery,
+} from '@/features/tickets/ticketsApi';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -11,28 +17,30 @@ import {
 } from '@/components/ui/dialog';
 import { FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
-	deleteTicketCategory,
-	editTicketCategory,
-	selectTicketCategories,
-	setTicketCategories,
-} from '@/features/tickets/ticketsSlice';
 import { icons } from '@/components/icons';
 import { toast } from 'sonner';
+import { Ticket as TicketProps } from '@/features/tickets/types';
+
+import LoadingButton from '@/components/loading-button';
+import Pulse from '@/components/pulse';
 
 const TicketCategory = () => {
 	const router = useRouter();
-
-	const ticketCategories = useAppSelector(selectTicketCategories);
+	const searchParams = useSearchParams();
 
 	const [openModal, setOpenModal] = useState(false);
 	const [ticket, setTicket] = useState<TicketProps | null>(null);
 
+	const { data: tickets, isLoading } = useGetEventTicketsQuery(
+		searchParams.get('eventId')!
+	);
+
 	return (
 		<div className='mt-6 relative -mx-6'>
 			<div className='flex flex-col items-center justify-center'>
-				{ticketCategories.length === 0 ? (
+				{isLoading ? (
+					<Pulse height='h-[12.625rem]' />
+				) : tickets?.data?.length === 0 ? (
 					<div
 						className='flex flex-col items-center justify-center  gap-5
 					 max-w-[19.125rem] mx-auto text-center'>
@@ -78,10 +86,10 @@ const TicketCategory = () => {
 					</div>
 				) : (
 					<ul className='w-full px-6 grid gap-4 mb-4'>
-						{ticketCategories.map((ticket, i) => (
+						{tickets?.data?.map((ticket, i) => (
 							<Ticket
 								ticket={ticket}
-								key={ticket.id}
+								key={ticket._id}
 								category={`Category ${i + 1}`}
 								setTicket={setTicket}
 								setOpenModal={setOpenModal}
@@ -90,30 +98,38 @@ const TicketCategory = () => {
 					</ul>
 				)}
 
-				<Dialog open={openModal} onOpenChange={setOpenModal}>
-					<DialogTrigger asChild className='max-w-[19.125rem] mx-auto text-center'>
-						<Button variant={'outline'} className='w-full mt-4' type='button'>
-							+ Add Ticket
-						</Button>
-					</DialogTrigger>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Ticket Category 1</DialogTitle>
-						</DialogHeader>
+				{!isLoading && (
+					<Dialog open={openModal} onOpenChange={setOpenModal}>
+						<DialogTrigger asChild className='max-w-[19.125rem] mx-auto text-center'>
+							<Button variant={'outline'} className='w-full mt-4' type='button'>
+								+ Add Ticket
+							</Button>
+						</DialogTrigger>
+						<DialogContent>
+							<DialogHeader>
+								<DialogTitle>Ticket Category 1</DialogTitle>
+							</DialogHeader>
 
-						<TicketModal
-							setOpenModal={setOpenModal}
-							ticket={ticket}
-							setTicket={setTicket}
-						/>
-					</DialogContent>
-				</Dialog>
+							<TicketModal
+								setOpenModal={setOpenModal}
+								ticket={ticket}
+								setTicket={setTicket}
+							/>
+						</DialogContent>
+					</Dialog>
+				)}
 			</div>
 			<div className='absolute -bottom-[9rem] md:-bottom-[7rem] grid gap-4 sm:grid-cols-2 w-full'>
 				<Button
 					variant='primary'
 					className='w-full'
-					disabled={ticketCategories.length === 0}>
+					disabled={tickets?.data?.length === 0}
+					type='button'
+					onClick={() =>
+						router.push(
+							`/events/create-event/preview?eventId=${searchParams.get('eventId')}`
+						)
+					}>
 					Preview Event
 				</Button>
 
@@ -127,14 +143,6 @@ const TicketCategory = () => {
 
 export default TicketCategory;
 
-type TicketProps = {
-	id: string;
-	name: string;
-	quantity: string;
-	limit: string;
-	price: string;
-};
-
 const TicketModal = ({
 	ticket,
 	setTicket,
@@ -144,13 +152,12 @@ const TicketModal = ({
 	setTicket: (e: null) => void;
 	setOpenModal: (e: boolean) => void;
 }) => {
-	const dispatch = useAppDispatch();
-	const ticketCategories = useAppSelector(selectTicketCategories);
+	const searchParams = useSearchParams();
 
 	const [formData, setFormData] = useState({
-		name: ticket?.name ?? '',
+		name: ticket?.title ?? '',
 		quantity: ticket?.quantity ?? '',
-		limit: ticket?.limit ?? '',
+		limit: ticket?.orderLimit ?? '',
 		price: ticket?.price ?? '',
 	});
 
@@ -164,29 +171,28 @@ const TicketModal = ({
 		});
 	};
 
-	const handleSubmit = () => {
+	const [createTicket, { isLoading }] = useCreateTicketMutation();
+
+	const handleSubmit = async () => {
 		if (!ticket) {
 			if (!formData.limit && !formData.name && !formData.price && !formData.quantity)
 				return;
 
-			const findTicket = ticketCategories.find(
-				(_ticket) => _ticket.name.toLowerCase() === formData?.name?.toLowerCase()
-			);
+			try {
+				await createTicket({
+					eventId: searchParams.get('eventId')!,
+					orderLimit: +formData.limit,
+					price: +formData.price.toString().split(',').join(''),
+					quantity: +formData.quantity,
+					title: formData.name,
+				}).unwrap();
 
-			if (findTicket) {
-				toast.error('Ticket category already exists!');
-				return;
+				setOpenModal(false);
+				toast.success('Ticket created successfully!');
+			} catch (error: any) {
+				toast.error(error?.data?.message);
 			}
-
-			dispatch(
-				setTicketCategories({
-					...formData,
-					id: new Date().toISOString(),
-				})
-			);
-			setOpenModal(false);
 		} else {
-			dispatch(editTicketCategory({ ...formData, id: ticket.id }));
 			setTicket(null);
 			setOpenModal(false);
 		}
@@ -272,7 +278,8 @@ const TicketModal = ({
 			</div>
 
 			<div className='flex items-center justify-center'>
-				<Button
+				<LoadingButton
+					loading={isLoading}
 					variant={'primary'}
 					className='mt-8 w-[19.15rem]'
 					type='button'
@@ -280,7 +287,7 @@ const TicketModal = ({
 					<DialogDescription className='text-white'>
 						Create Ticket Category
 					</DialogDescription>
-				</Button>
+				</LoadingButton>
 			</div>
 		</div>
 	);
@@ -297,8 +304,6 @@ const Ticket = ({
 	setTicket: (e: TicketProps) => void;
 	setOpenModal: (e: boolean) => void;
 }) => {
-	const dispatch = useAppDispatch();
-
 	const openModal = () => {
 		setOpenModal(true);
 		setTicket(ticket);
@@ -313,21 +318,17 @@ const Ticket = ({
 			<div className='flex items-center justify-between px-4 py-3'>
 				<div>
 					<h4 className='text-sm sm:text-base text-black-950 font-bold'>
-						{ticket.name}
+						{ticket.title}
 					</h4>
 					<h5 className='mt-3 text-black-950 text-sm'>
-						{ticket.quantity} | {ticket.limit} per person
+						{ticket.quantity} | {ticket.orderLimit} per person
 					</h5>
 				</div>
 				<div className='flex items-center gap-6'>
 					<button onClick={openModal} type='button'>
 						{icons.Edit}
 					</button>
-					<button
-						onClick={() => dispatch(deleteTicketCategory(ticket.id))}
-						type='button'>
-						{icons.Delete}
-					</button>
+					<button type='button'>{icons.Delete}</button>
 				</div>
 			</div>
 		</li>

@@ -12,3 +12,13 @@ type PreviewEventProps = {
 	start_time: string;
 	thumbnail: File;
 };
+
+type Pagination = {
+	prevPage: number;
+	nextPage: number | null;
+	perPage: number;
+	offset: number;
+	total: number;
+	currentPage: number;
+	totalPages: number;
+};
