@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const message = 'This field is required';
+export const message = 'This field is required';
 
 export const CreateEventSchema = z.object({
 	title: z.string().min(2, {

@@ -277,3 +277,17 @@ button[name='previous-month'] {
 		box-shadow: 0 0 0 33.6px #0000;
 	}
 }
+
+.radio {
+	@apply h-6 w-6 border-[#A6A6A6];
+	svg {
+		@apply size-3 transition-all duration-300 ease-in-out;
+	}
+}
+
+.radio[data-state='checked'] {
+	@apply border-blue-50;
+	svg {
+		fill: var(--color-blue-50);
+	}
+}
