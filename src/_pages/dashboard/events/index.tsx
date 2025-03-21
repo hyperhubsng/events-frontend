@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useGetEventsQuery } from '@/features/events/eventsApi';
 import { useAppSelector } from '@/lib/hooks';
+import { useDebounce } from '@/hooks/useDebounce';
 import { selectEvents } from '@/features/events/eventsSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,18 +17,23 @@ import Pulse from '@/components/pulse';
 
 const Events = () => {
 	const [selected, setSelected] = useState('Active');
+	const [search, setSearch] = useState('');
+	const debouncedSearchTerm = useDebounce(search, 300);
 
-	const { data: events, isLoading } = useGetEventsQuery({
+	const {
+		data: events,
+		isLoading,
+		isFetching,
+	} = useGetEventsQuery({
 		// ...(selected !== 'Draft' && { status: selected.toLowerCase() }),
+		...(debouncedSearchTerm && { q: debouncedSearchTerm }),
 	});
 
 	const draftEvents = useAppSelector(selectEvents);
 
 	return (
 		<div className='h-full p-4'>
-			{isLoading ? (
-				<Pulse />
-			) : events?.data?.length === 0 ? (
+			{events && events?.pagination.total === 0 ? (
 				<EmptyEvents />
 			) : (
 				<div className='h-full bg-white rounded-[8px] md:rounded-2xl p-4 sm:p-6'>
@@ -69,6 +75,8 @@ const Events = () => {
 										'
 									placeholder='Search'
 									id='search'
+									value={search}
+									onChange={(e) => setSearch(e.target.value)}
 								/>
 							</div>
 
@@ -87,40 +95,44 @@ const Events = () => {
 						className='mt-4'
 					/>
 
-					{/* empty selected event */}
-
-					{selected !== 'Draft' ? (
-						<>
-							{events?.data?.length === 0 ? (
-								<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
-									{icons.Events}
-									<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
-										No {selected} Event
-									</h3>
-								</div>
-							) : (
-								<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
-									{events?.data.map((event) => (
-										<Event {...event} key={event?._id} />
-									))}
-								</ul>
-							)}
-						</>
+					{isLoading || isFetching ? (
+						<Pulse height='h-[90%]' />
 					) : (
 						<>
-							{draftEvents?.length === 0 ? (
-								<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
-									{icons.Events}
-									<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
-										No {selected} Saved
-									</h3>
-								</div>
+							{selected !== 'Draft' ? (
+								<>
+									{events?.data?.length === 0 ? (
+										<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
+											{icons.Events}
+											<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
+												No {selected} Event
+											</h3>
+										</div>
+									) : (
+										<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
+											{events?.data.map((event) => (
+												<Event {...event} key={event?._id} />
+											))}
+										</ul>
+									)}
+								</>
 							) : (
-								<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
-									{draftEvents.map((event) => (
-										<Event {...event} key={event?._id} />
-									))}
-								</ul>
+								<>
+									{draftEvents?.length === 0 ? (
+										<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
+											{icons.Events}
+											<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
+												No {selected} Saved
+											</h3>
+										</div>
+									) : (
+										<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
+											{draftEvents.map((event) => (
+												<Event {...event} key={event?._id} />
+											))}
+										</ul>
+									)}
+								</>
 							)}
 						</>
 					)}
