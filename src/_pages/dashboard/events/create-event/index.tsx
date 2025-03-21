@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect } from 'react';
@@ -17,6 +18,8 @@ import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';
 import Media from './media';
 import TicketCategory from './ticket-category';
+import { useCreateEventMutation } from '@/features/events/eventsApi';
+import { toast } from 'sonner';
 
 const CreateEvent = ({ edit }: { edit?: boolean }) => {
 	const params = useSearchParams();
@@ -45,30 +48,37 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 		},
 	});
 
+	const [createEvent, { isLoading }] = useCreateEventMutation();
+
 	const onSubmit = async (data: z.infer<typeof CreateEventSchema>) => {
 		dispatch(setPreviewEvent(data));
-		router.push('/events/create-event/preview');
+
+		const formData = new FormData();
+
+		const keys: (keyof typeof data)[] = [
+			'description',
+			'venue',
+			'title',
+			'eventType',
+			'ownerId',
+		];
+
+		keys.forEach((key) => {
+			formData.append(key, data[key] as string);
+		});
+
+		formData.append('startDate', `${data.startDate} ${data.start_time}`);
+
+		const res = await createEvent(formData).unwrap();
+
+		router.push(`/events/create-event?tab=ticket&eventId=${res?.data?._id}`);
+		try {
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
 	};
 
-	useEffect(() => {
-		// 		const mounted = true;
-		// 		if (edit && mounted) {
-		// 			form.setValue('event_name', 'Detty December 2025');
-		// 			form.setValue('startDate', new Date());
-		// 			form.setValue('start_time', '07:00PM');
-		// 			form.setValue('venue', '123, Lorem Ispum street, VI, Lagos State.');
-		// 			form.setValue('coordinates', 'Opposite, Pizza Hut');
-		// 			form.setValue('eventType', 'paid');
-		// 			form.setValue('ownerId', 'XYZ Corp');
-		// 			form.setValue(
-		// 				'about',
-		// 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam.
-		// Cras feugiat vehicula justo, ut vestibulum purus consectetur vel.
-		// Pellentesque euismod dapibus sem, sit amet faucibus felis convallis et. Aliquam et tellus eu felis sagittis vulputate vel id justo. Nam viverra ligula nec sapien fringilla, vel volutpat ipsum interdum. Suspendisse potenti.
-		// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra nisi vel enim eleifend, at sagittis libero tincidunt. Integer bibendum mauris et justo tristique, sit amet porttitor lorem aliquam.`
-		// 			);
-		// 		}
-	}, [edit, form]);
+	useEffect(() => {}, [edit, form]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>
@@ -94,7 +104,7 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 							{!tab ? (
 								<BasicDetails form={form} />
 							) : tab === 'media' ? (
-								<Media form={form} />
+								<Media form={form} isLoading={isLoading} />
 							) : tab === 'ticket' ? (
 								<TicketCategory />
 							) : null}

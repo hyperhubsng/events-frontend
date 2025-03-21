@@ -3,6 +3,7 @@ import { Button } from './ui/button';
 
 type ButtonProps = {
 	loading: boolean;
+	disabled?: boolean;
 	className?: string;
 	children: React.ReactNode;
 	variant: 'primary' | 'secondary';
@@ -10,12 +11,13 @@ type ButtonProps = {
 
 const LoadingButton: React.FC<ButtonProps> = ({
 	loading,
+	disabled,
 	className,
 	children,
 	variant,
 }) => {
 	return (
-		<Button className={className} variant={variant} disabled={loading}>
+		<Button className={className} variant={variant} disabled={loading || disabled}>
 			{loading && <Loader2 className='animate-spin' />}
 			{children}
 		</Button>
