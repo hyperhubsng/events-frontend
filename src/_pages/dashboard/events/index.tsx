@@ -28,12 +28,12 @@ const Events = () => {
 			) : (
 				<div className='h-full bg-white rounded-[8px] md:rounded-2xl p-4 sm:p-6'>
 					<div className='flex items-start md:items-center justify-between relative'>
-						<h2 className='text-[1.25rem] sm:text-2xl text-black-950 font-bold absolute top-2 md:relative md:top-0'>
+						<h2 className='text-[1.25rem] sm:text-2xl text-black-950 font-bold absolute top-2 sm:relative sm:top-0'>
 							Event
 						</h2>
 
 						<div className='flex items-center justify-end gap-4 flex-wrap-reverse'>
-							<div className='relative w-full md:w-auto'>
+							<div className='relative w-full sm:w-auto'>
 								<svg
 									width='13'
 									height='15'
@@ -61,7 +61,7 @@ const Events = () => {
 								<Input
 									className='h-[40px] text-sm font-medium placeholder:text-white-300 
 														placeholder:font-normal text-black-950 focus-visible:ring-0
-														w-full md:w-[15rem] pl-10
+														w-full sm:w-[15rem] pl-10
 										'
 									placeholder='Search'
 									id='search'

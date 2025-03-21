@@ -13,11 +13,13 @@ import { toast } from 'sonner';
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: BASE_URL,
-	async prepareHeaders(headers) {
+	async prepareHeaders(headers, { ...rest }) {
 		const token = await getUserToken('access-token');
 
-		headers.set('Content-Type', 'application/json');
-		headers.set('Accept', 'application/json');
+		if (typeof rest?.arg === 'object' && !(rest?.arg?.body instanceof FormData)) {
+			headers.set('Content-Type', 'application/json');
+			headers.set('Accept', 'application/json');
+		}
 
 		if (token) {
 			headers.set('Authorization', `Bearer ${token}`);

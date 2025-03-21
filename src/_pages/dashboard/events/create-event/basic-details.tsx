@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useGetUsersQuery } from '@/features/users/usersApi';
 import { UseFormReturn } from 'react-hook-form';
 import { CreateEventSchema } from '@/lib/schemas';
 import { z } from 'zod';
@@ -24,7 +26,6 @@ import { format } from 'date-fns';
 import { icons } from '@/components/icons';
 import { MapPin } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-import { useEffect, useState } from 'react';
 
 type FormData = z.infer<typeof CreateEventSchema>;
 
@@ -38,14 +39,20 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 	const formValues = form.watch();
 
+	const { data: vendors, isLoading } = useGetUsersQuery({
+		accountType: 'vendor',
+	});
+
 	useEffect(() => {
 		for (const key in form.getValues()) {
 			const value = form.getValues()[key as keyof FormData];
-			if (value === '' || value === null) {
-				setErr(true);
-				break;
-			} else {
-				setErr(false);
+			if (key !== 'coordinates') {
+				if (value === '' || value === null) {
+					setErr(true);
+					break;
+				} else {
+					setErr(false);
+				}
 			}
 		}
 	}, [formValues, form]);
@@ -276,23 +283,24 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 							Organization
 						</FormLabel>
 						<FormControl>
-							<Select defaultValue={field.value} onValueChange={field.onChange}>
+							<Select
+								defaultValue={field.value}
+								onValueChange={field.onChange}
+								disabled={isLoading}>
 								<SelectTrigger
 									className='h-[44px] text-sm font-medium text-black-950
 										focus-visible:ring-0 w-full'>
 									<SelectValue placeholder='--Select--' className='text-black-950' />
 								</SelectTrigger>
 								<SelectContent className='w-full'>
-									<SelectItem
-										value='org1'
-										className='w-full cursor-pointer bg-transparent'>
-										ownerId 1
-									</SelectItem>
-									<SelectItem
-										value='org2'
-										className='w-full cursor-pointer bg-transparent'>
-										ownerId 2
-									</SelectItem>
+									{vendors?.data?.users?.map((vendor) => (
+										<SelectItem
+											key={vendor?._id}
+											value={vendor?._id}
+											className='w-full cursor-pointer bg-transparent'>
+											{vendor?.companyName}
+										</SelectItem>
+									))}
 								</SelectContent>
 							</Select>
 						</FormControl>

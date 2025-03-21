@@ -8,14 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 import Image from 'next/image';
+import LoadingButton from '@/components/loading-button';
 
 type FormData = z.infer<typeof CreateEventSchema>;
 
 type Props = {
 	form: UseFormReturn<FormData>;
+	isLoading: boolean;
 };
 
-const Media = ({ form }: Props) => {
+const Media = ({ form, isLoading }: Props) => {
 	const router = useRouter();
 
 	const images: {
@@ -59,14 +61,13 @@ const Media = ({ form }: Props) => {
 			))}
 
 			<div className='grid gap-4 sm:grid-cols-2 w-full'>
-				<Button
+				<LoadingButton
+					loading={isLoading}
 					variant='primary'
-					type='button'
 					disabled={!form.formState.isValid}
-					className='w-full'
-					onClick={() => router.push('/events/create-event/preview')}>
+					className='w-full'>
 					Continue
-				</Button>
+				</LoadingButton>
 
 				<Button variant='outline' type='button' onClick={() => router.back()}>
 					Go Back

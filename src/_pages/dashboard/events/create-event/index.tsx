@@ -5,6 +5,9 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useCreateEventMutation } from '@/features/events/eventsApi';
+import { toast } from 'sonner';
+import { format } from 'date-fns';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
@@ -18,8 +21,6 @@ import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';
 import Media from './media';
 import TicketCategory from './ticket-category';
-import { useCreateEventMutation } from '@/features/events/eventsApi';
-import { toast } from 'sonner';
 
 const CreateEvent = ({ edit }: { edit?: boolean }) => {
 	const params = useSearchParams();
@@ -52,27 +53,41 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 
 	const onSubmit = async (data: z.infer<typeof CreateEventSchema>) => {
 		dispatch(setPreviewEvent(data));
-
-		const formData = new FormData();
-
-		const keys: (keyof typeof data)[] = [
-			'description',
-			'venue',
-			'title',
-			'eventType',
-			'ownerId',
-		];
-
-		keys.forEach((key) => {
-			formData.append(key, data[key] as string);
-		});
-
-		formData.append('startDate', `${data.startDate} ${data.start_time}`);
-
-		const res = await createEvent(formData).unwrap();
-
-		router.push(`/events/create-event?tab=ticket&eventId=${res?.data?._id}`);
 		try {
+			const formData = new FormData();
+
+			const keys: (keyof typeof data)[] = [
+				'description',
+				'venue',
+				'title',
+				'eventType',
+				'ownerId',
+			];
+
+			keys.forEach((key) => {
+				formData.append(key, data[key] as string);
+			});
+
+			formData.append(
+				'startDate',
+				`${format(data.startDate, 'yyyy-MM-dd')} ${data.start_time}`
+			);
+
+			formData.append(
+				'endDate',
+				`${format(data.startDate, 'yyyy-MM-dd')} ${data.start_time}`
+			);
+
+			const files = [data.event_img_1, data.event_img_2, data.event_img_3];
+
+			files.forEach((file) => {
+				formData.append('files', file);
+			});
+
+			const res = await createEvent(formData).unwrap();
+			toast.success('Success! Please proceed to create ticket categories.');
+
+			router.push(`/events/create-event?tab=ticket&eventId=${res?.data?._id}`);
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
