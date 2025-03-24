@@ -24,7 +24,7 @@ const Search: React.FC<SearchProps> = ({
 			<h2 className='text-[1.25rem] sm:text-2xl text-black-950 font-bold absolute top-2 sm:relative sm:top-0'>
 				{title}
 			</h2>
-			<div className='flex items-center justify-end gap-4 flex-wrap-reverse'>
+			<div className='flex items-center justify-end gap-4 flex-wrap-reverse w-full md:w-auto'>
 				<div className='relative w-full sm:w-auto'>
 					<svg
 						width='13'
@@ -53,8 +53,7 @@ const Search: React.FC<SearchProps> = ({
 					<Input
 						className='h-[40px] text-sm font-medium placeholder:text-white-300 
 														placeholder:font-normal text-black-950 focus-visible:ring-0
-														w-full sm:w-[15rem] pl-10
-										'
+														w-full sm:w-[15rem] pl-10'
 						placeholder='Search'
 						id='search'
 						value={value}

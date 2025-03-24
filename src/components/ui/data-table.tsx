@@ -15,15 +15,22 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import Pagination from '../pagination';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	totalPages: number;
+	value: string;
+	onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	totalPages,
+	value,
+	onChange,
 }: DataTableProps<TData, TValue>) {
 	const table = useReactTable({
 		data,
@@ -72,6 +79,10 @@ export function DataTable<TData, TValue>({
 					)}
 				</TableBody>
 			</Table>
+
+			{table.getRowModel().rows?.length && (
+				<Pagination totalPages={totalPages} value={value} onChange={onChange} />
+			)}
 		</div>
 	);
 }

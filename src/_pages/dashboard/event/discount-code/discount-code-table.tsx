@@ -45,6 +45,8 @@ const columns: ColumnDef<DiscountTableProps>[] = [
 
 const DiscountCodeTable = ({ codes }: { codes: DiscountTableProps[] }) => {
 	const [search, setSearch] = useState('');
+	const [limit, setLimit] = useState('10');
+
 	const pathname = usePathname();
 	const match = useMediaQuery('(max-width:601px)');
 
@@ -58,7 +60,13 @@ const DiscountCodeTable = ({ codes }: { codes: DiscountTableProps[] }) => {
 				link={`${pathname}?tab=form`}
 			/>
 
-			<DataTable columns={columns} data={codes} />
+			<DataTable
+				columns={columns}
+				data={codes}
+				totalPages={5}
+				value={limit}
+				onChange={(e) => setLimit(e.target.value)}
+			/>
 		</div>
 	);
 };

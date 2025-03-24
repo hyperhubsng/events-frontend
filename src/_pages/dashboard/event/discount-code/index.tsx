@@ -18,7 +18,7 @@ const DiscountCode = () => {
 	const [codes, setCodes] = useState<DiscountTableProps[]>([]);
 
 	const handleSubmit = (data: DiscountTableProps) => {
-		setCodes((prev) => [...prev, data]);
+		setCodes((prev) => [data, ...prev]);
 		router.back();
 	};
 
