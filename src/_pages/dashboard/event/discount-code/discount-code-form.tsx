@@ -39,17 +39,17 @@ const DiscountSchema = z.object({
 	usage: z.enum(['duration', 'quantity'], {
 		required_error: message,
 	}),
-	startDate: z.date({
-		required_error: message,
-	}),
-	endDate: z.date({
-		required_error: message,
-	}),
+	startDate: z.date({}).optional(),
+	endDate: z.date({}).optional(),
+	quantity: z.string().optional(),
 });
 
 const DiscountForm = () => {
 	const form = useForm<z.infer<typeof DiscountSchema>>({
 		resolver: zodResolver(DiscountSchema),
+		defaultValues: {
+			usage: 'duration',
+		},
 	});
 
 	const onSubmit = async (data: z.infer<typeof DiscountSchema>) => {
@@ -217,105 +217,132 @@ const DiscountForm = () => {
 							)}
 						/>
 
-						<div>
-							<Label className='text-black-950 text-sm md:text-base font-semibold'>
-								Duration
-							</Label>
-							<div className='grid sm:grid-cols-2 gap-4 mt-4'>
-								<FormField
-									control={form.control}
-									name='startDate'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel
-												className='text-black-950 text-sm md:text-base font-semibold'
-												htmlFor='startDate'>
-												Start Date
-											</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl id='startDate'>
-														<Button
-															variant='outline'
-															size='lg'
-															className='w-full flex items-center justify-between px-3 border-white-300
+						<Label className='text-black-950 text-sm md:text-base font-semibold capitalize -mb-4'>
+							{form.watch('usage')}
+						</Label>
+						{form.watch('usage') === 'duration' ? (
+							<div>
+								<div className='grid sm:grid-cols-2 gap-4'>
+									<FormField
+										control={form.control}
+										name='startDate'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel
+													className='text-black-950 text-sm md:text-base font-semibold'
+													htmlFor='startDate'>
+													Start Date
+												</FormLabel>
+												<Popover>
+													<PopoverTrigger asChild>
+														<FormControl id='startDate'>
+															<Button
+																variant='outline'
+																size='lg'
+																className='w-full flex items-center justify-between px-3 border-white-300
                                   bg-transparent hover:bg-transparent text-black-950 !h-[44px]
                                   '>
-															{field?.value ? (
-																format(field.value, 'dd-MM-yyyy')
-															) : (
-																<span className='text-white-300 text-sm'>
-																	DD/MM/YYYY
-																</span>
-															)}
+																{field?.value ? (
+																	format(field.value, 'dd-MM-yyyy')
+																) : (
+																	<span className='text-white-300 text-sm'>
+																		DD/MM/YYYY
+																	</span>
+																)}
 
-															{icons.Calendar}
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className='w-auto p-0 ' align='start'>
-													<Calendar
-														mode='single'
-														selected={field.value}
-														onSelect={field.onChange}
-														disabled={(date) => date < new Date('1900-01-01')}
-														captionLayout='dropdown'
-														initialFocus
-													/>
-												</PopoverContent>
-											</Popover>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<FormField
-									control={form.control}
-									name='endDate'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel
-												className='text-black-950 text-sm md:text-base font-semibold'
-												htmlFor='endDate'>
-												End Date
-											</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl id='endDate'>
-														<Button
-															variant='outline'
-															size='lg'
-															className='w-full flex items-center justify-between px-3 border-white-300
+																{icons.Calendar}
+															</Button>
+														</FormControl>
+													</PopoverTrigger>
+													<PopoverContent className='w-auto p-0 ' align='start'>
+														<Calendar
+															mode='single'
+															selected={field.value}
+															onSelect={field.onChange}
+															disabled={(date) => date < new Date('1900-01-01')}
+															captionLayout='dropdown'
+															initialFocus
+														/>
+													</PopoverContent>
+												</Popover>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name='endDate'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel
+													className='text-black-950 text-sm md:text-base font-semibold'
+													htmlFor='endDate'>
+													End Date
+												</FormLabel>
+												<Popover>
+													<PopoverTrigger asChild>
+														<FormControl id='endDate'>
+															<Button
+																variant='outline'
+																size='lg'
+																className='w-full flex items-center justify-between px-3 border-white-300
                                   bg-transparent hover:bg-transparent text-black-950 !h-[44px]
                                   '>
-															{field?.value ? (
-																format(field.value, 'dd-MM-yyyy')
-															) : (
-																<span className='text-white-300 text-sm'>
-																	DD/MM/YYYY
-																</span>
-															)}
+																{field?.value ? (
+																	format(field.value, 'dd-MM-yyyy')
+																) : (
+																	<span className='text-white-300 text-sm'>
+																		DD/MM/YYYY
+																	</span>
+																)}
 
-															{icons.Calendar}
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className='w-auto p-0 ' align='start'>
-													<Calendar
-														mode='single'
-														selected={field.value}
-														onSelect={field.onChange}
-														disabled={(date) => date < new Date('1900-01-01')}
-														captionLayout='dropdown'
-														initialFocus
-													/>
-												</PopoverContent>
-											</Popover>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+																{icons.Calendar}
+															</Button>
+														</FormControl>
+													</PopoverTrigger>
+													<PopoverContent className='w-auto p-0 ' align='start'>
+														<Calendar
+															mode='single'
+															selected={field.value}
+															onSelect={field.onChange}
+															disabled={(date) => date < new Date('1900-01-01')}
+															captionLayout='dropdown'
+															initialFocus
+														/>
+													</PopoverContent>
+												</Popover>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
 							</div>
-						</div>
+						) : (
+							<FormField
+								control={form.control}
+								name='quantity'
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className='text-black-950 text-sm md:text-base font-semibold'
+											htmlFor='quantity'>
+											Quantity Of Tickets
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												id='quantity'
+												placeholder='Enter the number of tickets'
+												className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
+								focus-visible:ring-0
+								'
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						)}
 
 						<Button variant={'primary'} className='w-full mt-4'>
 							Create Discount Code
