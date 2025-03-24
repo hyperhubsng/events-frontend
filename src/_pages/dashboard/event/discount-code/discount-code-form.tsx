@@ -44,16 +44,29 @@ const DiscountSchema = z.object({
 	quantity: z.string().optional(),
 });
 
-const DiscountForm = () => {
+const DiscountForm = ({
+	handleSubmit,
+}: {
+	handleSubmit: (e: DiscountTableProps) => void;
+}) => {
 	const form = useForm<z.infer<typeof DiscountSchema>>({
 		resolver: zodResolver(DiscountSchema),
 		defaultValues: {
+			code: '',
+			category: '',
 			usage: 'duration',
 		},
 	});
 
 	const onSubmit = async (data: z.infer<typeof DiscountSchema>) => {
-		console.log(data);
+		const tData = {
+			code: data.code!,
+			start_date: data.startDate!,
+			end_date: data.endDate!,
+			status: 'active',
+		};
+
+		handleSubmit(tData);
 	};
 
 	return (
