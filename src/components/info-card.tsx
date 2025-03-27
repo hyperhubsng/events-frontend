@@ -1,7 +1,7 @@
 type CardProps = {
 	icon: React.ReactNode;
 	title: string;
-	info: string;
+	info: string | undefined | number;
 };
 
 const InfoCard: React.FC<CardProps> = ({ icon, title, info }) => {

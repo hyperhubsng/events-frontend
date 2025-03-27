@@ -29,3 +29,13 @@ type DiscountTableProps = {
 	end_date: Date;
 	status: string;
 };
+
+type OrganizerTableProps = {
+	firstName: string;
+	lastName: string;
+	email: string;
+	companyName: string;
+	phoneNumber: string;
+	website: string;
+	accountStatus: string;
+};

@@ -8,6 +8,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: '/users',
 				params,
 			}),
+			providesTags: ['users'],
 		}),
 	}),
 });

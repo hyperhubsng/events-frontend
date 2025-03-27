@@ -8,7 +8,7 @@ export type User = {
 	country: string;
 	companyName: string;
 	website: string;
-	locked: true;
+	locked: boolean;
 	userType: string;
 	createdAt: string;
 	updatedAt: string;

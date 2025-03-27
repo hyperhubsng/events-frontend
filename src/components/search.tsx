@@ -3,12 +3,16 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 type SearchProps = {
 	title: string;
 	value: string;
 	buttonText: string;
 	link?: string;
+	tClass?: string;
+	sClass?: string;
+	onClick?: () => void;
 	onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -17,15 +21,22 @@ const Search: React.FC<SearchProps> = ({
 	value,
 	buttonText,
 	link,
+	tClass,
+	sClass,
+	onClick,
 	onChange,
 }) => {
 	return (
 		<div className='flex items-start sm:items-center justify-between relative'>
-			<h2 className='text-[1.25rem] sm:text-2xl text-black-950 font-bold absolute top-2 sm:relative sm:top-0'>
+			<h2
+				className={cn(
+					'text-[1.25rem] sm:text-2xl text-black-950 font-bold absolute top-2 sm:relative sm:top-0',
+					tClass
+				)}>
 				{title}
 			</h2>
 			<div className='flex items-center justify-end gap-4 flex-wrap-reverse w-full md:w-auto'>
-				<div className='relative w-full sm:w-auto'>
+				<div className={cn('relative w-full sm:w-auto', sClass)}>
 					<svg
 						width='13'
 						height='15'
@@ -68,7 +79,10 @@ const Search: React.FC<SearchProps> = ({
 						</Button>
 					</Link>
 				) : (
-					<Button variant={'primary'} className='!h-[40px] md:h-[48px]'>
+					<Button
+						variant={'primary'}
+						className='!h-[40px] md:h-[48px]'
+						onClick={onClick}>
 						{buttonText}
 					</Button>
 				)}

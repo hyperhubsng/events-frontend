@@ -406,6 +406,48 @@ const Discount = () => {
 	);
 };
 
+const Suspend = () => {
+	return (
+		<svg
+			width='20'
+			height='21'
+			viewBox='0 0 20 21'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'>
+			<path
+				d='M9.99967 10.5013C12.3009 10.5013 14.1663 8.63582 14.1663 6.33464C14.1663 4.03345 12.3009 2.16797 9.99967 2.16797C7.69849 2.16797 5.83301 4.03345 5.83301 6.33464C5.83301 8.63582 7.69849 10.5013 9.99967 10.5013Z'
+				stroke='#B91C1C'
+				strokeWidth='1.5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M2.8418 18.8333C2.8418 15.6083 6.05015 13 10.0002 13C10.8002 13 11.5752 13.1083 12.3002 13.3083'
+				stroke='#B91C1C'
+				strokeWidth='1.5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M18.3337 15.5013C18.3337 15.768 18.3003 16.0263 18.2337 16.2763C18.1587 16.6096 18.0253 16.9346 17.8503 17.218C17.2753 18.1846 16.217 18.8346 15.0003 18.8346C14.142 18.8346 13.367 18.5096 12.7837 17.9763C12.5337 17.7596 12.317 17.5013 12.1503 17.218C11.842 16.718 11.667 16.1263 11.667 15.5013C11.667 14.6013 12.0253 13.7763 12.6087 13.1763C13.217 12.5513 14.067 12.168 15.0003 12.168C15.9837 12.168 16.8753 12.593 17.4753 13.2763C18.0086 13.868 18.3337 14.6513 18.3337 15.5013Z'
+				stroke='#B91C1C'
+				strokeWidth='1.5'
+				stroke-miterlimit='10'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M16.2421 15.4844H13.7588'
+				stroke='#B91C1C'
+				strokeWidth='1.5'
+				strokeMiterlimit='10'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</svg>
+	);
+};
+
 export const icons = {
 	TRev: <TRev />,
 	TEvents: <TEvents />,
@@ -415,4 +457,5 @@ export const icons = {
 	Edit: <Edit />,
 	Delete: <Delete />,
 	Discount: <Discount />,
+	Suspend: <Suspend />,
 };

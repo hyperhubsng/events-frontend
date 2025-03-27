@@ -291,3 +291,6 @@ button[name='previous-month'] {
 		fill: var(--color-blue-50);
 	}
 }
+div[role='dialog'] .lucide-x {
+	display: none;
+}

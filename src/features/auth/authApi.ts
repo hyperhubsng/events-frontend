@@ -1,4 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
+import { OnboardOrganizerPayload } from './types';
 
 export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -9,8 +10,16 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				body,
 			}),
 		}),
+		onboardOrganizer: builder.mutation({
+			query: (body: OnboardOrganizerPayload) => ({
+				url: '/auth/onboard-organiser',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['users'],
+		}),
 	}),
 	overrideExisting: true,
 });
 
-export const { useLoginMutation } = authApiSlice;
+export const { useLoginMutation, useOnboardOrganizerMutation } = authApiSlice;

@@ -1,7 +1,80 @@
-import React from 'react';
+'use client';
+
+import { useState } from 'react';
+import { useGetUsersQuery } from '@/features/users/usersApi';
+import { icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
+import OrganizerForm from './organizer-form';
+import Pulse from '@/components/pulse';
+import Organizers from './organizers';
 
 const OrganizerMgt = () => {
-	return <div>OrganizerMgt</div>;
+	const [openModal, setOpenModal] = useState(false);
+	const { data: vendors, isLoading } = useGetUsersQuery({
+		accountType: 'vendor',
+	});
+
+	return (
+		<div className='h-full p-4'>
+			{isLoading ? (
+				<Pulse />
+			) : vendors?.data?.users?.length == 0 ? (
+				<div className='h-full rounded-[8px] md:rounded-[16px] bg-white'>
+					<div className='flex flex-col items-center justify-center h-full text-center gap-3 max-w-[23.75rem] mx-auto'>
+						{icons.Discount}
+
+						<div>
+							<h2 className='text-2xl md:text-[2rem] text-black-950 font-bold'>
+								No Organizer Created Yet
+							</h2>
+							<p className='text-sm md:text-base text-black-700'>
+								Organizers created will appear here
+							</p>
+						</div>
+
+						<DialogTrigger asChild>
+							<Button variant={'primary'} className='w-full mt-6'>
+								+ Invite Organizer
+							</Button>
+						</DialogTrigger>
+					</div>
+				</div>
+			) : (
+				<Organizers vendors={vendors} setOpenModal={setOpenModal} />
+			)}
+			<Dialog open={openModal} onOpenChange={setOpenModal}>
+				<DialogContent className='lg:min-w-[628px]'>
+					<DialogHeader className='flex flex-row items-center justify-between'>
+						<DialogTitle className='text-black-950 font-bold text-2xl'>
+							New Organizer
+						</DialogTitle>
+						<button className='w-max' onClick={() => setOpenModal(false)}>
+							<svg
+								width='16'
+								height='16'
+								viewBox='0 0 16 16'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'>
+								<path
+									d='M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z'
+									fill='#202020'
+								/>
+							</svg>
+						</button>
+					</DialogHeader>
+
+					<OrganizerForm setOpenModal={setOpenModal} />
+				</DialogContent>
+			</Dialog>
+		</div>
+	);
 };
 
 export default OrganizerMgt;
