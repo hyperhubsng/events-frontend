@@ -103,6 +103,10 @@ export type EventGuest = {
 export type EventGuestsData = {
 	data: {
 		guests: EventGuest[];
+		stats: {
+			totalTickets: number;
+			totalCheckin: number;
+		};
 	};
 	pagination: Pagination;
 };

@@ -6,6 +6,7 @@ import { useGetEventGuestsQuery } from '@/features/events/eventsApi';
 
 import BreadcrumbWrapper from '@/components/breadcrumb';
 import Pulse from '@/components/pulse';
+import Cards from './cards';
 import GuestTable from './guest-table';
 
 const Guests = () => {
@@ -27,7 +28,10 @@ const Guests = () => {
 				{isLoading ? (
 					<Pulse />
 				) : (
-					<GuestTable guests={guestOverview!} limit={limit} setLimit={setLimit} />
+					<>
+						<Cards guestOverview={guestOverview!} />
+						<GuestTable guests={guestOverview!} limit={limit} setLimit={setLimit} />
+					</>
 				)}
 			</div>
 		</BreadcrumbWrapper>
