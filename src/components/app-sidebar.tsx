@@ -29,7 +29,7 @@ import Link from 'next/link';
 
 export function AppSidebar() {
 	const [showSub, setShowSub] = useState(false);
-	const { toggleSidebar, open } = useSidebar();
+	const { toggleSidebar, open, isMobile } = useSidebar();
 
 	const pathname = usePathname();
 	const dispatch = useAppDispatch();
@@ -50,7 +50,10 @@ export function AppSidebar() {
 						alt='hyperhubs logo'
 					/>
 				)}
-				<button onClick={toggleSidebar}>
+				<button
+					onClick={() => {
+						if (isMobile) toggleSidebar();
+					}}>
 					<svg
 						width='24'
 						height='24'
@@ -74,7 +77,10 @@ export function AppSidebar() {
 							{sidebarLinks.map((link) => (
 								<Fragment key={link.name}>
 									{link.href ? (
-										<SidebarMenuItem onClick={toggleSidebar}>
+										<SidebarMenuItem
+											onClick={() => {
+												if (isMobile) toggleSidebar();
+											}}>
 											<SidebarMenuButton
 												asChild
 												isActive={
@@ -237,7 +243,9 @@ export function AppSidebar() {
 																		pathname.includes(sublink.name.toLowerCase()) ||
 																		pathname === sublink.href
 																	}
-																	onClick={toggleSidebar}
+																	onClick={() => {
+																		if (isMobile) toggleSidebar();
+																	}}
 																	className='transition-colors duration-300 ease-in-out'>
 																	<Link
 																		href={sublink.href}
