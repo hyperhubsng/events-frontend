@@ -1,7 +1,12 @@
-import React from 'react';
+import Sales from '@/_pages/dashboard/event/sales';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Sales Overview',
+};
 
 const Salespage = () => {
-	return <div>Salespage</div>;
+	return <Sales />;
 };
 
 export default Salespage;

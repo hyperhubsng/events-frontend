@@ -78,3 +78,31 @@ export type CreateEventPayload = {
 	ownerId: string;
 	files: File[];
 };
+
+export type EventGuest = {
+	_id: string;
+	ownerId: string;
+	eventId: string;
+	ticketId: string;
+	email: string;
+	phoneNumber: string;
+	title: string;
+	firstName: string;
+	lastName: string;
+	quantity: number;
+	actualAmount: number;
+	amountPaid: number;
+	discountValue: number;
+	usedDiscount: boolean;
+	isValid: boolean;
+	isChecked: boolean;
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type EventGuestsData = {
+	data: {
+		guests: EventGuest[];
+	};
+	pagination: Pagination;
+};

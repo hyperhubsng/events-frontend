@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import { Event, EventsData, EventsParams } from './types';
+import { Event, EventGuestsData, EventsData, EventsParams } from './types';
 
 export const eventsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -21,9 +21,20 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 		getEvent: builder.query<{ data: Event }, string>({
 			query: (eventId: string) => `/events/${eventId}`,
 		}),
+		getEventGuests: builder.query<EventGuestsData, { ticket: string; id: string }>({
+			query: (params) => ({
+				url: `/events/${params.id}/guests`,
+				params,
+			}),
+			providesTags: ['events'],
+		}),
 	}),
 	overrideExisting: true,
 });
 
-export const { useGetEventsQuery, useCreateEventMutation, useGetEventQuery } =
-	eventsApiSlice;
+export const {
+	useGetEventsQuery,
+	useCreateEventMutation,
+	useGetEventQuery,
+	useGetEventGuestsQuery,
+} = eventsApiSlice;

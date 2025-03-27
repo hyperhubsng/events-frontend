@@ -21,7 +21,7 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
 		},
 		{
 			name: 'Guest Check-in',
-			link: `/events/${_id}/check-in`,
+			link: `/events/${_id}/guests`,
 		},
 	];
 
