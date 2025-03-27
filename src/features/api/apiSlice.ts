@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	BaseQueryFn,
@@ -34,12 +35,17 @@ const baseQueryWithReauth: BaseQueryFn<
 	unknown,
 	FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-	const result = await baseQuery(args, api, extraOptions);
+	const result: any = await baseQuery(args, api, extraOptions);
 
-	if (result?.error && result?.error?.status === 401) {
+	if (
+		result?.error &&
+		result?.error?.data?.message === 'Unauthorized, provide authorization token'
+	) {
 		deleteUserToken('access-token');
-		api.dispatch(logOut());
 		toast.info('Your session has expired, please log in again.');
+		setTimeout(() => {
+			api.dispatch(logOut());
+		}, 800);
 	}
 
 	return result;

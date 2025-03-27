@@ -25,7 +25,7 @@ const storage =
 	typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
 
 const persistConfig = {
-	key: 'root',
+	key: 'hyperhubs-admin',
 	version: 1,
 	storage,
 	whitelist: ['auth', 'events'],
