@@ -128,7 +128,7 @@ export default function Pagination({
 	};
 
 	return (
-		<div className='flex flex-wrap gap-4 justify-center md:justify-between md:grid md:grid-cols-2 lg:grid-cols-3 px-2 py-4'>
+		<div className='flex flex-col md:flex-row items-center gap-4 justify-center md:justify-between md:grid md:grid-cols-2 lg:grid-cols-3 px-2 py-4'>
 			<div className='flex items-center gap-2 w-max'>
 				<p className='text-[#4A4A4A] text-xs'>Showing</p>
 				<div className='flex items-center justify-center border border-white-300 border-solid rounded-md h-8 w-8 relative'>

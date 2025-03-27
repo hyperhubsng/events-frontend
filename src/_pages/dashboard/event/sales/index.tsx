@@ -29,8 +29,12 @@ const Sales = () => {
 					<Pulse />
 				) : (
 					<>
-						<Cards />
-						<SalesTable />
+						<Cards salesOverview={salesOverview!} />
+						<SalesTable
+							limit={limit}
+							setLimit={setLimit}
+							salesOverview={salesOverview!}
+						/>
 					</>
 				)}
 			</div>

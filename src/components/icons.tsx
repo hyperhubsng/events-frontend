@@ -464,6 +464,46 @@ const Close = () => {
 	);
 };
 
+const SRev = () => {
+	return (
+		<svg
+			width='40'
+			height='41'
+			viewBox='0 0 40 41'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'>
+			<rect y='0.5' width='40' height='40' rx='2.11111' fill='#F2F5F7' />
+			<path
+				d='M18.1103 20.1504H15.4603C14.8303 20.1504 14.3203 20.6603 14.3203 21.2903V26.4103H18.1103V20.1504V20.1504Z'
+				stroke='#003366'
+				strokeMiterlimit='10'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M20.7616 15.5996H19.2415C18.6115 15.5996 18.1016 16.1096 18.1016 16.7396V26.3997H21.8916V16.7396C21.8916 16.1096 21.3916 15.5996 20.7616 15.5996Z'
+				stroke='#003366'
+				strokeMiterlimit='10'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M24.5484 21.8496H21.8984V26.3997H25.6884V22.9896C25.6784 22.3596 25.1684 21.8496 24.5484 21.8496Z'
+				stroke='#003366'
+				strokeMiterlimit='10'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M17 31H23C28 31 30 29 30 24V18C30 13 28 11 23 11H17C12 11 10 13 10 18V24C10 29 12 31 17 31Z'
+				stroke='#003366'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</svg>
+	);
+};
+
 export const icons = {
 	TRev: <TRev />,
 	TEvents: <TEvents />,
@@ -475,4 +515,5 @@ export const icons = {
 	Discount: <Discount />,
 	Suspend: <Suspend />,
 	Close: <Close />,
+	SRev: <SRev />,
 };

@@ -129,12 +129,14 @@ export type EventSale = {
 };
 
 export type EventSalesData = {
-	stats: {
-		totalReceived: number;
-		category: number;
-		ticketSold: number;
-		totalSales: number;
+	data: {
+		stats: {
+			totalReceived: number;
+			category: number;
+			ticketSold: number;
+			totalSales: number;
+		};
+		sales: EventSale[];
 	};
-	sales: EventSale[];
 	pagination: Pagination;
 };

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 type SearchProps = {
 	title: string;
 	value: string;
-	buttonText: string;
+	buttonText?: string;
 	link?: string;
 	tClass?: string;
 	sClass?: string;
@@ -79,12 +79,14 @@ const Search: React.FC<SearchProps> = ({
 						</Button>
 					</Link>
 				) : (
-					<Button
-						variant={'primary'}
-						className='!h-[40px] md:h-[48px]'
-						onClick={onClick}>
-						{buttonText}
-					</Button>
+					buttonText && (
+						<Button
+							variant={'primary'}
+							className='!h-[40px] md:h-[48px]'
+							onClick={onClick}>
+							{buttonText}
+						</Button>
+					)
 				)}
 			</div>
 		</div>
