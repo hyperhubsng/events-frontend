@@ -10,23 +10,29 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 import InfoCard from '@/components/info-card';
 import Tabs from '@/components/tabs';
 import Search from '@/components/search';
 import Status from '@/components/status';
-import { Button } from '@/components/ui/button';
 
 const Organizers = ({
 	vendors,
 	setOpenModal,
+	limit,
+	setLimit,
+	selected,
+	setSelected,
 }: {
 	vendors: UsersData | undefined;
 	setOpenModal: (e: boolean) => void;
+	limit: string;
+	setLimit: (e: string) => void;
+	selected: string;
+	setSelected: (e: string) => void;
 }) => {
-	const [selected, setSelected] = useState('All');
 	const [search, setSearch] = useState('');
-	const [limit, setLimit] = useState('10');
 	const [vendorId, setVendorId] = useState<null | string>(null);
 
 	const card_info = [

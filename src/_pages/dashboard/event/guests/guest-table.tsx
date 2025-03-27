@@ -7,11 +7,18 @@ import { DataTable } from '@/components/ui/data-table';
 import Search from '@/components/search';
 import Link from 'next/link';
 
-const GuestTable = ({ guests }: { guests: EventGuestsData }) => {
+const GuestTable = ({
+	guests,
+	limit,
+	setLimit,
+}: {
+	guests: EventGuestsData;
+	limit: string;
+	setLimit: (e: string) => void;
+}) => {
 	const pathname = usePathname();
 
 	const [search, setSearch] = useState('');
-	const [limit, setLimit] = useState('10');
 
 	const columns: ColumnDef<EventGuest>[] = [
 		{

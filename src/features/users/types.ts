@@ -36,4 +36,5 @@ export type UsersData = {
 
 export type UsersParams = {
 	accountType?: string;
+	status?: string;
 };

@@ -5,6 +5,8 @@ const Status = ({ status }: { status: string }) => {
 		switch (status) {
 			case 'active':
 				return 'bg-[#F3F9F5] text-[#15803D]';
+			case 'inactive':
+				return 'bg-[#FBF4F4] text-[#B91C1C]';
 
 			default:
 				break;

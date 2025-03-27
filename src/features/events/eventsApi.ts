@@ -1,5 +1,11 @@
 import { apiSlice } from '../api/apiSlice';
-import { Event, EventGuestsData, EventsData, EventsParams } from './types';
+import {
+	Event,
+	EventGuestsData,
+	EventSalesData,
+	EventsData,
+	EventsParams,
+} from './types';
 
 export const eventsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -23,10 +29,20 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 		}),
 		getEventGuests: builder.query<
 			EventGuestsData,
-			{ ticket: string; id: string | string[] }
+			{ ticket: string; id: string | string[] } & PaginationParams
 		>({
 			query: (params) => ({
 				url: `/events/${params.id}/guests`,
+				params,
+			}),
+			providesTags: ['events'],
+		}),
+		getEventSales: builder.query<
+			EventSalesData,
+			{ ticket: string; id: string | string[] } & PaginationParams
+		>({
+			query: (params) => ({
+				url: `/events/${params.id}/sales-report`,
 				params,
 			}),
 			providesTags: ['events'],
@@ -40,4 +56,5 @@ export const {
 	useCreateEventMutation,
 	useGetEventQuery,
 	useGetEventGuestsQuery,
+	useGetEventSalesQuery,
 } = eventsApiSlice;

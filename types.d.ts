@@ -23,6 +23,11 @@ type Pagination = {
 	totalPages: number;
 };
 
+type PaginationParams = {
+	limit?: number;
+	page?: number;
+};
+
 type DiscountTableProps = {
 	code: string;
 	start_date: Date;

@@ -106,3 +106,35 @@ export type EventGuestsData = {
 	};
 	pagination: Pagination;
 };
+
+export type EventSale = {
+	_id: string;
+	ownerId: string;
+	eventId: string;
+	ticketId: string;
+	email: string;
+	phoneNumber: string;
+	title: string;
+	firstName: string;
+	lastName: string;
+	quantity: number;
+	actualAmount: number;
+	amountPaid: number;
+	discountValue: number;
+	usedDiscount: boolean;
+	isValid: boolean;
+	isChecked: boolean;
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type EventSalesData = {
+	stats: {
+		totalReceived: number;
+		category: number;
+		ticketSold: number;
+		totalSales: number;
+	};
+	sales: EventSale[];
+	pagination: Pagination;
+};

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useGetUsersQuery } from '@/features/users/usersApi';
 import { icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -16,9 +17,17 @@ import Pulse from '@/components/pulse';
 import Organizers from './organizers';
 
 const OrganizerMgt = () => {
+	const searchParams = useSearchParams();
+
 	const [openModal, setOpenModal] = useState(false);
+	const [limit, setLimit] = useState('10');
+	const [selected, setSelected] = useState('All');
+
 	const { data: vendors, isLoading } = useGetUsersQuery({
 		accountType: 'vendor',
+		page: +searchParams.get('page')! || 1,
+		limit: +limit,
+		...(selected !== 'All' && { status: selected.toLowerCase() }),
 	});
 
 	return (
@@ -47,7 +56,14 @@ const OrganizerMgt = () => {
 					</div>
 				</div>
 			) : (
-				<Organizers vendors={vendors} setOpenModal={setOpenModal} />
+				<Organizers
+					vendors={vendors}
+					setOpenModal={setOpenModal}
+					limit={limit}
+					setLimit={setLimit}
+					selected={selected}
+					setSelected={setSelected}
+				/>
 			)}
 			<Dialog open={openModal} onOpenChange={setOpenModal}>
 				<DialogContent className='lg:min-w-[628px]'>

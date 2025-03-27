@@ -3,7 +3,7 @@ import { UsersData, UsersParams } from './types';
 
 export const usersApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getUsers: builder.query<UsersData, UsersParams>({
+		getUsers: builder.query<UsersData, UsersParams & PaginationParams>({
 			query: (params) => ({
 				url: '/users',
 				params,
