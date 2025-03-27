@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
 				</TableBody>
 			</Table>
 
-			{table.getRowModel().rows?.length && (
+			{table.getRowModel().rows?.length > 0 && (
 				<Pagination totalPages={totalPages} value={value} onChange={onChange} />
 			)}
 		</div>
