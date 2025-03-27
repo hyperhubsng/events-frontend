@@ -21,7 +21,10 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 		getEvent: builder.query<{ data: Event }, string>({
 			query: (eventId: string) => `/events/${eventId}`,
 		}),
-		getEventGuests: builder.query<EventGuestsData, { ticket: string; id: string }>({
+		getEventGuests: builder.query<
+			EventGuestsData,
+			{ ticket: string; id: string | string[] }
+		>({
 			query: (params) => ({
 				url: `/events/${params.id}/guests`,
 				params,
