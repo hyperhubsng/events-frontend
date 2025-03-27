@@ -1,57 +1,21 @@
 import { useState } from 'react';
 import { icons } from '@/components/icons';
-import { UsersData } from '@/features/users/types';
+import { User, UsersData } from '@/features/users/types';
 import { DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
 
 import InfoCard from '@/components/info-card';
 import Tabs from '@/components/tabs';
 import Search from '@/components/search';
 import Status from '@/components/status';
-
-const columns: ColumnDef<OrganizerTableProps>[] = [
-	{
-		accessorKey: 'firstName',
-		header: 'name',
-		cell: ({ row }) => (
-			<span className='capitalize'>
-				{row.original.firstName} {row.original.lastName}
-			</span>
-		),
-	},
-
-	{
-		accessorKey: 'companyName',
-		header: 'Company Name',
-	},
-	{
-		accessorKey: 'email',
-		header: 'Email Address',
-	},
-	{
-		accessorKey: 'phoneNumber',
-		header: 'Phone Number',
-	},
-	{
-		accessorKey: 'website',
-		header: 'Website',
-	},
-	{
-		accessorKey: 'accountStatus',
-		header: 'Status',
-		cell: ({ row }) => <Status status={row.getValue('accountStatus')} />,
-	},
-	{
-		accessorKey: '',
-		header: 'Actions',
-		cell: ({}) => (
-			<div className='flex items-center gap-4'>
-				<button>{icons.Edit}</button>
-				<button>{icons.Suspend}</button>
-			</div>
-		),
-	},
-];
+import { Button } from '@/components/ui/button';
 
 const Organizers = ({
 	vendors,
@@ -63,6 +27,7 @@ const Organizers = ({
 	const [selected, setSelected] = useState('All');
 	const [search, setSearch] = useState('');
 	const [limit, setLimit] = useState('10');
+	const [vendorId, setVendorId] = useState<null | string>(null);
 
 	const card_info = [
 		{
@@ -81,6 +46,53 @@ const Organizers = ({
 			info: vendors?.data?.stats?.inactive,
 		},
 	];
+
+	const columns: ColumnDef<User>[] = [
+		{
+			accessorKey: 'firstName',
+			header: 'Name',
+			cell: ({ row }) => (
+				<span className='capitalize'>
+					{row.original.firstName} {row.original.lastName}
+				</span>
+			),
+		},
+
+		{
+			accessorKey: 'companyName',
+			header: 'Company Name',
+		},
+		{
+			accessorKey: 'email',
+			header: 'Email Address',
+		},
+		{
+			accessorKey: 'phoneNumber',
+			header: 'Phone Number',
+		},
+		{
+			accessorKey: 'website',
+			header: 'Website',
+		},
+		{
+			accessorKey: 'accountStatus',
+			header: 'Status',
+			cell: ({ row }) => <Status status={row.getValue('accountStatus')} />,
+		},
+		{
+			accessorKey: '',
+			header: 'Actions',
+			cell: ({ row }) => (
+				<div className='flex items-center gap-4'>
+					<button>{icons.Edit}</button>
+					<button onClick={() => setVendorId(row.original._id)}>
+						{icons.Suspend}
+					</button>
+				</div>
+			),
+		},
+	];
+
 	return (
 		<div>
 			<div className='grid grid-cols-2 min-[1200px]:grid-cols-4 gap-4'>
@@ -114,8 +126,59 @@ const Organizers = ({
 					onChange={(e) => setLimit(e.target.value)}
 				/>
 			</div>
+
+			<Dialog open={vendorId !== null} onOpenChange={() => setVendorId(null)}>
+				<DialogContent>
+					<DialogHeader className='flex items-end'>
+						<button onClick={() => setVendorId(null)}>{icons.Close}</button>
+					</DialogHeader>
+					<DeactivateModal id={vendorId} />
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 };
 
 export default Organizers;
+
+const DeactivateModal = ({ id }: { id: string | null }) => {
+	console.log(id);
+
+	return (
+		<div className='flex flex-col items-center justify-center text-center'>
+			<svg
+				width='65'
+				height='65'
+				viewBox='0 0 65 65'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'>
+				<rect x='2.5' y='2.5' width='60' height='60' rx='30' fill='#FEEDB8' />
+				<rect
+					x='2.5'
+					y='2.5'
+					width='60'
+					height='60'
+					rx='30'
+					stroke='#FEF6DB'
+					strokeWidth='4'
+				/>
+				<path
+					d='M33.4009 33.399H30.4676V24.599H33.4009V33.399ZM33.4009 39.2656H30.4676V36.3323H33.4009V39.2656ZM31.9342 17.2656C30.0082 17.2656 28.101 17.645 26.3216 18.3821C24.5421 19.1191 22.9253 20.1995 21.5633 21.5614C18.8128 24.3119 17.2676 28.0424 17.2676 31.9323C17.2676 35.8221 18.8128 39.5527 21.5633 42.3032C22.9253 43.6651 24.5421 44.7455 26.3216 45.4825C28.101 46.2196 30.0082 46.599 31.9342 46.599C35.8241 46.599 39.5546 45.0537 42.3051 42.3032C45.0557 39.5527 46.6009 35.8221 46.6009 31.9323C46.6009 30.0062 46.2215 28.099 45.4845 26.3196C44.7474 24.5402 43.6671 22.9233 42.3051 21.5614C40.9432 20.1995 39.3264 19.1191 37.5469 18.3821C35.7675 17.645 33.8603 17.2656 31.9342 17.2656Z'
+					fill='#CAA93E'
+				/>
+			</svg>
+			<div className='mt-2'>
+				<DialogTitle className='text-[1.25rem] text-black-950 font-bold'>
+					Deactivate Organizer
+				</DialogTitle>
+				<DialogDescription className='text-black-700'>
+					Proceeding would deactivate the organizer.
+				</DialogDescription>
+			</div>
+
+			<Button variant={'primary'} className='w-full mt-10'>
+				Update
+			</Button>
+		</div>
+	);
+};

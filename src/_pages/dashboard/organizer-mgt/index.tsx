@@ -27,11 +27,11 @@ const OrganizerMgt = () => {
 				<Pulse />
 			) : vendors?.data?.users?.length == 0 ? (
 				<div className='h-full rounded-[8px] md:rounded-[16px] bg-white'>
-					<div className='flex flex-col items-center justify-center h-full text-center gap-3 max-w-[23.75rem] mx-auto'>
+					<div className='flex flex-col items-center justify-center h-full text-center gap-3 max-w-[23.75rem] mx-auto px-4'>
 						{icons.Discount}
 
 						<div>
-							<h2 className='text-2xl md:text-[2rem] text-black-950 font-bold'>
+							<h2 className='text-[1.25rem] md:text-2xl text-black-950 font-bold'>
 								No Organizer Created Yet
 							</h2>
 							<p className='text-sm md:text-base text-black-700'>

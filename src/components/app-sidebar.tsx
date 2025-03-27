@@ -74,7 +74,7 @@ export function AppSidebar() {
 							{sidebarLinks.map((link) => (
 								<Fragment key={link.name}>
 									{link.href ? (
-										<SidebarMenuItem>
+										<SidebarMenuItem onClick={toggleSidebar}>
 											<SidebarMenuButton
 												asChild
 												isActive={
@@ -237,6 +237,7 @@ export function AppSidebar() {
 																		pathname.includes(sublink.name.toLowerCase()) ||
 																		pathname === sublink.href
 																	}
+																	onClick={toggleSidebar}
 																	className='transition-colors duration-300 ease-in-out'>
 																	<Link
 																		href={sublink.href}
