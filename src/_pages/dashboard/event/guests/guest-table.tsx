@@ -3,9 +3,11 @@ import { usePathname } from 'next/navigation';
 import { ColumnDef } from '@tanstack/react-table';
 import { EventGuest, EventGuestsData } from '@/features/events/types';
 import { DataTable } from '@/components/ui/data-table';
+import { Dialog } from '@/components/ui/dialog';
 
 import Search from '@/components/search';
 import Link from 'next/link';
+import CheckInModal from './check-in-modal';
 
 const GuestTable = ({
 	guests,
@@ -19,6 +21,7 @@ const GuestTable = ({
 	const pathname = usePathname();
 
 	const [search, setSearch] = useState('');
+	const [openModal, setOpenModal] = useState(false);
 
 	const columns: ColumnDef<EventGuest>[] = [
 		{
@@ -75,6 +78,7 @@ const GuestTable = ({
 				buttonText='Check-In Guest'
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
+				onClick={() => setOpenModal(true)}
 			/>
 			<DataTable
 				columns={columns}
@@ -83,6 +87,9 @@ const GuestTable = ({
 				value={limit}
 				onChange={(e) => setLimit(e.target.value)}
 			/>
+			<Dialog open={openModal} onOpenChange={setOpenModal}>
+				<CheckInModal onClose={() => setOpenModal(false)} />
+			</Dialog>
 		</div>
 	);
 };

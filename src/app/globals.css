@@ -294,3 +294,9 @@ button[name='previous-month'] {
 div[role='dialog'] .lucide-x {
 	display: none;
 }
+
+.s-check {
+	path {
+		fill: #fff;
+	}
+}

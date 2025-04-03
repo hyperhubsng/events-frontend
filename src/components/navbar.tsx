@@ -25,7 +25,7 @@ const Navbar = () => {
 
 	return (
 		<header
-			className='bg-white sticky top-0 z-[9] before:bg-white before:absolute before:top-0
+			className='bg-white sticky top-0 z-20 before:bg-white before:absolute before:top-0
      before:h-full before:w-20 before:left-0 before:-z-[1] py-3 px-4 md:py-4'>
 			<div className='app-container'>
 				<nav className='flex items-center justify-between'>
