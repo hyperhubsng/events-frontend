@@ -50,10 +50,7 @@ export function AppSidebar() {
 						alt='hyperhubs logo'
 					/>
 				)}
-				<button
-					onClick={() => {
-						if (isMobile) toggleSidebar();
-					}}>
+				<button onClick={toggleSidebar}>
 					<svg
 						width='24'
 						height='24'

@@ -38,8 +38,10 @@ const baseQueryWithReauth: BaseQueryFn<
 	const result: any = await baseQuery(args, api, extraOptions);
 
 	if (
-		result?.error &&
-		result?.error?.data?.message === 'Unauthorized, provide authorization token'
+		(result?.error &&
+			result?.error?.data?.message ===
+				'Unauthorized, provide authorization token') ||
+		result?.error?.data?.message === 'Please,login again'
 	) {
 		deleteUserToken('access-token');
 		toast.info('Your session has expired, please log in again.');
