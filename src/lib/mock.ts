@@ -14,8 +14,8 @@ export const sidebarLinks = [
 		name: 'Admin Tools',
 		subLinks: [
 			{
-				name: 'User Management',
-				href: '/user-management',
+				name: 'Admin Management',
+				href: '/admin-management',
 			},
 			{
 				name: 'Organizer Management',
