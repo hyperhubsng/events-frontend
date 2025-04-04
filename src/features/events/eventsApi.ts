@@ -47,6 +47,13 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 			}),
 			providesTags: ['events'],
 		}),
+		checkInGuest: builder.query({
+			query: (params: { action: string; actionType: string; code: string }) => ({
+				url: `/attendees/${params.code}`,
+				params,
+			}),
+			providesTags: ['events'],
+		}),
 	}),
 	overrideExisting: true,
 });
@@ -57,4 +64,5 @@ export const {
 	useGetEventQuery,
 	useGetEventGuestsQuery,
 	useGetEventSalesQuery,
+	useLazyCheckInGuestQuery,
 } = eventsApiSlice;

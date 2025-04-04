@@ -42,7 +42,7 @@ const Events = () => {
 							Event
 						</h2>
 
-						<div className='flex items-center justify-end gap-4 flex-wrap-reverse'>
+						<div className='flex items-center justify-end gap-4 flex-wrap-reverse w-full'>
 							<div className='relative w-full sm:w-auto'>
 								<svg
 									width='13'

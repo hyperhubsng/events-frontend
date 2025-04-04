@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { icons } from '@/components/icons';
 import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { useLazyCheckInGuestQuery } from '@/features/events/eventsApi';
+
+import LoadingButton from '@/components/loading-button';
 
 const FormSchema = z.object({
 	code: z.string().min(2, {
@@ -23,8 +26,15 @@ const FormSchema = z.object({
 	}),
 });
 
-const CheckInModal = ({ onClose }: { onClose: () => void }) => {
+const CheckInModal = ({
+	onClose,
+	refetch,
+}: {
+	onClose: () => void;
+	refetch: () => void;
+}) => {
 	const [selected, setSelected] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 	const options = [
 		{
 			icon: icons.QR,
@@ -43,11 +53,32 @@ const CheckInModal = ({ onClose }: { onClose: () => void }) => {
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(data);
-		setSelected('');
+	const [checkInGuest] = useLazyCheckInGuestQuery();
+
+	async function onSubmit(data: z.infer<typeof FormSchema>) {
+		try {
+			setIsLoading(true);
+
+			const res = await checkInGuest({
+				action: 'checkin',
+				actionType: 'code',
+				code: data.code,
+			}).unwrap();
+
+			if (res?.message === 'Already checked') {
+				toast.error('Guest already checked-in');
+			} else {
+				toast.success('Guest Checked-in successfully');
+			}
+		} catch (error: any) {
+			toast.error(error.data?.message);
+		} finally {
+			setIsLoading(false);
+		}
+		refetch();
 		onClose();
-		toast.success('Guest Checked-in successfully');
+		setSelected('');
+		form.reset();
 	}
 
 	return (
@@ -111,7 +142,8 @@ const CheckInModal = ({ onClose }: { onClose: () => void }) => {
 				</Form>
 			)}
 
-			<Button
+			<LoadingButton
+				loading={isLoading}
 				variant={'primary'}
 				className='mt-10 w-full md:w-[19.125rem] mx-auto'
 				disabled={!selected}
@@ -119,7 +151,7 @@ const CheckInModal = ({ onClose }: { onClose: () => void }) => {
 					selected === 'Manual Input' ? form.handleSubmit(onSubmit) : undefined
 				}>
 				Continue
-			</Button>
+			</LoadingButton>
 		</DialogContent>
 	);
 };

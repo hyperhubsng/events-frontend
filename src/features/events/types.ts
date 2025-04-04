@@ -89,8 +89,10 @@ export type EventGuest = {
 	title: string;
 	firstName: string;
 	lastName: string;
+	passCode: string;
 	quantity: number;
 	actualAmount: number;
+	ticketsChecked: number;
 	amountPaid: number;
 	discountValue: number;
 	usedDiscount: boolean;
@@ -143,4 +145,31 @@ export type EventSalesData = {
 		sales: EventSale[];
 	};
 	pagination: Pagination;
+};
+
+export type CheckedInAttendee = {
+	data: {
+		attendee: {
+			_id: string;
+			ownerId: string;
+			eventId: string;
+			ticketId: string;
+			email: string;
+			phoneNumber: string;
+			title: string;
+			firstName: string;
+			lastName: string;
+			quantity: number;
+			actualAmount: number;
+			amountPaid: number;
+			discountValue: number;
+			usedDiscount: false;
+			isValid: true;
+			isChecked: true;
+			passCode: string;
+			createdAt: string;
+			updatedAt: string;
+			ticketsChecked: number;
+		};
+	};
 };

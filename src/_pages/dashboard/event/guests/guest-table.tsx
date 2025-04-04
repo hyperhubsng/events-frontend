@@ -13,10 +13,12 @@ const GuestTable = ({
 	guests,
 	limit,
 	setLimit,
+	refetch,
 }: {
 	guests: EventGuestsData;
 	limit: string;
 	setLimit: (e: string) => void;
+	refetch: () => void;
 }) => {
 	const pathname = usePathname();
 
@@ -51,7 +53,11 @@ const GuestTable = ({
 		{
 			accessorKey: 'quantity',
 			header: 'Check-in',
-			cell: ({}) => <span>0/3 ticket(s)</span>,
+			cell: ({ row }) => (
+				<span>
+					{row.original.ticketsChecked ?? 0}/{row.original.quantity} ticket(s)
+				</span>
+			),
 		},
 		{
 			accessorKey: 'title',
@@ -88,7 +94,7 @@ const GuestTable = ({
 				onChange={(e) => setLimit(e.target.value)}
 			/>
 			<Dialog open={openModal} onOpenChange={setOpenModal}>
-				<CheckInModal onClose={() => setOpenModal(false)} />
+				<CheckInModal onClose={() => setOpenModal(false)} refetch={refetch} />
 			</Dialog>
 		</div>
 	);

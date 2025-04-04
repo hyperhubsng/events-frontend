@@ -15,7 +15,11 @@ const Guests = () => {
 	const params = useParams();
 	const searchParams = useSearchParams();
 
-	const { data: guestOverview, isLoading } = useGetEventGuestsQuery({
+	const {
+		data: guestOverview,
+		isLoading,
+		refetch,
+	} = useGetEventGuestsQuery({
 		id: params.id!,
 		ticket: 'all',
 		page: +searchParams.get('page')! || 1,
@@ -24,13 +28,18 @@ const Guests = () => {
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Guest Check-in']}>
-			<div className='h-[90%] p-4'>
+			<div className='h-full p-4'>
 				{isLoading ? (
 					<Pulse />
 				) : (
 					<>
 						<Cards guestOverview={guestOverview!} />
-						<GuestTable guests={guestOverview!} limit={limit} setLimit={setLimit} />
+						<GuestTable
+							guests={guestOverview!}
+							limit={limit}
+							setLimit={setLimit}
+							refetch={refetch}
+						/>
 					</>
 				)}
 			</div>
