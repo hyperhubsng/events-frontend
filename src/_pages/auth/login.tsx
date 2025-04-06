@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/lib/hooks';
 import { useLoginMutation } from '@/features/auth/authApi';
 import { setUser } from '@/features/auth/authSlice';
@@ -28,6 +29,7 @@ const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 
 	const formSchema = z.object({
 		email: z.string().email(),
@@ -57,10 +59,11 @@ const Login = () => {
 
 			const userClone = { ...res?.data };
 			delete userClone?.token;
-
-			window.location.reload();
-
 			dispatch(setUser(userClone));
+
+			if (res?.data) {
+				router.push('/');
+			}
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
