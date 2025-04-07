@@ -62,7 +62,7 @@ const Login = () => {
 			dispatch(setUser(userClone));
 
 			if (res?.data) {
-				router.push('/');
+				router.reload()
 			}
 		} catch (error: any) {
 			toast.error(error?.data?.message);
