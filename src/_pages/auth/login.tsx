@@ -3,11 +3,9 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/lib/hooks';
 import { useLoginMutation } from '@/features/auth/authApi';
 import { setUser } from '@/features/auth/authSlice';
-import { setUserToken } from '@/lib/session';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -29,7 +27,6 @@ const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const dispatch = useAppDispatch();
-	const router = useRouter();
 
 	const formSchema = z.object({
 		email: z.string().email(),
@@ -55,15 +52,9 @@ const Login = () => {
 				password: data.password,
 			}).unwrap();
 
-			await setUserToken('access-token', res?.data?.token);
-
 			const userClone = { ...res?.data };
 			delete userClone?.token;
 			dispatch(setUser(userClone));
-
-			if (res?.data) {
-				router.reload()
-			}
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
