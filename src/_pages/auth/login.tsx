@@ -19,6 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
+import { setAuthCookie } from '@/lib/auth';
 
 import Link from 'next/link';
 import LoadingButton from '@/components/loading-button';
@@ -51,6 +52,8 @@ const Login = () => {
 				email: data.email,
 				password: data.password,
 			}).unwrap();
+
+			await setAuthCookie('access-token', res?.data?.token);
 
 			const userClone = { ...res?.data };
 			delete userClone?.token;

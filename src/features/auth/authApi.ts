@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { setUserToken } from '@/lib/session';
 import { apiSlice } from '../api/apiSlice';
 import { OnboardOrganizerPayload } from './types';
 
@@ -11,16 +9,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				method: 'POST',
 				body,
 			}),
-			async onQueryStarted(arg, { queryFulfilled }) {
-				try {
-					const { data: response } = await queryFulfilled;
-
-					await setUserToken('access-token', response?.data?.token);
-					window.location.reload();
-				} catch (error: any) {
-					console.log(error);
-				}
-			},
 		}),
 		onboardOrganizer: builder.mutation({
 			query: (body: OnboardOrganizerPayload) => ({
