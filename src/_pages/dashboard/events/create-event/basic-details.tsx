@@ -317,7 +317,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 						<FormLabel
 							className='text-black-950 text-sm md:text-base font-semibold'
 							htmlFor='description'>
-							About Event
+							About Event <span className='text-xs'>(Mininum 20 characters)</span>
 						</FormLabel>
 						<FormControl>
 							<Textarea
