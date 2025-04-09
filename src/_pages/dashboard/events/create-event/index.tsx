@@ -73,7 +73,7 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 				`${format(data.startDate, 'yyyy-MM-dd')} ${data.start_time}`
 			);
 
-			formData.append('endDate', `${format(data.startDate, 'yyyy-MM-dd')} 09:02`);
+			// formData.append('endDate', `${format(data.startDate, 'yyyy-MM-dd')} 09:02`);
 
 			const files = [data.event_img_1, data.event_img_2, data.event_img_3];
 
