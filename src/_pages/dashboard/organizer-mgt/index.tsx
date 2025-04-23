@@ -10,11 +10,11 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from '@/components/ui/dialog';
 import OrganizerForm from './organizer-form';
 import Pulse from '@/components/pulse';
 import Organizers from './organizers';
+import { DialogTrigger } from '@radix-ui/react-dialog';
 
 const OrganizerMgt = () => {
 	const searchParams = useSearchParams();
@@ -34,7 +34,7 @@ const OrganizerMgt = () => {
 		<div className='h-full p-4'>
 			{isLoading ? (
 				<Pulse />
-			) : vendors?.data?.users?.length == 0 ? (
+			) : vendors?.data?.stats?.total === 0 ? (
 				<div className='h-full rounded-[8px] md:rounded-[16px] bg-white'>
 					<div className='flex flex-col items-center justify-center h-full text-center gap-3 max-w-[23.75rem] mx-auto px-4'>
 						{icons.Discount}
@@ -48,11 +48,12 @@ const OrganizerMgt = () => {
 							</p>
 						</div>
 
-						<DialogTrigger asChild>
-							<Button variant={'primary'} className='w-full mt-6'>
-								+ Invite Organizer
-							</Button>
-						</DialogTrigger>
+						<Button
+							variant={'primary'}
+							className='w-full mt-6'
+							onClick={() => setOpenModal(true)}>
+							+ Invite Organizer
+						</Button>
 					</div>
 				</div>
 			) : (
@@ -71,19 +72,21 @@ const OrganizerMgt = () => {
 						<DialogTitle className='text-black-950 font-bold text-2xl'>
 							New Organizer
 						</DialogTitle>
-						<button className='w-max' onClick={() => setOpenModal(false)}>
-							<svg
-								width='16'
-								height='16'
-								viewBox='0 0 16 16'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'>
-								<path
-									d='M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z'
-									fill='#202020'
-								/>
-							</svg>
-						</button>
+						<DialogTrigger asChild>
+							<button className='w-max' onClick={() => setOpenModal(false)}>
+								<svg
+									width='16'
+									height='16'
+									viewBox='0 0 16 16'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'>
+									<path
+										d='M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z'
+										fill='#202020'
+									/>
+								</svg>
+							</button>
+						</DialogTrigger>
 					</DialogHeader>
 
 					<OrganizerForm setOpenModal={setOpenModal} />
