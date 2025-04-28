@@ -42,10 +42,10 @@ interface FormattedDataItem {
 }
 
 const Chart = () => {
-	const [time, setTime] = useState('This Week');
+	const [time, setTime] = useState('This Month');
 	const match = useMediaQuery('(max-width: 769px)');
 
-	const times = ['This Week', 'This Month'];
+	const times = ['This Month', 'This Year'];
 
 	const [date, setDate] = useState<DateRange | undefined>({
 		from: undefined,
@@ -53,7 +53,7 @@ const Chart = () => {
 	});
 
 	const { data, isLoading, isFetching } = useGetRevenueAnalyticsQuery({
-		presentation: time == 'This Week' ? 'weekly' : 'monthly',
+		presentation: time == 'This Month' ? 'weekly' : 'monthly',
 		...(date?.from &&
 			date?.to && { from: format(date?.from.toISOString(), 'yyyy-MM-dd') }),
 		...(date?.to &&
@@ -151,7 +151,7 @@ const Chart = () => {
 								}
 								tickMargin={8}
 								tickFormatter={(value) =>
-									time == 'This Month'
+									time !== 'This Month'
 										? `${value.slice(0, 1).toUpperCase()}${value.slice(1, 3)}`
 										: format(new Date(value), 'do MMM')
 								}

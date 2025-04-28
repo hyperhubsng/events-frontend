@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DateRange } from 'react-day-picker';
 import { apiSlice } from '../api/apiSlice';
 import { DashboardAnalyticsData } from './types';
 
@@ -12,8 +11,8 @@ const dashboardApiSlice = apiSlice.injectEndpoints({
 			any,
 			{
 				presentation: string;
-				from?: string | DateRange | undefined;
-				to?: string | DateRange | undefined;
+				from?: string | undefined;
+				to?: string | undefined;
 			}
 		>({
 			query: (params) => ({
@@ -21,9 +20,23 @@ const dashboardApiSlice = apiSlice.injectEndpoints({
 				params,
 			}),
 		}),
+		getEventsAnalytics: builder.query<
+			any,
+			{
+				presentation: string;
+			}
+		>({
+			query: (params) => ({
+				url: '/events/payments',
+				params,
+			}),
+		}),
 	}),
 	overrideExisting: true,
 });
 
-export const { useGetAnalyticsQuery, useGetRevenueAnalyticsQuery } =
-	dashboardApiSlice;
+export const {
+	useGetAnalyticsQuery,
+	useGetRevenueAnalyticsQuery,
+	useGetEventsAnalyticsQuery,
+} = dashboardApiSlice;
