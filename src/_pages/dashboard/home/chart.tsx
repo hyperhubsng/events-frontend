@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useGetRevenueAnalyticsQuery } from '@/features/dashboard/dashboardApi';
 import {
 	Select,
 	SelectContent,
@@ -14,12 +15,12 @@ import { ChartConfig, ChartContainer, ChartTooltip } from '@/components/ui/chart
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { DateRange } from 'react-day-picker';
-import { format } from 'date-fns';
 import { ChevronDown } from 'lucide-react';
+import { format } from 'date-fns';
+import { formatCurrency } from '@/lib/utils';
 
+import Pulse from '@/components/pulse';
 import * as RechartsPrimitive from 'recharts';
-
-import Tabs from '@/components/tabs';
 
 const chartConfig = {
 	total_revenue: {
@@ -31,37 +32,47 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
+interface RevenueDataItem {
+	[date: string]: number;
+}
+
+interface FormattedDataItem {
+	date: string;
+	value: number;
+}
+
 const Chart = () => {
+	const [time, setTime] = useState('This Week');
 	const match = useMediaQuery('(max-width: 769px)');
 
-	const [selected, setSelected] = useState('Revenue');
+	const times = ['This Week', 'This Month'];
+
 	const [date, setDate] = useState<DateRange | undefined>({
-		from: new Date(2025, 2, 1),
-		to: new Date(2025, 2, 7),
+		from: undefined,
+		to: undefined,
 	});
 
-	const [time, setTime] = useState('This Week');
-	const times = ['This Week', 'Last Week', 'Two weeks ago'];
+	const { data, isLoading, isFetching } = useGetRevenueAnalyticsQuery({
+		presentation: time == 'This Week' ? 'weekly' : 'monthly',
+		...(date?.from &&
+			date?.to && { from: format(date?.from.toISOString(), 'yyyy-MM-dd') }),
+		...(date?.to &&
+			date?.from && { to: format(date?.to.toISOString(), 'yyyy-MM-dd') }),
+	});
 
-	const chartData = [
-		{ day: 'Mar 01, 2025 04:00PM', total_revenue: 5, sales: 150000 },
-		{ day: 'Mar 02, 2025 04:00PM', total_revenue: 5, sales: 200000 },
-		{ day: 'Mar 03, 2025 04:00PM', total_revenue: 30, sales: 80000 },
-		{ day: 'Mar 04, 2025 04:00PM', total_revenue: 40, sales: 900000 },
-		{ day: 'Mar 05, 2025 04:00PM', total_revenue: 0, sales: 250000 },
-		{ day: 'Mar 06, 2025 04:00PM', total_revenue: 48, sales: 320000 },
-		{ day: 'Mar 07, 2025 04:00PM', total_revenue: 55, sales: 200000 },
-		{ day: 'Mar 08, 2025 04:00PM', total_revenue: 0, sales: 650000 },
-	];
+	const chartData: FormattedDataItem[] | undefined = data?.data?.map(
+		(item: RevenueDataItem) => {
+			const [date, total_revenue] = Object.entries(item)[0];
+			return { date, total_revenue };
+		}
+	);
 
 	return (
-		<div className='bg-white rounded-[4px] md:rounded-[8px] pt-3 md:pt-5 px-3 md:px-6 pb-6 mt-4'>
+		<div className='bg-white rounded-[4px] md:rounded-[8px] pt-3 md:pt-5 px-3 md:px-6 pb-6 mt-4 overflow-hidden'>
 			<div className='flex items-center justify-between flex-col gap-6 md:flex-row'>
-				<Tabs
-					selected={selected}
-					setSelected={setSelected}
-					items={['Revenue', 'Commission']}
-				/>
+				<h2 className='text-black-950 text-sm md:text-base lg:text-2xl font-semibold'>
+					Revenue
+				</h2>
 
 				<div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-fit'>
 					<Popover>
@@ -117,39 +128,52 @@ const Chart = () => {
 				</div>
 			</div>
 
-			<div className='mt-8 -ml-10'>
-				<ChartContainer config={chartConfig} className='max-h-[315px] w-full'>
-					<LineChart
-						accessibilityLayer
-						data={chartData}
-						margin={{
-							left: 12,
-							right: 12,
-						}}>
-						<CartesianGrid vertical={false} horizontal={true} />
-						<XAxis
-							dataKey='day'
-							axisLine={false}
-							tickMargin={8}
-							tickFormatter={(value) => value.slice(0, 6)}
-							{...(match && { interval: 1 })}
-						/>
-						<YAxis />
-						<ChartTooltip cursor={false} content={<CustomTooltip />} />
-						<Line
-							dataKey='total_revenue'
-							type='linear'
-							stroke='var(--color-total_revenue)'
-							strokeWidth={2}
-							dot={{
-								stroke: 'var(--color-total_revenue)',
-							}}
-							// activeDot={{
-							// 	r: 6,
-							// }}
-						/>
-					</LineChart>
-				</ChartContainer>
+			<div className='mt-8 -ml-8'>
+				{isLoading || isFetching ? (
+					<Pulse height='h-[200px] md:h-[315px]' />
+				) : (
+					<ChartContainer config={chartConfig} className='max-h-[315px] w-full'>
+						<LineChart
+							accessibilityLayer
+							data={chartData}
+							margin={{
+								left: 12,
+								right: 12,
+							}}>
+							<CartesianGrid vertical={false} horizontal={true} />
+							<XAxis
+								dataKey='date'
+								axisLine={false}
+								padding={
+									chartData && chartData?.length <= 2
+										? { left: 50, right: 50 }
+										: { left: 0, right: 0 }
+								}
+								tickMargin={8}
+								tickFormatter={(value) =>
+									time == 'This Month'
+										? `${value.slice(0, 1).toUpperCase()}${value.slice(1, 3)}`
+										: format(new Date(value), 'do MMM')
+								}
+								{...(match && { interval: 0 })}
+							/>
+							<YAxis tickFormatter={(value) => String(formatCurrency(value))} />
+							<ChartTooltip cursor={false} content={<CustomTooltip />} />
+							<Line
+								dataKey='total_revenue'
+								type='linear'
+								stroke='var(--color-total_revenue)'
+								strokeWidth={2}
+								dot={{
+									stroke: 'var(--color-total_revenue)',
+								}}
+								// activeDot={{
+								// 	r: 6,
+								// }}
+							/>
+						</LineChart>
+					</ChartContainer>
+				)}
 			</div>
 		</div>
 	);
@@ -162,13 +186,17 @@ const CustomTooltip = ({
 	payload,
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip>) => {
 	if (active && payload && payload.length) {
-		const item = payload[0].payload as { sales: number; day: string };
+		const item = payload[0].payload as { total_revenue: number; date: string };
 
 		return (
 			<div className='bg-white rounded-[4px] border border-solid border-white-200 text-center py-1 px-2'>
-				<p className='text-black-950 text-xs'>{item.day}</p>
+				<p className='text-black-950 text-xs capitalize'>
+					{item.date.includes('-')
+						? format(new Date(item.date), 'do MMM')
+						: item.date}
+				</p>
 				<p className='text-black-950 text-sm font-bold pt-2'>
-					N{item.sales.toLocaleString()}
+					N{item.total_revenue.toLocaleString()}
 				</p>
 			</div>
 		);
