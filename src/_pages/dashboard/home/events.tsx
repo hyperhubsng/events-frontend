@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import {
 	Select,
 	SelectContent,
@@ -15,7 +16,6 @@ import { format } from 'date-fns';
 
 import Pulse from '@/components/pulse';
 import * as RechartsPrimitive from 'recharts';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const chartConfig = {
 	events: {
@@ -92,7 +92,7 @@ const Events = () => {
 								tickFormatter={(value) =>
 									time !== 'This Month'
 										? `${value.slice(0, 1).toUpperCase()}${value.slice(1, 3)}`
-										: format(new Date(value), match ? 'dd/LL' : 'do MMM')
+										: format(new Date(value), match ? 'dd/LL' : 'dd/MMM')
 								}
 								interval={0}
 							/>
