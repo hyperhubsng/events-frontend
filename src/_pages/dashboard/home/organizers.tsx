@@ -17,14 +17,26 @@ import {
 	ChartLegend,
 	ChartLegendContent,
 } from '@/components/ui/chart';
+import { useGetUsersAnalyticsQuery } from '@/features/dashboard/dashboardApi';
+import Pulse from '@/components/pulse';
 
 const Organizers = () => {
-	const [time, setTime] = useState('This Year');
-	const times = ['This Year', 'Last Year', 'Two Years ago'];
+	const [time, setTime] = useState('This Month');
+	const times = ['This Month', 'This Year'];
+
+	const { data, isLoading, isFetching } = useGetUsersAnalyticsQuery({});
 
 	const chartData = [
-		{ organizers: 'active', number: 30, fill: 'var(--blue-50)' },
-		{ organizers: 'inactive', number: 2, fill: 'var(--yellow-800)' },
+		{
+			organizers: 'active',
+			number: data && data?.data?.active,
+			fill: 'var(--blue-50)',
+		},
+		{
+			organizers: 'inactive',
+			number: data && data?.data?.inactive,
+			fill: 'var(--yellow-800)',
+		},
 	];
 
 	const chartConfig = {
@@ -65,27 +77,31 @@ const Organizers = () => {
 			</div>
 
 			<div className='mt-8'>
-				<ChartContainer
-					config={chartConfig}
-					className='mx-auto aspect-square max-h-[250px]'>
-					<PieChart>
-						<ChartTooltip
-							cursor={false}
-							content={<ChartTooltipContent hideLabel />}
-						/>
-						<Pie
-							data={chartData}
-							dataKey='number'
-							nameKey='organizers'
-							innerRadius={60}
-							label
-						/>
-						<ChartLegend
-							content={<ChartLegendContent nameKey='organizers' />}
-							className='-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center'
-						/>
-					</PieChart>
-				</ChartContainer>
+				{isLoading || isFetching ? (
+					<Pulse height='h-[200px] mt-24' />
+				) : (
+					<ChartContainer
+						config={chartConfig}
+						className='mx-auto aspect-square max-h-[250px]'>
+						<PieChart>
+							<ChartTooltip
+								cursor={false}
+								content={<ChartTooltipContent hideLabel />}
+							/>
+							<Pie
+								data={chartData}
+								dataKey='number'
+								nameKey='organizers'
+								innerRadius={60}
+								label
+							/>
+							<ChartLegend
+								content={<ChartLegendContent nameKey='organizers' />}
+								className='-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center'
+							/>
+						</PieChart>
+					</ChartContainer>
+				)}
 			</div>
 		</div>
 	);

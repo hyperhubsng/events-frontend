@@ -31,6 +31,18 @@ const dashboardApiSlice = apiSlice.injectEndpoints({
 				params,
 			}),
 		}),
+		getUsersAnalytics: builder.query<
+			any,
+			{
+				from?: string | undefined;
+				to?: string | undefined;
+			}
+		>({
+			query: (params) => ({
+				url: '/analytics/users',
+				params,
+			}),
+		}),
 	}),
 	overrideExisting: true,
 });
@@ -39,4 +51,5 @@ export const {
 	useGetAnalyticsQuery,
 	useGetRevenueAnalyticsQuery,
 	useGetEventsAnalyticsQuery,
+	useGetUsersAnalyticsQuery,
 } = dashboardApiSlice;
