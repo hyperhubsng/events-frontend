@@ -44,6 +44,7 @@ interface FormattedDataItem {
 const Chart = () => {
 	const [time, setTime] = useState('This Month');
 	const match = useMediaQuery('(max-width: 769px)');
+	const match2 = useMediaQuery('(max-width: 600px)');
 
 	const times = ['This Month', 'This Year'];
 
@@ -153,7 +154,7 @@ const Chart = () => {
 								tickFormatter={(value) =>
 									time !== 'This Month'
 										? `${value.slice(0, 1).toUpperCase()}${value.slice(1, 3)}`
-										: format(new Date(value), 'do MMM')
+										: format(new Date(value), match2 ? 'dd/LL' : 'do MMM')
 								}
 								{...(match && { interval: 0 })}
 							/>

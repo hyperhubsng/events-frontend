@@ -27,7 +27,7 @@ const dashboardApiSlice = apiSlice.injectEndpoints({
 			}
 		>({
 			query: (params) => ({
-				url: '/events/payments',
+				url: '/analytics/events',
 				params,
 			}),
 		}),
