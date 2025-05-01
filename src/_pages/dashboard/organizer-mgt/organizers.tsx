@@ -24,6 +24,7 @@ const Organizers = ({
 	setLimit,
 	selected,
 	setSelected,
+	setUser,
 }: {
 	vendors: UsersData | undefined;
 	setOpenModal: (e: boolean) => void;
@@ -31,6 +32,7 @@ const Organizers = ({
 	setLimit: (e: string) => void;
 	selected: string;
 	setSelected: (e: string) => void;
+	setUser: (e: User) => void;
 }) => {
 	const [search, setSearch] = useState('');
 	const [vendorId, setVendorId] = useState<null | string>(null);
@@ -90,7 +92,13 @@ const Organizers = ({
 			header: 'Actions',
 			cell: ({ row }) => (
 				<div className='flex items-center gap-4'>
-					<button>{icons.Edit}</button>
+					<button
+						onClick={() => {
+							setOpenModal(true);
+							setUser(row.original);
+						}}>
+						{icons.Edit}
+					</button>
 					<button onClick={() => setVendorId(row.original._id)}>
 						{icons.Suspend}
 					</button>

@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 import LoadingButton from '@/components/loading-button';
+import { User } from '@/features/users/types';
 
 const OrganizerSchema = z.object({
 	firstName: z.string().min(1, { message }),
@@ -30,16 +31,22 @@ const OrganizerSchema = z.object({
 	website: z.string().optional(),
 });
 
-const OrganizerForm = ({ setOpenModal }: { setOpenModal: (e: boolean) => void }) => {
+const OrganizerForm = ({
+	setOpenModal,
+	user,
+}: {
+	setOpenModal: (e: boolean) => void;
+	user?: User;
+}) => {
 	const form = useForm<z.infer<typeof OrganizerSchema>>({
 		resolver: zodResolver(OrganizerSchema),
 		defaultValues: {
-			firstName: '',
-			lastName: '',
-			email: '',
-			phoneNumber: '',
-			companyName: '',
-			website: 'https://',
+			firstName: user?.firstName ?? '',
+			lastName: user?.lastName ?? '',
+			email: user?.email ?? '',
+			phoneNumber: user?.phoneNumber ?? '',
+			companyName: user?.companyName ?? '',
+			website: user?.website ?? '',
 		},
 	});
 

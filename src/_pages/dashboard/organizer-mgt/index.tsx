@@ -10,17 +10,19 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from '@/components/ui/dialog';
 import OrganizerForm from './organizer-form';
 import Pulse from '@/components/pulse';
 import Organizers from './organizers';
-import { DialogTrigger } from '@radix-ui/react-dialog';
+import { User } from '@/features/users/types';
 
 const OrganizerMgt = () => {
 	const searchParams = useSearchParams();
 
 	const [openModal, setOpenModal] = useState(false);
 	const [limit, setLimit] = useState('10');
+	const [user, setUser] = useState<User | null>(null);
 	const [selected, setSelected] = useState('All');
 
 	const { data: vendors, isLoading } = useGetUsersQuery({
@@ -64,13 +66,19 @@ const OrganizerMgt = () => {
 					setLimit={setLimit}
 					selected={selected}
 					setSelected={setSelected}
+					setUser={setUser}
 				/>
 			)}
-			<Dialog open={openModal} onOpenChange={setOpenModal}>
+			<Dialog
+				open={openModal}
+				onOpenChange={() => {
+					setOpenModal(false);
+					setUser(null);
+				}}>
 				<DialogContent className='lg:min-w-[628px]'>
 					<DialogHeader className='flex flex-row items-center justify-between'>
 						<DialogTitle className='text-black-950 font-bold text-2xl'>
-							New Organizer
+							{!user ? 'New' : 'Edit'} Organizer
 						</DialogTitle>
 						<DialogTrigger asChild>
 							<button className='w-max' onClick={() => setOpenModal(false)}>
@@ -89,7 +97,7 @@ const OrganizerMgt = () => {
 						</DialogTrigger>
 					</DialogHeader>
 
-					<OrganizerForm setOpenModal={setOpenModal} />
+					<OrganizerForm setOpenModal={setOpenModal} user={user!} />
 				</DialogContent>
 			</Dialog>
 		</div>
