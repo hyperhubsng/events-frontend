@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
+import { useDeactivateOrganizerMutation } from '@/features/auth/authApi';
+import { toast } from 'sonner';
 import { icons } from '@/components/icons';
 import { User, UsersData } from '@/features/users/types';
 import { DataTable } from '@/components/ui/data-table';
@@ -10,12 +13,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 
 import InfoCard from '@/components/info-card';
 import Tabs from '@/components/tabs';
 import Search from '@/components/search';
 import Status from '@/components/status';
+import LoadingButton from '@/components/loading-button';
 
 const Organizers = ({
 	vendors,
@@ -146,7 +149,7 @@ const Organizers = ({
 					<DialogHeader className='flex items-end'>
 						<button onClick={() => setVendorId(null)}>{icons.Close}</button>
 					</DialogHeader>
-					<DeactivateModal id={vendorId} />
+					<DeactivateModal id={vendorId} onClose={() => setVendorId(null)} />
 				</DialogContent>
 			</Dialog>
 		</div>
@@ -155,8 +158,24 @@ const Organizers = ({
 
 export default Organizers;
 
-const DeactivateModal = ({ id }: { id: string | null }) => {
-	console.log(id);
+const DeactivateModal = ({
+	id,
+	onClose,
+}: {
+	id: string | null;
+	onClose: () => void;
+}) => {
+	const [deactivateOrg, { isLoading }] = useDeactivateOrganizerMutation();
+
+	const handleDeactivation = async () => {
+		try {
+			await deactivateOrg(id!).unwrap();
+			toast.success('Organizer deactivated successfully');
+			onClose();
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
+	};
 
 	return (
 		<div className='flex flex-col items-center justify-center text-center'>
@@ -190,9 +209,13 @@ const DeactivateModal = ({ id }: { id: string | null }) => {
 				</DialogDescription>
 			</div>
 
-			<Button variant={'primary'} className='w-full mt-10'>
-				Update
-			</Button>
+			<LoadingButton
+				loading={isLoading}
+				variant={'destructive'}
+				className='w-full mt-10'
+				onClick={handleDeactivation}>
+				Continue
+			</LoadingButton>
 		</div>
 	);
 };

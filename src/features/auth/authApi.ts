@@ -26,6 +26,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['users'],
 		}),
+		deactivateOrganizer: builder.mutation({
+			query: (id: string) => ({
+				url: `/users/${id}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['users'],
+		}),
 	}),
 	overrideExisting: true,
 });
@@ -34,4 +41,5 @@ export const {
 	useLoginMutation,
 	useOnboardOrganizerMutation,
 	useEditOrganizerMutation,
+	useDeactivateOrganizerMutation,
 } = authApiSlice;
