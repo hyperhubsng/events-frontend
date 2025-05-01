@@ -18,8 +18,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['users'],
 		}),
+		editOrganizer: builder.mutation({
+			query: (body: OnboardOrganizerPayload) => ({
+				url: `/users/${body._id}`,
+				method: 'PUT',
+				body,
+			}),
+			invalidatesTags: ['users'],
+		}),
 	}),
 	overrideExisting: true,
 });
 
-export const { useLoginMutation, useOnboardOrganizerMutation } = authApiSlice;
+export const {
+	useLoginMutation,
+	useOnboardOrganizerMutation,
+	useEditOrganizerMutation,
+} = authApiSlice;

@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from 'react-hook-form';
-import { useOnboardOrganizerMutation } from '@/features/auth/authApi';
+import {
+	useEditOrganizerMutation,
+	useOnboardOrganizerMutation,
+} from '@/features/auth/authApi';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { message } from '@/lib/schemas';
@@ -14,10 +17,10 @@ import {
 } from '@/components/ui/form';
 import { DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { User } from '@/features/users/types';
 import { toast } from 'sonner';
 
 import LoadingButton from '@/components/loading-button';
-import { User } from '@/features/users/types';
 
 const OrganizerSchema = z.object({
 	firstName: z.string().min(1, { message }),
@@ -51,11 +54,17 @@ const OrganizerForm = ({
 	});
 
 	const [onboard, { isLoading }] = useOnboardOrganizerMutation();
+	const [edit, { isLoading: isEditing }] = useEditOrganizerMutation();
 
 	const onSubmit = async (data: z.infer<typeof OrganizerSchema>) => {
 		try {
-			await onboard({ ...data, password: '12345678' }).unwrap();
-			toast.success('Organizer invited successfully');
+			if (!user) {
+				await onboard({ ...data, password: '12345678' }).unwrap();
+				toast.success('Organizer invited successfully');
+			} else {
+				await edit({ ...data, _id: user?._id }).unwrap();
+				toast.success('Organizer edited successfully');
+			}
 			setOpenModal(false);
 		} catch (error: any) {
 			toast.error(error?.data?.message);
@@ -213,11 +222,11 @@ const OrganizerForm = ({
 				</div>
 				<div className='flex items-center justify-center'>
 					<LoadingButton
-						loading={isLoading}
+						loading={isLoading || isEditing}
 						variant='primary'
 						className='max-w-[19.125rem] w-full  mt-8'>
 						<DialogDescription className='text-white'>
-							Send Invitation
+							{!user ? 'Send Invitation' : 'Continue'}
 						</DialogDescription>
 					</LoadingButton>
 				</div>

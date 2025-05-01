@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useGetUsersQuery } from '@/features/users/usersApi';
 import { icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { User } from '@/features/users/types';
 import {
 	Dialog,
 	DialogContent,
@@ -15,7 +16,6 @@ import {
 import OrganizerForm from './organizer-form';
 import Pulse from '@/components/pulse';
 import Organizers from './organizers';
-import { User } from '@/features/users/types';
 
 const OrganizerMgt = () => {
 	const searchParams = useSearchParams();

@@ -6,4 +6,5 @@ export type OnboardOrganizerPayload = {
 	phoneNumber: string;
 	companyName: string;
 	website?: string;
+	_id?: string;
 };
