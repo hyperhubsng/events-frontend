@@ -6,7 +6,7 @@ type ButtonProps = {
 	disabled?: boolean;
 	className?: string;
 	children: React.ReactNode;
-	variant: 'primary' | 'secondary';
+	variant: 'primary' | 'secondary' | 'destructive';
 	type?: 'button' | 'submit' | 'reset' | undefined;
 	onClick?: () => void;
 };

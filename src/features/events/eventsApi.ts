@@ -24,6 +24,13 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['events'],
 		}),
+		deleteEvent: builder.mutation({
+			query: (id: string) => ({
+				url: `/events/${id}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['events'],
+		}),
 		getEvent: builder.query<{ data: Event }, string>({
 			query: (eventId: string) => `/events/${eventId}`,
 		}),
@@ -61,6 +68,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 export const {
 	useGetEventsQuery,
 	useCreateEventMutation,
+	useDeleteEventMutation,
 	useGetEventQuery,
 	useGetEventGuestsQuery,
 	useGetEventSalesQuery,

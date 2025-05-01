@@ -1,11 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
+import { useState } from 'react';
+import { useDeleteEventMutation } from '@/features/events/eventsApi';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 import { Event as EventProps } from '@/features/events/types';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
+import LoadingButton from '@/components/loading-button';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) => {
+	const [openModal, setOpenModal] = useState(false);
+
+	const [deleteEvent, { isLoading }] = useDeleteEventMutation();
+
 	const links = [
 		{
 			name: 'Edit Event',
@@ -24,6 +43,16 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
 			link: `/events/${_id}/guests`,
 		},
 	];
+
+	const handleDelete = async () => {
+		try {
+			const res = await deleteEvent(_id).unwrap();
+			toast.success(res?.message);
+			setOpenModal(false);
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
+	};
 
 	return (
 		<li
@@ -107,6 +136,62 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
 							{link.name}
 						</Link>
 					))}
+					<Dialog open={openModal} onOpenChange={setOpenModal}>
+						<DialogTrigger asChild>
+							<button className='text-black-950 text-xs p-2 whitespace-nowrap'>
+								Delete Event
+							</button>
+						</DialogTrigger>
+						<DialogContent>
+							<div className='flex flex-col items-center'>
+								<svg
+									width='65'
+									height='65'
+									viewBox='0 0 65 65'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'>
+									<rect
+										x='2.5'
+										y='2.5'
+										width='60'
+										height='60'
+										rx='30'
+										fill='#FEEDB8'
+									/>
+									<rect
+										x='2.5'
+										y='2.5'
+										width='60'
+										height='60'
+										rx='30'
+										stroke='#FEF6DB'
+										strokeWidth='4'
+									/>
+									<path
+										d='M33.4009 33.4002H30.4676V24.6002H33.4009V33.4002ZM33.4009 39.2668H30.4676V36.3335H33.4009V39.2668ZM31.9342 17.2668C30.0082 17.2668 28.101 17.6462 26.3216 18.3833C24.5421 19.1203 22.9253 20.2007 21.5633 21.5626C18.8128 24.3131 17.2676 28.0437 17.2676 31.9335C17.2676 35.8234 18.8128 39.5539 21.5633 42.3044C22.9253 43.6663 24.5421 44.7467 26.3216 45.4837C28.101 46.2208 30.0082 46.6002 31.9342 46.6002C35.8241 46.6002 39.5546 45.0549 42.3051 42.3044C45.0557 39.5539 46.6009 35.8234 46.6009 31.9335C46.6009 30.0075 46.2215 28.1003 45.4845 26.3208C44.7474 24.5414 43.6671 22.9245 42.3051 21.5626C40.9432 20.2007 39.3264 19.1203 37.5469 18.3833C35.7675 17.6462 33.8603 17.2668 31.9342 17.2668Z'
+										fill='#CAA93E'
+									/>
+								</svg>
+								<DialogHeader className='mt-4 !text-center'>
+									<DialogTitle className='text-base sm:text-[1.25rem] text-black-950 font-bold'>
+										Delete Event
+									</DialogTitle>
+									<DialogDescription className='text-sm text-black-700 max-w-[20rem]'>
+										Proceeding would delete the event and tickets wouldn&apos;t be
+										available for sale.
+									</DialogDescription>
+								</DialogHeader>
+
+								<LoadingButton
+									loading={isLoading}
+									variant={'destructive'}
+									className='mt-10 w-full'
+									onClick={handleDelete}>
+									Delete
+								</LoadingButton>
+							</div>
+						</DialogContent>
+					</Dialog>
 				</PopoverContent>
 			</Popover>
 		</li>

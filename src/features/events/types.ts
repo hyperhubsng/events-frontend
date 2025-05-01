@@ -11,6 +11,7 @@ export type Event = {
 	images: string[];
 	startDate: string;
 	endDate: string;
+	softDelete: boolean;
 	availableSlots: number;
 	location: {
 		type: string;

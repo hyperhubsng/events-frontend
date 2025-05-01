@@ -110,9 +110,11 @@ const Events = () => {
 										</div>
 									) : (
 										<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
-											{events?.data.map((event) => (
-												<Event {...event} key={event?._id} />
-											))}
+											{events?.data
+												?.filter((item) => item?.softDelete !== true)
+												.map((event) => (
+													<Event {...event} key={event?._id} />
+												))}
 										</ul>
 									)}
 								</>
