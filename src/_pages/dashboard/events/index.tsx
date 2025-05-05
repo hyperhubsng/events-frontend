@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useGetEventsQuery } from '@/features/events/eventsApi';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useDebounce } from '@/hooks/useDebounce';
-import { selectEvents } from '@/features/events/eventsSlice';
+import { selectEvents, setPreviewEvent } from '@/features/events/eventsSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { icons } from '@/components/icons';
@@ -18,7 +18,9 @@ import Pulse from '@/components/pulse';
 const Events = () => {
 	const [selected, setSelected] = useState('Active');
 	const [search, setSearch] = useState('');
+
 	const debouncedSearchTerm = useDebounce(search, 300);
+	const dispatch = useAppDispatch();
 
 	const {
 		data: events,
@@ -81,7 +83,10 @@ const Events = () => {
 							</div>
 
 							<Link href='/events/create-event'>
-								<Button variant={'primary'} className='!h-[40px] md:h-[48px]'>
+								<Button
+									variant={'primary'}
+									className='!h-[40px] md:h-[48px]'
+									onClick={() => dispatch(setPreviewEvent(null))}>
 									+ Create Event
 								</Button>
 							</Link>

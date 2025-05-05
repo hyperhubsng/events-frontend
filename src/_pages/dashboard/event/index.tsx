@@ -3,6 +3,8 @@
 
 import { useState } from 'react';
 import { useDeleteEventMutation } from '@/features/events/eventsApi';
+import { useAppDispatch } from '@/lib/hooks';
+import { setPreviewEvent } from '@/features/events/eventsSlice';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
 	Dialog,
@@ -20,33 +22,34 @@ import LoadingButton from '@/components/loading-button';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) => {
+const Event: React.FC<EventProps> = ({ ...props }) => {
 	const [openModal, setOpenModal] = useState(false);
+	const dispatch = useAppDispatch();
 
 	const [deleteEvent, { isLoading }] = useDeleteEventMutation();
 
 	const links = [
 		{
 			name: 'Edit Event',
-			link: `/events/${_id}/edit`,
+			link: `/events/${props?._id}/edit`,
 		},
 		{
 			name: 'Discount Code',
-			link: `/events/${_id}/discount-code`,
+			link: `/events/${props?._id}/discount-code`,
 		},
 		{
 			name: 'Sales',
-			link: `/events/${_id}/sales`,
+			link: `/events/${props?._id}/sales`,
 		},
 		{
 			name: 'Guest Check-in',
-			link: `/events/${_id}/guests`,
+			link: `/events/${props?._id}/guests`,
 		},
 	];
 
 	const handleDelete = async () => {
 		try {
-			const res = await deleteEvent(_id).unwrap();
+			const res = await deleteEvent(props?._id).unwrap();
 			toast.success(res?.message);
 			setOpenModal(false);
 		} catch (error: any) {
@@ -60,22 +63,26 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
                  rounded-[4px] md:rounded-[8px] relative'>
 			<figure>
 				<Image
-					src={images ? images[0] : '/images/event-img.png'}
+					src={props?.images ? props?.images[0] : '/images/event-img.png'}
 					width={264}
 					height={160}
-					alt={`thumbnail image for ${title}`}
+					alt={`thumbnail image for ${props?.title}`}
 					className='rounded-t-[4px] md:rounded-t-[8px] w-full h-[10rem] object-cover object-top'
 				/>
 			</figure>
 
 			<div className='p-3'>
 				<h3 className='text-[1.125rem] text-black-950 font-bold leading-[1]'>
-					{title}
+					{props?.title}
 				</h3>
 				<div className='mt-3'>
-					<p className='text-sm text-black-700'>{format(startDate, 'dd/MM/yyyy')}</p>
-					<p className='text-sm text-black-700'>{format(startDate, 'K:mmaa')}</p>
-					<p className='text-sm text-black-700'>{venue}</p>
+					<p className='text-sm text-black-700'>
+						{format(props?.startDate, 'dd/MM/yyyy')}
+					</p>
+					<p className='text-sm text-black-700'>
+						{format(props?.startDate, 'K:mmaa')}
+					</p>
+					<p className='text-sm text-black-700'>{props?.venue}</p>
 				</div>
 			</div>
 
@@ -128,11 +135,12 @@ const Event: React.FC<EventProps> = ({ images, _id, title, startDate, venue }) =
 				<PopoverContent
 					className='bg-white rounded-[4px] w-[6.688rem] p-0'
 					align='start'>
-					{links.map((link) => (
+					{links.map((link, i) => (
 						<Link
 							href={link.link}
 							key={link.name}
-							className='text-black-950 text-xs p-2 whitespace-nowrap block'>
+							className='text-black-950 text-xs p-2 whitespace-nowrap block'
+							onClick={() => (i == 0 ? dispatch(setPreviewEvent(props)) : null)}>
 							{link.name}
 						</Link>
 					))}

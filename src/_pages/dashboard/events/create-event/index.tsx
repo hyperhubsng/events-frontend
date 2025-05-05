@@ -87,7 +87,7 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 		}
 	};
 
-	useEffect(() => {}, [edit, form]);
+	useEffect(() => {}, [edit, dispatch]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>
