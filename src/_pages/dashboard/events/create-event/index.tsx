@@ -12,10 +12,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
 import { Form } from '@/components/ui/form';
-import {
-	selectPreviewEvent,
-	setPreviewEvent,
-} from '@/features/tickets/ticketsSlice';
+import { selectPreviewEvent, setPreviewEvent } from '@/features/events/eventsSlice';
 
 import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';

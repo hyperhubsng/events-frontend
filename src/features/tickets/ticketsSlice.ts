@@ -10,27 +10,10 @@ interface TicketCategory {
 
 interface TicketsState {
 	ticketCategories: TicketCategory[];
-	previewEvent: PreviewEvent | null;
-}
-
-interface PreviewEvent {
-	title: string;
-	startDate: Date | undefined;
-	start_time: string;
-	venue: string;
-	coordinates: string;
-	eventType: string;
-	ownerId: string;
-	description: string;
-	thumbnail: File | undefined;
-	event_img_1: File | undefined;
-	event_img_2: File | undefined;
-	event_img_3: File | undefined;
 }
 
 const initialState: TicketsState = {
 	ticketCategories: [],
-	previewEvent: null,
 };
 
 export const ticketsSlice = createSlice({
@@ -50,23 +33,15 @@ export const ticketsSlice = createSlice({
 				(ticket) => ticket.id !== action.payload
 			);
 		},
-		setPreviewEvent: (state, action) => {
-			state.previewEvent = action.payload;
-		},
 	},
 	selectors: {
 		selectTicketCategories: (tickets) => tickets.ticketCategories,
-		selectPreviewEvent: (tickets) => tickets.previewEvent,
 	},
 });
 
-export const {
-	setTicketCategories,
-	editTicketCategory,
-	deleteTicketCategory,
-	setPreviewEvent,
-} = ticketsSlice.actions;
+export const { setTicketCategories, editTicketCategory, deleteTicketCategory } =
+	ticketsSlice.actions;
 
-export const { selectTicketCategories, selectPreviewEvent } = ticketsSlice.selectors;
+export const { selectTicketCategories } = ticketsSlice.selectors;
 
 export const ticketsReducer = ticketsSlice.reducer;
