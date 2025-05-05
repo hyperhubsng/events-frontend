@@ -237,7 +237,9 @@ export function AppSidebar() {
 																<SidebarMenuButton
 																	asChild
 																	isActive={
-																		pathname.includes(sublink.name.toLowerCase()) ||
+																		pathname
+																			.toLowerCase()
+																			.includes(sublink.href.toLowerCase()) ||
 																		pathname === sublink.href
 																	}
 																	onClick={() => {
