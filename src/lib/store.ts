@@ -1,6 +1,7 @@
 import { apiSlice } from '@/features/api/apiSlice';
 import { authReducer } from '@/features/auth/authSlice';
 import { eventsReducer } from '@/features/events/eventsSlice';
+import { rolesReducer } from '@/features/roles-and-permissions/rolesSlice';
 import { ticketsReducer } from '@/features/tickets/ticketsSlice';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -28,13 +29,14 @@ const persistConfig = {
 	key: 'hyperhubs-admin',
 	version: 1,
 	storage,
-	whitelist: ['auth', 'events'],
+	whitelist: ['auth', 'events', 'roles'],
 };
 
 const rootReducer = combineReducers({
 	auth: authReducer,
 	tickets: ticketsReducer,
 	events: eventsReducer,
+	roles: rolesReducer,
 	[apiSlice.reducerPath]: apiSlice.reducer,
 });
 
