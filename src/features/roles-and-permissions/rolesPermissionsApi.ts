@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import { CreateRolePayload, RolesData } from './types';
+import { CreateRolePayload, PermissionsData, RolesData } from './types';
 
 const rolesPermissionsApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -10,7 +10,7 @@ const rolesPermissionsApi = apiSlice.injectEndpoints({
 			}),
 			providesTags: ['roles-and-permissions'],
 		}),
-		getPermissions: builder.query<RolesData, PaginationParams>({
+		getPermissions: builder.query<PermissionsData, PaginationParams>({
 			query: (params) => ({
 				url: '/permissions',
 				params,

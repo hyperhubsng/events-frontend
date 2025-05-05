@@ -300,3 +300,10 @@ div[role='dialog'] .lucide-x {
 		fill: #fff;
 	}
 }
+
+.data-\[state\=checked\]\:bg-primary[data-state='checked'] {
+	@apply bg-blue-950;
+}
+button[role='checkbox'] {
+	@apply size-6;
+}
