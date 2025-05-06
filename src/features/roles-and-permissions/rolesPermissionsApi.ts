@@ -27,7 +27,7 @@ const rolesPermissionsApi = apiSlice.injectEndpoints({
 		}),
 		updateRole: builder.mutation({
 			query: (body: CreateRolePayload) => ({
-				url: '/roles',
+				url: `/roles/${body.id}`,
 				method: 'PUT',
 				body,
 			}),

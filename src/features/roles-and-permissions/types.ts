@@ -34,4 +34,5 @@ export type CreateRolePayload = {
 	permissions: string[];
 	description: string;
 	action?: string;
+	id?: string;
 };
