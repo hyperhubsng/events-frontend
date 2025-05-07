@@ -27,7 +27,7 @@ const Events = () => {
 		isLoading,
 		isFetching,
 	} = useGetEventsQuery({
-		// ...(selected !== 'Draft' && { status: selected.toLowerCase() }),
+		...(selected !== 'Draft' && { status: selected.toLowerCase() }),
 		...(debouncedSearchTerm && { q: debouncedSearchTerm }),
 	});
 
@@ -35,7 +35,7 @@ const Events = () => {
 
 	return (
 		<div className='h-full p-4'>
-			{events && events?.pagination.total === 0 ? (
+			{events && events?.pagination.total === 0 && selected === 'Draft' ? (
 				<EmptyEvents />
 			) : (
 				<div className='h-full bg-white rounded-[8px] md:rounded-2xl p-4 sm:p-6'>
@@ -114,7 +114,7 @@ const Events = () => {
 											</h3>
 										</div>
 									) : (
-										<ul className='mt-4 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
+										<ul className='mt-6 grid md:grid-cols-3 min-[1200px]:!grid-cols-4  gap-6'>
 											{events?.data
 												?.filter((item) => item?.softDelete !== true)
 												.map((event) => (
