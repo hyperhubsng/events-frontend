@@ -33,6 +33,12 @@ export type CreateRolePayload = {
 	title: string;
 	permissions: string[];
 	description: string;
-	action?: string;
-	id?: string;
+};
+
+export type UpdateRolePayload = {
+	action: string;
+	id: string;
+	title?: string;
+	permissions?: string[];
+	description?: string;
 };

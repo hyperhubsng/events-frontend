@@ -1,5 +1,10 @@
 import { apiSlice } from '../api/apiSlice';
-import { CreateRolePayload, PermissionsData, RolesData } from './types';
+import {
+	CreateRolePayload,
+	PermissionsData,
+	RolesData,
+	UpdateRolePayload,
+} from './types';
 
 const rolesPermissionsApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -26,7 +31,7 @@ const rolesPermissionsApi = apiSlice.injectEndpoints({
 			invalidatesTags: ['roles-and-permissions'],
 		}),
 		updateRole: builder.mutation({
-			query: (body: CreateRolePayload) => ({
+			query: (body: UpdateRolePayload) => ({
 				url: `/roles/${body.id}`,
 				method: 'PUT',
 				body,

@@ -7,6 +7,8 @@ import {
 	useDeleteRoleMutation,
 	useGetRolesQuery,
 } from '@/features/roles-and-permissions/rolesPermissionsApi';
+import { useAppDispatch } from '@/lib/hooks';
+import { setEdittingRole } from '@/features/roles-and-permissions/rolesSlice';
 import { Button } from '@/components/ui/button';
 import { icons } from '@/components/icons';
 import {
@@ -16,6 +18,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ColumnDef } from '@tanstack/react-table';
 import { Role } from '@/features/roles-and-permissions/types';
 import { DataTable } from '@/components/ui/data-table';
@@ -34,6 +37,8 @@ const UserRoles = () => {
 	const [search, setSearch] = useState('');
 
 	const [roleId, setRoleId] = useState<null | string>(null);
+
+	const dispatch = useAppDispatch();
 
 	const { data: roles, isLoading } = useGetRolesQuery({
 		page: +searchParams.get('page')! || 1,
@@ -71,7 +76,27 @@ const UserRoles = () => {
 			header: 'Actions',
 			cell: ({ row }) => (
 				<div className='flex items-center gap-4'>
-					<Link href={`/user-roles/${row.original._id}/edit`}>{icons.Edit}</Link>
+					<Popover>
+						<PopoverTrigger asChild>
+							<button onClick={() => dispatch(setEdittingRole(row.original))}>
+								{icons.Edit}
+							</button>
+						</PopoverTrigger>
+						<PopoverContent
+							className='bg-white rounded-[12px] w-max grid gap-2 !py-2 !px-4'
+							align='end'>
+							<Link
+								href={`/user-roles/${row.original._id}/edit`}
+								className='text-sm text-black-950'>
+								Edit Title/Desc
+							</Link>
+							<Link
+								href={`/user-roles/${row.original._id}/edit?tab=2`}
+								className='text-sm text-black-950'>
+								Edit Permissions
+							</Link>
+						</PopoverContent>
+					</Popover>
 					<button onClick={() => setRoleId(row.original._id)}>{icons.Delete}</button>
 				</div>
 			),

@@ -4,6 +4,8 @@
 import { useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useAppSelector } from '@/lib/hooks';
+import { selectEdittingRole } from '@/features/roles-and-permissions/rolesSlice';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { message } from '@/lib/schemas';
@@ -18,6 +20,7 @@ import {
 import {
 	useCreateRoleMutation,
 	useGetPermissionsQuery,
+	useUpdateRoleMutation,
 } from '@/features/roles-and-permissions/rolesPermissionsApi';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
@@ -43,36 +46,63 @@ const NewRole = () => {
 	const pathname = usePathname();
 	const tab = params.get('tab') || 1;
 
+	const edittingRole = useAppSelector(selectEdittingRole);
+
 	const form = useForm<z.infer<typeof formOneSchema>>({
 		resolver: zodResolver(formOneSchema),
 		defaultValues: {
-			title: '',
-			description: '',
+			title: edittingRole?.title ?? '',
+			description: edittingRole?.description ?? '',
 		},
 	});
 	const formTwo = useForm<z.infer<typeof formTwoSchema>>({
 		resolver: zodResolver(formTwoSchema),
 		defaultValues: {
-			permissions: [],
+			permissions: edittingRole?.permissions ?? [],
 		},
 	});
 
 	const [createRole, { isLoading }] = useCreateRoleMutation();
+	const [updateRole, { isLoading: isEditting }] = useUpdateRoleMutation();
 	const { data: permissions } = useGetPermissionsQuery({});
 
 	const [checked, setChecked] = useState(false);
 
-	const onFormOneSubmit = () => router.push(`${pathname}?tab=2`);
+	const onFormOneSubmit = async () => {
+		if (!edittingRole) {
+			router.push(`${pathname}?tab=2`);
+		} else {
+			await updateRole({
+				id: edittingRole?._id,
+				action: 'others',
+				title: form.watch('title'),
+				description: form.watch('description'),
+			}).unwrap();
+
+			toast.success('Role updated successfully');
+			router.push('/user-roles');
+		}
+	};
 
 	const onSubmit = async (data: z.infer<typeof formTwoSchema>) => {
 		try {
-			await createRole({
-				...data,
-				description: form.watch('description'),
-				title: form.watch('title'),
-			}).unwrap();
+			if (!edittingRole) {
+				await createRole({
+					...data,
+					description: form.watch('description'),
+					title: form.watch('title'),
+				}).unwrap();
 
-			toast.success('Role created successfully');
+				toast.success('Role created successfully');
+			} else {
+				await updateRole({
+					...data,
+					id: edittingRole?._id,
+					action: 'permissions',
+				}).unwrap();
+
+				toast.success('Role updated successfully');
+			}
 
 			router.push('/user-roles');
 		} catch (error: any) {
@@ -85,7 +115,9 @@ const NewRole = () => {
 			<div className='max-w-[39.25rem] w-full bg-white p-4 md:p-6 rounded-[8px]'>
 				<div className='flex items-center justify-between'>
 					<h2 className='text-[1.25rem] md:text-2xl text-black-950 font-bold'>
-						{tab === 1 ? 'New Role' : 'Role Permission'}
+						{tab === 1
+							? `${!edittingRole ? 'New' : 'Edit'} Role`
+							: 'Role Permission'}
 					</h2>
 
 					<p className='text-sm text-black-950 font-bold'>{tab}/2</p>
@@ -143,9 +175,18 @@ const NewRole = () => {
 									)}
 								/>
 							</div>
-							<Button className='w-full mt-8' variant={'primary'}>
-								Proceed
-							</Button>
+							{!edittingRole ? (
+								<Button className='w-full mt-8' variant={'primary'}>
+									Proceed
+								</Button>
+							) : (
+								<LoadingButton
+									className='w-full mt-8'
+									variant={'primary'}
+									loading={isEditting}>
+									Continue
+								</LoadingButton>
+							)}
 						</form>
 					</Form>
 				) : (
@@ -228,10 +269,10 @@ const NewRole = () => {
 
 								<div className='grid gap-4 md:grid-cols-2 mt-8'>
 									<LoadingButton
-										loading={isLoading}
+										loading={isLoading || isEditting}
 										variant='primary'
 										className='w-full'>
-										Create User Role
+										{!edittingRole ? 'Create' : 'Edit'} User Role
 									</LoadingButton>
 
 									<Button

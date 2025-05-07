@@ -67,7 +67,7 @@ const Event: React.FC<EventProps> = ({ ...props }) => {
 					width={264}
 					height={160}
 					alt={`thumbnail image for ${props?.title}`}
-					className='rounded-t-[4px] md:rounded-t-[8px] w-full h-[10rem] object-cover object-top'
+					className='rounded-t-[4px] md:rounded-t-[8px] w-full h-[10rem] object-cover'
 				/>
 			</figure>
 
