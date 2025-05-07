@@ -20,6 +20,7 @@ interface PreviewEvent {
 	event_img_1: File | undefined;
 	event_img_2: File | undefined;
 	event_img_3: File | undefined;
+	images: string[];
 }
 
 const initialState: EventsState = {

@@ -28,13 +28,16 @@ export const CreateEventSchema = z.object({
 	// thumbnail: z.instanceof(File, {
 	// 	message: 'Please select an image',
 	// }),
-	event_img_1: z.instanceof(File, {
-		message: 'Please select an image',
-	}),
-	event_img_2: z.instanceof(File, {
-		message: 'Please select an image',
-	}),
-	event_img_3: z.instanceof(File, {
-		message: 'Please select an image',
-	}),
+	event_img_1: z.union([
+		z.instanceof(File, { message: 'Please select an image' }),
+		z.string().min(1, { message: 'Must be a valid image URL' }),
+	]),
+	event_img_2: z.union([
+		z.instanceof(File, { message: 'Please select an image' }),
+		z.string().min(1, { message: 'Must be a valid image URL' }),
+	]),
+	event_img_3: z.union([
+		z.instanceof(File, { message: 'Please select an image' }),
+		z.string().min(1, { message: 'Must be a valid image URL' }),
+	]),
 });

@@ -43,9 +43,9 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 				: '',
 			startDate: previewEvent?.startDate ?? undefined,
 			// thumbnail: previewEvent?.thumbnail ?? undefined,
-			event_img_1: previewEvent?.event_img_1 ?? undefined,
-			event_img_2: previewEvent?.event_img_2 ?? undefined,
-			event_img_3: previewEvent?.event_img_3 ?? undefined,
+			event_img_1: previewEvent?.images[0] ?? undefined,
+			event_img_2: previewEvent?.images[1] ?? undefined,
+			event_img_3: previewEvent?.images[2] ?? undefined,
 		},
 	});
 

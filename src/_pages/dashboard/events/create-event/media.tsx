@@ -64,7 +64,11 @@ const Media = ({ form, isLoading }: Props) => {
 				<LoadingButton
 					loading={isLoading}
 					variant='primary'
-					disabled={!form.formState.isValid}
+					disabled={
+						!form.getValues('event_img_1') ||
+						!form.getValues('event_img_2') ||
+						!form.getValues('event_img_3')
+					}
 					className='w-full'>
 					Continue
 				</LoadingButton>
@@ -106,6 +110,10 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 			const imageUrl = URL.createObjectURL(file);
 			setPreview(imageUrl);
 		}
+
+		if (typeof form.getValues(name) === 'string') {
+			setPreview(form.getValues(name) as string);
+		}
 	}, [form, name]);
 
 	return (
@@ -114,9 +122,7 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 			name={name}
 			render={({ field: { onChange } }) => (
 				<FormItem>
-					<FormLabel
-						className='text-black-950 text-sm md:text-base font-semibold'
-						htmlFor='startDate'>
+					<FormLabel className='text-black-950 text-sm md:text-base font-semibold'>
 						{label}
 					</FormLabel>
 					<div
@@ -162,7 +168,7 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 								width={580}
 								height={150}
 								alt={label}
-								className='absolute top-0 left-0 w-full h-full pointer-events-none rounded-[inherit] object-cover object-top'
+								className='absolute top-0 left-0 w-full h-full pointer-events-none rounded-[inherit] object-cover'
 							/>
 						)}
 					</div>
