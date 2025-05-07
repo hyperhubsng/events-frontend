@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useGetUsersQuery } from '@/features/users/usersApi';
 import { UseFormReturn } from 'react-hook-form';
 import { CreateEventSchema } from '@/lib/schemas';
@@ -34,6 +34,7 @@ type Props = {
 };
 const BasicDetails: React.FC<Props> = ({ form }) => {
 	const router = useRouter();
+	const pathname = usePathname();
 
 	const [err, setErr] = useState(false);
 
@@ -340,7 +341,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 					type='button'
 					disabled={err || form.getValues('description').length < 20}
 					className='w-full'
-					onClick={() => router.push('/events/create-event?tab=media')}>
+					onClick={() => router.push(`${pathname}?tab=media`)}>
 					Continue
 				</Button>
 
