@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { useCreateEventMutation } from '@/features/events/eventsApi';
+import {
+	useCreateEventMutation,
+	useUpdateEventMutation,
+} from '@/features/events/eventsApi';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { formatTimeUTC } from '@/lib/utils';
@@ -20,9 +22,11 @@ import BasicDetails from './basic-details';
 import Media from './media';
 import TicketCategory from './ticket-category';
 
-const CreateEvent = ({ edit }: { edit?: boolean }) => {
+const CreateEvent = () => {
+	const pathname = usePathname();
 	const params = useSearchParams();
 	const tab = params.get('tab');
+	const id = useParams().id;
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -41,15 +45,18 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 			start_time: previewEvent?.startDate
 				? formatTimeUTC(previewEvent.startDate)
 				: '',
-			startDate: previewEvent?.startDate ?? undefined,
+			startDate: previewEvent?.startDate
+				? new Date(previewEvent?.startDate)
+				: undefined,
 			// thumbnail: previewEvent?.thumbnail ?? undefined,
-			event_img_1: previewEvent?.images[0] ?? undefined,
-			event_img_2: previewEvent?.images[1] ?? undefined,
-			event_img_3: previewEvent?.images[2] ?? undefined,
+			event_img_1: previewEvent ? previewEvent?.images[0] : undefined,
+			event_img_2: previewEvent ? previewEvent?.images[1] : undefined,
+			event_img_3: previewEvent ? previewEvent?.images[2] : undefined,
 		},
 	});
 
 	const [createEvent, { isLoading }] = useCreateEventMutation();
+	const [updateEvent, { isLoading: isUpdating }] = useUpdateEventMutation();
 
 	const onSubmit = async (data: z.infer<typeof CreateEventSchema>) => {
 		dispatch(setPreviewEvent(data));
@@ -81,16 +88,19 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 				formData.append('files', file);
 			});
 
-			const res = await createEvent(formData).unwrap();
-			toast.success('Success! Please proceed to create ticket categories.');
-
-			router.push(`/events/create-event?tab=ticket&eventId=${res?.data?._id}`);
+			if (!id) {
+				const res = await createEvent(formData).unwrap();
+				toast.success('Success! Please proceed to create ticket categories.');
+				router.push(`${pathname}?tab=ticket&eventId=${res?.data?._id}`);
+			} else {
+				const res = await updateEvent({ id, formData }).unwrap();
+				toast.success('Success! Please proceed to update ticket categories.');
+				router.push(`${pathname}?tab=ticket&eventId=${res?.data?._id || id}`);
+			}
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
 	};
-
-	useEffect(() => {}, [edit, dispatch]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>
@@ -116,7 +126,7 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 							{!tab ? (
 								<BasicDetails form={form} />
 							) : tab === 'media' ? (
-								<Media form={form} isLoading={isLoading} />
+								<Media form={form} isLoading={isLoading || isUpdating} />
 							) : tab === 'ticket' ? (
 								<TicketCategory />
 							) : null}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiSlice } from '../api/apiSlice';
 import {
 	Event,
@@ -21,6 +22,17 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 				url: '/events',
 				method: 'POST',
 				body,
+			}),
+			invalidatesTags: ['events'],
+		}),
+		updateEvent: builder.mutation<
+			any,
+			{ id: string | string[]; formData: FormData }
+		>({
+			query: ({ id, formData }) => ({
+				url: `/events/${id}`,
+				method: 'PUT',
+				body: formData,
 			}),
 			invalidatesTags: ['events'],
 		}),
@@ -68,6 +80,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 export const {
 	useGetEventsQuery,
 	useCreateEventMutation,
+	useUpdateEventMutation,
 	useDeleteEventMutation,
 	useGetEventQuery,
 	useGetEventGuestsQuery,

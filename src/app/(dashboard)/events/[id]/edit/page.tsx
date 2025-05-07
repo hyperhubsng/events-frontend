@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 const EditEventpage = () => {
-	return <CreateEvent edit />;
+	return <CreateEvent />;
 };
 
 export default EditEventpage;
