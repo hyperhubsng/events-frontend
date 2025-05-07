@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useCreateEventMutation } from '@/features/events/eventsApi';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { formatTimeUTC } from '@/lib/utils';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
@@ -37,7 +38,9 @@ const CreateEvent = ({ edit }: { edit?: boolean }) => {
 			eventType: previewEvent?.eventType ?? '',
 			coordinates: previewEvent?.coordinates ?? '',
 			ownerId: previewEvent?.ownerId ?? '',
-			start_time: previewEvent?.start_time ?? '',
+			start_time: previewEvent?.startDate
+				? formatTimeUTC(previewEvent.startDate)
+				: '',
 			startDate: previewEvent?.startDate ?? undefined,
 			// thumbnail: previewEvent?.thumbnail ?? undefined,
 			event_img_1: previewEvent?.event_img_1 ?? undefined,
