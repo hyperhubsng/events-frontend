@@ -98,7 +98,7 @@ const NewRole = () => {
 				await updateRole({
 					...data,
 					id: edittingRole?._id,
-					action: 'permissions',
+					action: 'add-permissions',
 				}).unwrap();
 
 				toast.success('Role updated successfully');
@@ -272,7 +272,7 @@ const NewRole = () => {
 										loading={isLoading || isEditting}
 										variant='primary'
 										className='w-full'>
-										{!edittingRole ? 'Create' : 'Edit'} User Role
+										{!edittingRole ? 'Create User Role' : 'Edit User Permissions'}
 									</LoadingButton>
 
 									<Button

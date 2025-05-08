@@ -3,7 +3,7 @@
 
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppSelector } from '@/lib/hooks';
 import {
 	useCreateEventMutation,
 	useUpdateEventMutation,
@@ -15,7 +15,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
 import { Form } from '@/components/ui/form';
-import { selectPreviewEvent, setPreviewEvent } from '@/features/events/eventsSlice';
+import { selectPreviewEvent } from '@/features/events/eventsSlice';
 
 import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';
@@ -28,7 +28,6 @@ const CreateEvent = () => {
 	const tab = params.get('tab');
 	const id = useParams().id;
 
-	const dispatch = useAppDispatch();
 	const router = useRouter();
 
 	const previewEvent = useAppSelector(selectPreviewEvent);
@@ -59,7 +58,7 @@ const CreateEvent = () => {
 	const [updateEvent, { isLoading: isUpdating }] = useUpdateEventMutation();
 
 	const onSubmit = async (data: z.infer<typeof CreateEventSchema>) => {
-		dispatch(setPreviewEvent(data));
+		// dispatch(setPreviewEvent(data));
 		try {
 			const formData = new FormData();
 
