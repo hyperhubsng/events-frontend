@@ -3,19 +3,19 @@
 
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
 	useCreateEventMutation,
 	useUpdateEventMutation,
 } from '@/features/events/eventsApi';
 import { toast } from 'sonner';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { formatTimeUTC } from '@/lib/utils';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateEventSchema } from '@/lib/schemas';
 import { Form } from '@/components/ui/form';
-import { selectPreviewEvent } from '@/features/events/eventsSlice';
+import { selectPreviewEvent, setPreviewEvent } from '@/features/events/eventsSlice';
 
 import BreadcrumbWrapper from '@/components/breadcrumb';
 import BasicDetails from './basic-details';
@@ -31,6 +31,7 @@ const CreateEvent = () => {
 	const router = useRouter();
 
 	const previewEvent = useAppSelector(selectPreviewEvent);
+	const dispatch = useAppDispatch();
 
 	const form = useForm<z.infer<typeof CreateEventSchema>>({
 		resolver: zodResolver(CreateEventSchema),
@@ -92,7 +93,15 @@ const CreateEvent = () => {
 				toast.success('Success! Please proceed to create ticket categories.');
 				router.push(`${pathname}?tab=ticket&eventId=${res?.data?._id}`);
 			} else {
+				formData.delete('ownerId');
+				formData.append(
+					'endDate',
+					format(addDays(data.startDate, 1), 'yyyy-MM-dd HH:mm')
+				);
+
 				const res = await updateEvent({ id, formData }).unwrap();
+				dispatch(setPreviewEvent(res?.data));
+
 				toast.success('Success! Please proceed to update ticket categories.');
 				router.push(`${pathname}?tab=ticket&eventId=${res?.data?._id || id}`);
 			}

@@ -1,11 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useRemoveEventImageMutation } from '@/features/events/eventsApi';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { selectPreviewEvent, setPreviewEvent } from '@/features/events/eventsSlice';
+import { toast } from 'sonner';
 import { UseFormReturn } from 'react-hook-form';
 import { CreateEventSchema } from '@/lib/schemas';
 import { z } from 'zod';
 import { FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 import Image from 'next/image';
 import LoadingButton from '@/components/loading-button';
@@ -102,7 +109,34 @@ type PreviewProps = {
 };
 
 const Preview = ({ form, name, label }: PreviewProps) => {
+	const params = useParams();
 	const [preview, setPreview] = useState('');
+
+	const dispatch = useAppDispatch();
+	const previewEvent = useAppSelector(selectPreviewEvent);
+
+	const [removeImage, { isLoading }] = useRemoveEventImageMutation();
+
+	const handleRemoveImage = async () => {
+		try {
+			const res = await removeImage({
+				images: [preview],
+				id: typeof params?.id === 'string' ? params.id : '',
+			}).unwrap();
+
+			toast.success(res?.message);
+			setPreview('');
+			form.setValue(name, undefined);
+			dispatch(
+				setPreviewEvent({
+					...previewEvent,
+					images: previewEvent?.images.filter((img) => img !== preview),
+				})
+			);
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
+	};
 
 	useEffect(() => {
 		const file = form.watch(name);
@@ -170,6 +204,40 @@ const Preview = ({ form, name, label }: PreviewProps) => {
 								alt={label}
 								className='absolute top-0 left-0 w-full h-full pointer-events-none rounded-[inherit] object-cover'
 							/>
+						)}
+
+						{preview && (
+							<button
+								className='absolute top-4 right-4'
+								type='button'
+								onClick={() => {
+									if (!preview.includes('https://hyperhubsevents.s3')) {
+										setPreview('');
+									} else {
+										handleRemoveImage();
+									}
+								}}>
+								<svg
+									width='24'
+									height='24'
+									viewBox='0 0 24 24'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'>
+									<rect width='24' height='24' rx='12' fill='#FBF4F4' />
+									<path
+										fillRule='evenodd'
+										clipRule='evenodd'
+										d='M16.5079 7.78363C16.7219 7.78363 16.9 7.96128 16.9 8.18733V8.39633C16.9 8.61687 16.7219 8.80002 16.5079 8.80002H7.39262C7.17812 8.80002 7 8.61687 7 8.39633V8.18733C7 7.96128 7.17812 7.78363 7.39262 7.78363H8.99626C9.32202 7.78363 9.60552 7.55208 9.6788 7.22539L9.76278 6.85029C9.89329 6.33935 10.3228 6 10.8144 6H13.0856C13.5718 6 14.0062 6.33935 14.1319 6.82334L14.2217 7.22484C14.2945 7.55208 14.578 7.78363 14.9043 7.78363H16.5079ZM15.6932 15.4236C15.8606 13.8633 16.1537 10.1563 16.1537 10.1189C16.1644 10.0056 16.1275 9.89838 16.0542 9.81203C15.9756 9.73118 15.8761 9.68333 15.7664 9.68333H8.13765C8.02746 9.68333 7.92262 9.73118 7.84987 9.81203C7.77606 9.89838 7.73968 10.0056 7.74503 10.1189C7.74601 10.1258 7.75653 10.2564 7.77412 10.4747C7.85224 11.4445 8.06981 14.1455 8.2104 15.4236C8.30989 16.3652 8.9277 16.957 9.8226 16.9785C10.5132 16.9944 11.2246 16.9999 11.9521 16.9999C12.6373 16.9999 13.3332 16.9944 14.0451 16.9785C14.971 16.9625 15.5883 16.3812 15.6932 15.4236Z'
+										fill='#B91C1C'
+									/>
+								</svg>
+							</button>
+						)}
+
+						{isLoading && (
+							<div className='absolute flex items-center justify-center bg-[rgba(0,0,0,0.5)] h-full w-full rounded-[inherit]'>
+								<Loader2 className='animate-spin' color='#fff' />
+							</div>
 						)}
 					</div>
 				</FormItem>
