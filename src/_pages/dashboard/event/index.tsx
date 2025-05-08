@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Event as EventProps } from '@/features/events/types';
 import { format } from 'date-fns';
+import { formatTimeUTC } from '@/lib/utils';
 import { toast } from 'sonner';
 
 import LoadingButton from '@/components/loading-button';
@@ -79,9 +80,7 @@ const Event: React.FC<EventProps> = ({ ...props }) => {
 					<p className='text-sm text-black-700'>
 						{format(props?.startDate, 'dd/MM/yyyy')}
 					</p>
-					<p className='text-sm text-black-700'>
-						{format(props?.startDate, 'K:mmaa')}
-					</p>
+					<p className='text-sm text-black-700'>{formatTimeUTC(props?.startDate)}</p>
 					<p className='text-sm text-black-700'>{props?.venue}</p>
 				</div>
 			</div>
