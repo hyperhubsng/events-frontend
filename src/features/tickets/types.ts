@@ -28,5 +28,6 @@ export type CreateTicketPayload = {
 	quantity: number;
 	price: number;
 	orderLimit: number;
-	eventId: string;
+	eventId?: string;
+	id?: string;
 };

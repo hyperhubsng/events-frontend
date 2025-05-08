@@ -43,6 +43,14 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['events'],
 		}),
+		removeEventImage: builder.mutation({
+			query: (body: { id: string; images: string[] }) => ({
+				url: `/events/${body.id}/images`,
+				method: 'DELETE',
+				body,
+			}),
+			invalidatesTags: ['events'],
+		}),
 		getEvent: builder.query<{ data: Event }, string>({
 			query: (eventId: string) => `/events/${eventId}`,
 		}),
@@ -82,6 +90,7 @@ export const {
 	useCreateEventMutation,
 	useUpdateEventMutation,
 	useDeleteEventMutation,
+	useRemoveEventImageMutation,
 	useGetEventQuery,
 	useGetEventGuestsQuery,
 	useGetEventSalesQuery,
