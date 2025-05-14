@@ -26,7 +26,7 @@ const OrganizerMgt = () => {
 	const [selected, setSelected] = useState('All');
 
 	const { data: vendors, isLoading } = useGetUsersQuery({
-		accountType: 'vendor',
+		userType: 'vendor',
 		page: +searchParams.get('page')! || 1,
 		limit: +limit,
 		...(selected !== 'All' && { status: selected.toLowerCase() }),

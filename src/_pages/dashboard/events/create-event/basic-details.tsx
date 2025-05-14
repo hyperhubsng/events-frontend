@@ -41,7 +41,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 	const formValues = form.watch();
 
 	const { data: vendors, isLoading } = useGetUsersQuery({
-		accountType: 'vendor',
+		userType: 'vendor',
 	});
 
 	useEffect(() => {

@@ -12,6 +12,23 @@ export type User = {
 	userType: string;
 	createdAt: string;
 	updatedAt: string;
+	organisations: string[];
+	totalEvents: number;
+	totalRevenue: number;
+	totalCommissions: number;
+	softDelete: false;
+	dob: string;
+	gender: string;
+	role: {
+		title: string;
+		permissions: string[];
+		organisationId: string;
+		description: string;
+		softDelete: false;
+		roleId: string;
+	};
+	designation: string;
+	profileImageUrl: string;
 };
 
 export type UsersData = {
@@ -35,6 +52,6 @@ export type UsersData = {
 };
 
 export type UsersParams = {
-	accountType?: string;
+	userType?: string;
 	status?: string;
 };

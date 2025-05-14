@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import { OnboardOrganizerPayload } from './types';
+import { OnboardAdminPayload, OnboardOrganizerPayload } from './types';
 
 export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -43,6 +43,22 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['users'],
 		}),
+		onboardAdmin: builder.mutation({
+			query: (body: OnboardAdminPayload) => ({
+				url: '/auth/onboard-secondary-users',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['users'],
+		}),
+		editAdmin: builder.mutation({
+			query: (body: OnboardAdminPayload) => ({
+				url: `/users/${body._id}`,
+				method: 'PUT',
+				body,
+			}),
+			invalidatesTags: ['users'],
+		}),
 		editOrganizer: builder.mutation({
 			query: (body: OnboardOrganizerPayload) => ({
 				url: `/users/${body._id}`,
@@ -69,5 +85,7 @@ export const {
 	useVerifyForgotPasswordMutation,
 	useOnboardOrganizerMutation,
 	useEditOrganizerMutation,
+	useOnboardAdminMutation,
+	useEditAdminMutation,
 	useDeactivateOrganizerMutation,
 } = authApiSlice;

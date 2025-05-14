@@ -8,3 +8,14 @@ export type OnboardOrganizerPayload = {
 	website?: string;
 	_id?: string;
 };
+
+export type OnboardAdminPayload = {
+	email: string;
+	firstName: string;
+	lastName: string;
+	role: string;
+	userType: string;
+	phoneNumber: string;
+	password?: string;
+	_id?: string;
+};
