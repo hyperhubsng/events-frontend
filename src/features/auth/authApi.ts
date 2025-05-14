@@ -10,6 +10,31 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				body,
 			}),
 		}),
+		forgotPassword: builder.mutation({
+			query: (body: { email: string }) => ({
+				url: '/auth/forgot-password',
+				method: 'POST',
+				body,
+			}),
+		}),
+		verifyForgotPassword: builder.mutation({
+			query: (body: { otpEmail: string; otp: string }) => ({
+				url: '/auth/verify-forgot-password',
+				method: 'POST',
+				body,
+			}),
+		}),
+		resetPassword: builder.mutation({
+			query: (body: {
+				resetToken: string;
+				password: string;
+				confirmPassword: string;
+			}) => ({
+				url: '/auth/set-password',
+				method: 'POST',
+				body,
+			}),
+		}),
 		onboardOrganizer: builder.mutation({
 			query: (body: OnboardOrganizerPayload) => ({
 				url: '/auth/onboard-organiser',
@@ -39,6 +64,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useLoginMutation,
+	useForgotPasswordMutation,
+	useResetPasswordMutation,
+	useVerifyForgotPasswordMutation,
 	useOnboardOrganizerMutation,
 	useEditOrganizerMutation,
 	useDeactivateOrganizerMutation,

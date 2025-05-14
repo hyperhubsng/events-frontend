@@ -1,4 +1,3 @@
-import React from 'react';
 import Login from '@/_pages/auth/login';
 import { Metadata } from 'next';
 
