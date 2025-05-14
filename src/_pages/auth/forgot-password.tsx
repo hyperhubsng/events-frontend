@@ -46,8 +46,8 @@ const ForgotPassword = () => {
 		<div>
 			{!isSuccess ? (
 				<>
-					<div className='py-2 mt-4 text-center'>
-						<h1 className='text-[#101010] text-2xl md:text-[1.75rem] text-center font-semibold'>
+					<div className='mt-6 md:mt-8 text-center'>
+						<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
 							Reset Password
 						</h1>
 						<p className='text-[#4D4D4D] text-base'>
@@ -56,7 +56,7 @@ const ForgotPassword = () => {
 					</div>
 
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className='mt-6'>
+						<form onSubmit={form.handleSubmit(onSubmit)} className='mt-8'>
 							<FormField
 								control={form.control}
 								name='email'
@@ -133,7 +133,7 @@ const Success = ({ email }: { email: string }) => {
 			/>
 
 			<div className='mt-4 text-center'>
-				<h1 className='text-[#101010] text-2xl md:text-[1.75rem] text-center font-semibold'>
+				<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
 					Reset Password
 				</h1>
 				<p className='text-[#4D4D4D] text-base max-w-[26.813rem]'>

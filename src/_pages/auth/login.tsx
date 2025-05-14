@@ -66,15 +66,15 @@ const Login = () => {
 	return (
 		<div>
 			<div className='border-b border-solid border-b-[#E8E8E8] py-2 mt-4'>
-				<h1 className='text-[#101010] text-2xl md:text-[1.75rem] text-center font-semibold'>
-					Welcome Admin
+				<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+					Welcome
 				</h1>
 			</div>
 
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className='flex flex-col gap-4 mt-6'>
+					className='flex flex-col gap-8 mt-6'>
 					<FormField
 						control={form.control}
 						name='email'
