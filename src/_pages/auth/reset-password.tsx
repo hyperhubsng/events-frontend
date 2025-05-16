@@ -65,7 +65,7 @@ const ResetPassword = () => {
 
 	return (
 		<div>
-			{isSuccess ? (
+			{!isSuccess ? (
 				<>
 					<div className='mt-6 md:mt-8 text-center'>
 						<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>

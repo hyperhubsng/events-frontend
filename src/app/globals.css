@@ -307,3 +307,13 @@ div[role='dialog'] .lucide-x {
 button[role='checkbox'] {
 	@apply size-6;
 }
+div[data-input-otp-container='true'] {
+	@apply w-full justify-between;
+}
+div[data-slot='input-otp-slot'] {
+	@apply border-l-[#C4C4C4] border-l rounded-[4px] h-[3.5rem] w-[3.5rem];
+}
+
+div[data-slot='input-otp-slot'][data-active='true'] {
+	@apply shadow-none ring-0 border-input;
+}
