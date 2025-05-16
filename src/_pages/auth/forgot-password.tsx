@@ -27,6 +27,8 @@ import { Button } from '@/components/ui/button';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/lib/hooks';
+import { setResetToken } from '@/features/auth/authSlice';
 
 const ForgotPassword = () => {
 	const formSchema = z.object({
@@ -107,6 +109,7 @@ export default ForgotPassword;
 
 const Success = ({ email }: { email: string }) => {
 	const router = useRouter();
+	const dispatch = useAppDispatch();
 
 	const [timer, setTimer] = useState(59);
 	const [showOtp, setShowOtp] = useState(false);
@@ -134,9 +137,10 @@ const Success = ({ email }: { email: string }) => {
 		if (otp.length < 5) return;
 
 		try {
-			await verifyPwd({ otpEmail: email, otp }).unwrap();
-			toast.success('Successful. Proceed to reset your password');
+			const res = await verifyPwd({ otpEmail: email, otp }).unwrap();
+			dispatch(setResetToken(res?.data?.resetToken));
 			router.push('/reset-password');
+			toast.success('Successful. Proceed to reset your password');
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}

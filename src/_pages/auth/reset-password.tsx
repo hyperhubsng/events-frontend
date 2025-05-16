@@ -4,6 +4,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useResetPasswordMutation } from '@/features/auth/authApi';
+import { useAppSelector } from '@/lib/hooks';
+import { selectResetToken } from '@/features/auth/authSlice';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -26,6 +28,8 @@ import Image from 'next/image';
 const ResetPassword = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	const resetToken = useAppSelector(selectResetToken);
 
 	const passwordSchema = z
 		.string()
@@ -57,7 +61,7 @@ const ResetPassword = () => {
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		try {
-			await resetPwd({ ...data, resetToken: '' }).unwrap();
+			await resetPwd({ ...data, resetToken }).unwrap();
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
