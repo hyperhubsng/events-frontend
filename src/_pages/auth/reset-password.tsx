@@ -4,10 +4,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useResetPasswordMutation } from '@/features/auth/authApi';
-import { useAppSelector } from '@/lib/hooks';
-import { selectResetToken } from '@/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { logOut, selectResetToken } from '@/features/auth/authSlice';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { deleteUserToken } from '@/lib/session';
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import {
 	Form,
 	FormControl,
@@ -25,7 +27,7 @@ import LoadingButton from '@/components/loading-button';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const ResetPassword = () => {
+const ResetPassword = ({ fromSettings }: { fromSettings?: boolean }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -72,12 +74,25 @@ const ResetPassword = () => {
 			{!isSuccess ? (
 				<>
 					<div className='mt-6 md:mt-8 text-center'>
-						<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
-							Reset Password
-						</h1>
-						<p className='text-[#4D4D4D] text-base'>
-							Enter a new password and confirm password
-						</p>
+						{!fromSettings ? (
+							<>
+								<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+									Reset Password
+								</h1>
+								<p className='text-[#4D4D4D] text-base'>
+									Enter a new password and confirm password
+								</p>
+							</>
+						) : (
+							<>
+								<DialogTitle className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+									Reset Password
+								</DialogTitle>
+								<DialogDescription className='text-[#4D4D4D] text-base'>
+									Enter a new password and confirm password
+								</DialogDescription>
+							</>
+						)}
 					</div>
 
 					<Form {...form}>
@@ -166,7 +181,7 @@ const ResetPassword = () => {
 					</Form>
 				</>
 			) : (
-				<Success />
+				<Success fromSettings={fromSettings} />
 			)}
 		</div>
 	);
@@ -174,7 +189,14 @@ const ResetPassword = () => {
 
 export default ResetPassword;
 
-const Success = () => {
+const Success = ({ fromSettings }: { fromSettings?: boolean }) => {
+	const dispatch = useAppDispatch();
+
+	const handleLogout = async () => {
+		await deleteUserToken('access-token');
+		dispatch(logOut());
+	};
+
 	return (
 		<div className='flex flex-col items-center justify-center text-center mt-4 gap-2'>
 			<Image
@@ -186,16 +208,36 @@ const Success = () => {
 			/>
 
 			<div>
-				<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
-					Reset Password Successful
-				</h1>
-				<p className='text-[#4D4D4D] text-base max-w-[26.813rem]'>
-					You have successfully reset your password
-				</p>
+				{!fromSettings ? (
+					<>
+						<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+							Reset Password Successful
+						</h1>
+						<p className='text-[#4D4D4D] text-base max-w-[26.813rem]'>
+							You have successfully reset your password
+						</p>
+					</>
+				) : (
+					<>
+						<DialogTitle className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+							Reset Password Successful
+						</DialogTitle>
+						<DialogDescription className='text-[#4D4D4D] text-base max-w-[26.813rem]'>
+							You have successfully reset your password
+						</DialogDescription>
+					</>
+				)}
 			</div>
 
 			<Link href='/login' className='w-full mt-4'>
-				<Button variant={'primary'} className='w-full'>
+				<Button
+					variant={'primary'}
+					className='w-full'
+					onClick={() => {
+						if (fromSettings) {
+							handleLogout();
+						}
+					}}>
 					Sign in
 				</Button>
 			</Link>

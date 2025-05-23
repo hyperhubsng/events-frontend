@@ -18,11 +18,9 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form';
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-
-import LoadingButton from '@/components/loading-button';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
@@ -30,7 +28,10 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/lib/hooks';
 import { setResetToken } from '@/features/auth/authSlice';
 
-const ForgotPassword = () => {
+import LoadingButton from '@/components/loading-button';
+import Image from 'next/image';
+
+const ForgotPassword = ({ onSubmitComplete }: { onSubmitComplete?: () => void }) => {
 	const formSchema = z.object({
 		email: z.string().email(),
 	});
@@ -57,12 +58,24 @@ const ForgotPassword = () => {
 			{!isSuccess ? (
 				<>
 					<div className='mt-6 md:mt-8 text-center'>
-						<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
-							Reset Password
-						</h1>
-						<p className='text-[#4D4D4D] text-base'>
-							Enter your email to continue with your password reset
-						</p>
+						{!onSubmitComplete ? (
+							<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+								Reset Password
+							</h1>
+						) : (
+							<DialogTitle className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+								Reset Password
+							</DialogTitle>
+						)}
+						{!onSubmitComplete ? (
+							<p className='text-[#4D4D4D] text-base'>
+								Enter your email to continue with your password reset
+							</p>
+						) : (
+							<DialogDescription className='text-[#4D4D4D] text-base'>
+								Enter your email to continue with your password reset
+							</DialogDescription>
+						)}
 					</div>
 
 					<Form {...form}>
@@ -99,7 +112,10 @@ const ForgotPassword = () => {
 					</Form>
 				</>
 			) : (
-				<Success email={form.getValues('email')} />
+				<Success
+					email={form.getValues('email')}
+					onSubmitComplete={onSubmitComplete}
+				/>
 			)}
 		</div>
 	);
@@ -107,7 +123,13 @@ const ForgotPassword = () => {
 
 export default ForgotPassword;
 
-const Success = ({ email }: { email: string }) => {
+const Success = ({
+	email,
+	onSubmitComplete,
+}: {
+	email: string;
+	onSubmitComplete?: () => void;
+}) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 
@@ -139,8 +161,12 @@ const Success = ({ email }: { email: string }) => {
 		try {
 			const res = await verifyPwd({ otpEmail: email, otp }).unwrap();
 			dispatch(setResetToken(res?.data?.resetToken));
-			router.push('/reset-password');
 			toast.success('Successful. Proceed to reset your password');
+			if (!onSubmitComplete) {
+				router.push('/reset-password');
+			} else {
+				onSubmitComplete();
+			}
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
@@ -169,14 +195,29 @@ const Success = ({ email }: { email: string }) => {
 					/>
 
 					<div className='mt-4 text-center'>
-						<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
-							Reset Password
-						</h1>
-						<p className='text-[#4D4D4D] text-base max-w-[26.813rem]'>
-							We just popped a quick email to{' '}
-							<span className='font-bold'>{email} </span>
-							to reset your password.
-						</p>
+						{!onSubmitComplete ? (
+							<>
+								<h1 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+									Reset Password
+								</h1>
+								<p className='text-[#4D4D4D] text-base max-w-[26.813rem]'>
+									We just popped a quick email to{' '}
+									<span className='font-bold'>{email} </span>
+									to reset your password.
+								</p>
+							</>
+						) : (
+							<>
+								<DialogTitle className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold'>
+									Reset Password
+								</DialogTitle>
+								<DialogDescription className='text-[#4D4D4D] text-base max-w-[26.813rem]'>
+									We just popped a quick email to{' '}
+									<span className='font-bold'>{email} </span>
+									to reset your password.
+								</DialogDescription>
+							</>
+						)}
 					</div>
 
 					{/* <p className='text-[#4D4D4D] text-base mt-6'>
