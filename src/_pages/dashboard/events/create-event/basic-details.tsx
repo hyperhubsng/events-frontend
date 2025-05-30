@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useGetUsersQuery } from '@/features/users/usersApi';
+import { useLazyGetUsersQuery } from '@/features/users/usersApi';
 import { UseFormReturn } from 'react-hook-form';
 import { CreateEventSchema } from '@/lib/schemas';
 import { z } from 'zod';
@@ -45,9 +45,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 
 	const formValues = form.watch();
 
-	const { data: vendors, isLoading } = useGetUsersQuery({
-		userType: 'vendor',
-	});
+	const [getUsers, { data: vendors, isLoading }] = useLazyGetUsersQuery();
 
 	useEffect(() => {
 		for (const key in form.getValues()) {
@@ -62,6 +60,14 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 			}
 		}
 	}, [formValues, form]);
+
+	useEffect(() => {
+		if (user?.userType !== 'vendor') {
+			getUsers({
+				userType: 'vendor',
+			});
+		}
+	}, [getUsers, user?.userType]);
 
 	return (
 		<div className='flex flex-col gap-4 mt-6'>
@@ -125,7 +131,11 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 										mode='single'
 										selected={field.value}
 										onSelect={field.onChange}
-										disabled={(date) => date < new Date('1900-01-01')}
+										disabled={(date) => {
+											const today = new Date();
+											today.setHours(0, 0, 0, 0);
+											return date < today;
+										}}
 										captionLayout='dropdown'
 										initialFocus
 										onDayClick={() => setShowDate(false)}
@@ -352,7 +362,12 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 					type='button'
 					disabled={err || form.getValues('description').length < 20}
 					className='w-full'
-					onClick={() => router.push(`${pathname}?tab=media`)}>
+					onClick={() => {
+						router.push(`${pathname}?tab=media`);
+						if (user?.userType === 'vendor') {
+							form.setValue('ownerId', user!.userId || user!._id);
+						}
+					}}>
 					Continue
 				</Button>
 

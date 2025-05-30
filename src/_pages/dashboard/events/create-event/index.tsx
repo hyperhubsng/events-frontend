@@ -2,7 +2,7 @@
 'use client';
 
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
@@ -45,7 +45,11 @@ const CreateEvent = () => {
 			title: previewEvent?.title ?? '',
 			eventType: previewEvent?.eventType ?? '',
 			coordinates: previewEvent?.coordinates ?? '',
-			ownerId: previewEvent?.ownerId ?? '',
+			ownerId: previewEvent
+				? previewEvent?.ownerId
+				: user?.userType === 'vendor'
+				? user?._id || user?.userId
+				: '',
 			start_time: previewEvent?.startDate
 				? formatTimeUTC(previewEvent.startDate)
 				: '',
@@ -113,12 +117,6 @@ const CreateEvent = () => {
 			toast.error(error?.data?.message);
 		}
 	};
-
-	useEffect(() => {
-		if (user?.userType === 'vendor') {
-			form.setValue('ownerId', user?._id);
-		}
-	}, [user?._id, form, user?.userType]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>
