@@ -9,6 +9,27 @@ interface User {
 	email: string;
 	profileImageUrl: string;
 	userType: string;
+	currentOrganisation: string;
+	organisations: string[];
+	role: {
+		description: string;
+		organisationId: string;
+	};
+	accountStatus: string;
+	companyName: string;
+	country: string;
+	createdAt: string;
+	designation: string;
+	dob: string;
+	gender: string;
+	needsToChangePassword: boolean;
+	phoneNumber: string;
+	softDelete: boolean;
+	totalCommissions: number;
+	totalEvents: number;
+	totalRevenue: number;
+	updatedAt: string;
+	_id: string;
 }
 
 interface AuthState {

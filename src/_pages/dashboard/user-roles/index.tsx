@@ -28,6 +28,7 @@ import Pulse from '@/components/pulse';
 import Search from '@/components/search';
 import Link from 'next/link';
 import LoadingButton from '@/components/loading-button';
+import ErrorMessage from '@/components/error-message';
 
 const UserRoles = () => {
 	const router = useRouter();
@@ -40,7 +41,11 @@ const UserRoles = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { data: roles, isLoading } = useGetRolesQuery({
+	const {
+		data: roles,
+		isLoading,
+		error,
+	} = useGetRolesQuery({
 		page: +searchParams.get('page')! || 1,
 		limit: +limit,
 	});
@@ -102,6 +107,10 @@ const UserRoles = () => {
 			),
 		},
 	];
+
+	if (error) {
+		return <ErrorMessage error={error} />;
+	}
 
 	return (
 		<div className='h-full p-4'>

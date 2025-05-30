@@ -1,8 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useAppDispatch } from '@/lib/hooks';
-import { logOut } from '@/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { logOut, selectUser } from '@/features/auth/authSlice';
 import { deleteUserToken } from '@/lib/session';
 import {
 	Sidebar,
@@ -30,6 +30,8 @@ import Link from 'next/link';
 export function AppSidebar() {
 	const [showSub, setShowSub] = useState(false);
 	const { toggleSidebar, open, isMobile } = useSidebar();
+
+	const user = useAppSelector(selectUser);
 
 	const pathname = usePathname();
 	const dispatch = useAppDispatch();
@@ -71,7 +73,7 @@ export function AppSidebar() {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{sidebarLinks.map((link) => (
+							{sidebarLinks.admin.map((link) => (
 								<Fragment key={link.name}>
 									{link.href ? (
 										<SidebarMenuItem
