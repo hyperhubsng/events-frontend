@@ -41,6 +41,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 	const user = useAppSelector(selectUser);
 
 	const [err, setErr] = useState(false);
+	const [showdate, setShowDate] = useState(false);
 
 	const formValues = form.watch();
 
@@ -100,7 +101,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 								htmlFor='startDate'>
 								Start Date
 							</FormLabel>
-							<Popover>
+							<Popover open={showdate} onOpenChange={setShowDate}>
 								<PopoverTrigger asChild>
 									<FormControl id='startDate'>
 										<Button
@@ -127,6 +128,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 										disabled={(date) => date < new Date('1900-01-01')}
 										captionLayout='dropdown'
 										initialFocus
+										onDayClick={() => setShowDate(false)}
 									/>
 								</PopoverContent>
 							</Popover>
@@ -150,7 +152,7 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 									<Input
 										{...field}
 										id='start_time'
-										placeholder='HH:MM:SS'
+										placeholder='HH:MM'
 										className='h-[44px] text-sm font-medium placeholder:text-white-300 placeholder:font-normal text-black-950
 										focus-visible:ring-0
 										'

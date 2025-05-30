@@ -116,9 +116,9 @@ const CreateEvent = () => {
 
 	useEffect(() => {
 		if (user?.userType === 'vendor') {
-			form.setValue('ownerId', user?.currentOrganisation);
+			form.setValue('ownerId', user?._id);
 		}
-	}, [user?.currentOrganisation, form, user?.userType]);
+	}, [user?._id, form, user?.userType]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>
