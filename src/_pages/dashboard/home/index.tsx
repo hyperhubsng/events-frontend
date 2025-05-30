@@ -1,5 +1,7 @@
 'use client';
 
+import { useAppSelector } from '@/lib/hooks';
+import { selectUser } from '@/features/auth/authSlice';
 import { cn } from '@/lib/utils';
 
 import Cards from './cards';
@@ -8,13 +10,14 @@ import Organizers from './organizers';
 import Events from './events';
 
 const Dashboard = () => {
+	const user = useAppSelector(selectUser);
 	return (
 		<div className='p-4'>
 			<Cards />
 			<Chart />
 			<div className={cn('grid md:grid-cols-2 mt-4 gap-4')}>
 				<Events />
-				<Organizers />
+				{user?.userType?.includes('admin') && <Organizers />}
 			</div>
 		</div>
 	);

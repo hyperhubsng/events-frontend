@@ -26,6 +26,8 @@ import { format } from 'date-fns';
 import { icons } from '@/components/icons';
 import { MapPin } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { useAppSelector } from '@/lib/hooks';
+import { selectUser } from '@/features/auth/authSlice';
 
 type FormData = z.infer<typeof CreateEventSchema>;
 
@@ -35,6 +37,8 @@ type Props = {
 const BasicDetails: React.FC<Props> = ({ form }) => {
 	const router = useRouter();
 	const pathname = usePathname();
+
+	const user = useAppSelector(selectUser);
 
 	const [err, setErr] = useState(false);
 
@@ -273,42 +277,47 @@ const BasicDetails: React.FC<Props> = ({ form }) => {
 				)}
 			/>
 
-			<FormField
-				control={form.control}
-				name='ownerId'
-				render={({ field }) => (
-					<FormItem id='ownerId'>
-						<FormLabel
-							className='text-black-950 text-sm md:text-base font-semibold'
-							htmlFor='ownerId'>
-							Organization
-						</FormLabel>
-						<FormControl>
-							<Select
-								defaultValue={field.value}
-								onValueChange={field.onChange}
-								disabled={isLoading}>
-								<SelectTrigger
-									className='h-[44px] text-sm font-medium text-black-950
+			{user?.userType !== 'vendor' && (
+				<FormField
+					control={form.control}
+					name='ownerId'
+					render={({ field }) => (
+						<FormItem id='ownerId'>
+							<FormLabel
+								className='text-black-950 text-sm md:text-base font-semibold'
+								htmlFor='ownerId'>
+								Organization
+							</FormLabel>
+							<FormControl>
+								<Select
+									defaultValue={field.value}
+									onValueChange={field.onChange}
+									disabled={isLoading}>
+									<SelectTrigger
+										className='h-[44px] text-sm font-medium text-black-950
 										focus-visible:ring-0 w-full'>
-									<SelectValue placeholder='--Select--' className='text-black-950' />
-								</SelectTrigger>
-								<SelectContent className='w-full'>
-									{vendors?.data?.users?.map((vendor) => (
-										<SelectItem
-											key={vendor?._id}
-											value={vendor?._id}
-											className='w-full cursor-pointer bg-transparent'>
-											{vendor?.companyName}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</FormControl>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
+										<SelectValue
+											placeholder='--Select--'
+											className='text-black-950'
+										/>
+									</SelectTrigger>
+									<SelectContent className='w-full'>
+										{vendors?.data?.users?.map((vendor) => (
+											<SelectItem
+												key={vendor?._id}
+												value={vendor?._id}
+												className='w-full cursor-pointer bg-transparent'>
+												{vendor?.companyName}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			)}
 
 			<FormField
 				control={form.control}

@@ -44,10 +44,10 @@ export const sidebarLinks = {
 			name: 'Events',
 			href: '/events',
 		},
-		{
-			name: 'User Management',
-			href: '/user-management',
-		},
+		// {
+		// 	name: 'User Management',
+		// 	href: '/user-management',
+		// },
 		{
 			name: 'Settings',
 			href: '/settings',

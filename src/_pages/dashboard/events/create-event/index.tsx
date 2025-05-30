@@ -2,12 +2,14 @@
 'use client';
 
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
 	useCreateEventMutation,
 	useUpdateEventMutation,
 } from '@/features/events/eventsApi';
+import { selectUser } from '@/features/auth/authSlice';
 import { toast } from 'sonner';
 import { addDays, format } from 'date-fns';
 import { formatTimeUTC } from '@/lib/utils';
@@ -29,6 +31,8 @@ const CreateEvent = () => {
 	const id = useParams().id;
 
 	const router = useRouter();
+
+	const user = useAppSelector(selectUser);
 
 	const previewEvent = useAppSelector(selectPreviewEvent);
 	const dispatch = useAppDispatch();
@@ -109,6 +113,12 @@ const CreateEvent = () => {
 			toast.error(error?.data?.message);
 		}
 	};
+
+	useEffect(() => {
+		if (user?.userType === 'vendor') {
+			form.setValue('ownerId', user?.currentOrganisation);
+		}
+	}, [user?.currentOrganisation, form, user?.userType]);
 
 	return (
 		<BreadcrumbWrapper items={['Events', 'Create Event']}>
