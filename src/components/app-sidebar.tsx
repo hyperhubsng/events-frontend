@@ -73,7 +73,7 @@ export function AppSidebar() {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{user?.userType === 'adminuser'
+							{user?.userType.includes('admin')
 								? sidebarLinks.admin.map((link) => (
 										<Fragment key={link.name}>
 											{link.href ? (
