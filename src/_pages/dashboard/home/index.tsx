@@ -15,7 +15,11 @@ const Dashboard = () => {
 		<div className='p-4'>
 			<Cards />
 			<Chart />
-			<div className={cn('grid md:grid-cols-2 mt-4 gap-4')}>
+			<div
+				className={cn(
+					'mt-4',
+					user?.userType?.includes('admin') && 'grid md:grid-cols-2 gap-4'
+				)}>
 				<Events />
 				{user?.userType?.includes('admin') && <Organizers />}
 			</div>
