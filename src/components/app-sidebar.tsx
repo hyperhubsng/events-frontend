@@ -73,14 +73,205 @@ export function AppSidebar() {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{sidebarLinks.admin.map((link) => (
-								<Fragment key={link.name}>
-									{link.href ? (
-										<SidebarMenuItem
-											onClick={() => {
-												if (isMobile) toggleSidebar();
-											}}>
+							{user?.userType === 'adminuser'
+								? sidebarLinks.admin.map((link) => (
+										<Fragment key={link.name}>
+											{link.href ? (
+												<SidebarMenuItem>
+													<SidebarMenuButton
+														asChild
+														isActive={
+															pathname.includes(link.name.toLowerCase()) ||
+															pathname === link.href
+														}
+														onClick={() => {
+															if (isMobile) toggleSidebar();
+														}}
+														className='transition-colors duration-300 ease-in-out mb-1'>
+														<Link
+															href={link.href}
+															className='py-[1.25rem] text-blue-100 data-[active=true]:font-semibold group/trigger'>
+															{link.name === 'Events' ? (
+																<svg
+																	width='24'
+																	height='24'
+																	viewBox='0 0 24 24'
+																	fill='none'
+																	xmlns='http://www.w3.org/2000/svg'
+																	className={cn(
+																		' group-hover/trigger:fill-none',
+																		!(
+																			pathname.includes(link.name.toLowerCase()) ||
+																			pathname === link.href
+																		) && 'fill-current'
+																	)}>
+																	<path
+																		d='M20.25 4.5H3.75C3.33579 4.5 3 4.83579 3 5.25V18.75C3 19.1642 3.33579 19.5 3.75 19.5H20.25C20.6642 19.5 21 19.1642 21 18.75V5.25C21 4.83579 20.6642 4.5 20.25 4.5Z'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M12 4.5V19.5'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M3 7.5H21'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M3 16.5H21'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M7.5 4.5V7.5'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M16.5 4.5V7.5'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M7.5 16.5V19.5'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M16.5 16.5V19.5'
+																		stroke='#003366'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																</svg>
+															) : (
+																link.icon && <link.icon />
+															)}
+															<span className={cn('text-base')}>{link.name}</span>
+														</Link>
+													</SidebarMenuButton>
+												</SidebarMenuItem>
+											) : (
+												<Collapsible className='group/collapsible'>
+													<SidebarMenuItem>
+														<CollapsibleTrigger
+															asChild
+															onClick={() => setShowSub(!showSub)}>
+															<SidebarMenuButton className='py-[1.25rem] text-blue-100 mb-1 relative'>
+																<svg
+																	width='24'
+																	height='24'
+																	viewBox='0 0 24 24'
+																	fill='none'
+																	xmlns='http://www.w3.org/2000/svg'
+																	className='stroke-current'>
+																	<path
+																		d='M12.0001 16.137C14.095 16.137 15.7932 14.4388 15.7932 12.3439C15.7932 10.249 14.095 8.55078 12.0001 8.55078C9.90526 8.55078 8.20703 10.249 8.20703 12.3439C8.20703 14.4388 9.90526 16.137 12.0001 16.137Z'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M18.4482 10.0684C19.3318 10.0669 20.2035 10.2719 20.9937 10.667C21.784 11.0622 22.471 11.6365 23 12.3442'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M1 12.3442C1.52895 11.6365 2.21596 11.0622 3.00623 10.667C3.7965 10.2719 4.66817 10.0669 5.55172 10.0684'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M6.53809 19.552C7.03766 18.5289 7.81454 17.6667 8.78023 17.0635C9.74592 16.4604 10.8616 16.1406 12.0002 16.1406C13.1387 16.1406 14.2544 16.4604 15.2201 17.0635C16.1858 17.6667 16.9626 18.5289 17.4622 19.552'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M5.55123 10.069C4.97529 10.0695 4.41108 9.90621 3.92451 9.59805C3.43795 9.28988 3.04913 8.84961 2.8035 8.32867C2.55786 7.80774 2.46555 7.22766 2.53734 6.65621C2.60914 6.08476 2.84208 5.54554 3.20895 5.10156C3.57582 4.65758 4.06146 4.32717 4.60913 4.14895C5.15681 3.97072 5.74389 3.95204 6.30179 4.09507C6.85969 4.23811 7.36536 4.53697 7.75972 4.95672C8.15407 5.37647 8.42083 5.89979 8.52882 6.46552'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																	<path
+																		d='M15.4707 6.46552C15.5787 5.89979 15.8455 5.37647 16.2398 4.95672C16.6342 4.53697 17.1398 4.23811 17.6977 4.09507C18.2556 3.95204 18.8427 3.97072 19.3904 4.14895C19.9381 4.32717 20.4237 4.65758 20.7906 5.10156C21.1574 5.54554 21.3904 6.08476 21.4622 6.65621C21.534 7.22766 21.4417 7.80774 21.196 8.32867C20.9504 8.84961 20.5616 9.28988 20.075 9.59805C19.5884 9.90621 19.0242 10.0695 18.4483 10.069'
+																		strokeWidth='1.5'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
+																	/>
+																</svg>
+
+																<span>{link.name}</span>
+																{open && (
+																	<ChevronDown
+																		className={cn(
+																			'absolute right-4 transition-transform duration-300 ease-in-out',
+
+																			showSub ? '-rotate-180' : ''
+																		)}
+																	/>
+																)}
+															</SidebarMenuButton>
+														</CollapsibleTrigger>
+														<CollapsibleContent>
+															<SidebarMenuSub className='border-0'>
+																{link.subLinks?.map((sublink) => (
+																	<SidebarMenuItem key={sublink.name}>
+																		<SidebarMenuButton
+																			asChild
+																			isActive={
+																				pathname
+																					.toLowerCase()
+																					.includes(sublink.href.toLowerCase()) ||
+																				pathname === sublink.href
+																			}
+																			onClick={() => {
+																				if (isMobile) toggleSidebar();
+																			}}
+																			className='transition-colors duration-300 ease-in-out'>
+																			<Link
+																				href={sublink.href}
+																				className='py-[1.25rem] text-blue-100 data-[active=true]:font-semibold'>
+																				<span className={cn('text-base')}>
+																					{sublink.name}
+																				</span>
+																			</Link>
+																		</SidebarMenuButton>
+																	</SidebarMenuItem>
+																))}
+															</SidebarMenuSub>
+														</CollapsibleContent>
+													</SidebarMenuItem>
+												</Collapsible>
+											)}
+										</Fragment>
+								  ))
+								: sidebarLinks.organizer.map((link) => (
+										<SidebarMenuItem key={link.name}>
 											<SidebarMenuButton
+												onClick={() => {
+													if (isMobile) toggleSidebar();
+												}}
 												asChild
 												isActive={
 													pathname.includes(link.name.toLowerCase()) ||
@@ -161,20 +352,7 @@ export function AppSidebar() {
 																strokeLinejoin='round'
 															/>
 														</svg>
-													) : (
-														link.icon && <link.icon />
-													)}
-													<span className={cn('text-base')}>{link.name}</span>
-												</Link>
-											</SidebarMenuButton>
-										</SidebarMenuItem>
-									) : (
-										<Collapsible className='group/collapsible'>
-											<SidebarMenuItem>
-												<CollapsibleTrigger
-													asChild
-													onClick={() => setShowSub(!showSub)}>
-													<SidebarMenuButton className='py-[1.25rem] text-blue-100 mb-1 relative'>
+													) : link.name === 'User Management' ? (
 														<svg
 															width='24'
 															height='24'
@@ -219,52 +397,14 @@ export function AppSidebar() {
 																strokeLinejoin='round'
 															/>
 														</svg>
-
-														<span>{link.name}</span>
-														{open && (
-															<ChevronDown
-																className={cn(
-																	'absolute right-4 transition-transform duration-300 ease-in-out',
-
-																	showSub ? '-rotate-180' : ''
-																)}
-															/>
-														)}
-													</SidebarMenuButton>
-												</CollapsibleTrigger>
-												<CollapsibleContent>
-													<SidebarMenuSub className='border-0'>
-														{link.subLinks?.map((sublink) => (
-															<SidebarMenuItem key={sublink.name}>
-																<SidebarMenuButton
-																	asChild
-																	isActive={
-																		pathname
-																			.toLowerCase()
-																			.includes(sublink.href.toLowerCase()) ||
-																		pathname === sublink.href
-																	}
-																	onClick={() => {
-																		if (isMobile) toggleSidebar();
-																	}}
-																	className='transition-colors duration-300 ease-in-out'>
-																	<Link
-																		href={sublink.href}
-																		className='py-[1.25rem] text-blue-100 data-[active=true]:font-semibold'>
-																		<span className={cn('text-base')}>
-																			{sublink.name}
-																		</span>
-																	</Link>
-																</SidebarMenuButton>
-															</SidebarMenuItem>
-														))}
-													</SidebarMenuSub>
-												</CollapsibleContent>
-											</SidebarMenuItem>
-										</Collapsible>
-									)}
-								</Fragment>
-							))}
+													) : (
+														link.icon && <link.icon />
+													)}
+													<span className={cn('text-base')}>{link.name}</span>
+												</Link>
+											</SidebarMenuButton>
+										</SidebarMenuItem>
+								  ))}
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

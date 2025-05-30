@@ -45,7 +45,7 @@ export const sidebarLinks = {
 			href: '/events',
 		},
 		{
-			name: 'User management',
+			name: 'User Management',
 			href: '/user-management',
 		},
 		{
