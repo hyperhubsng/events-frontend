@@ -13,6 +13,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { ChartConfig, ChartContainer, ChartTooltip } from '@/components/ui/chart';
 import { useGetEventsAnalyticsQuery } from '@/features/dashboard/dashboardApi';
 import { format } from 'date-fns';
+import { icons } from '@/components/icons';
 
 import Pulse from '@/components/pulse';
 import * as RechartsPrimitive from 'recharts';
@@ -76,6 +77,13 @@ const Events = () => {
 			<div className='mt-8 -ml-10'>
 				{isLoading || isFetching ? (
 					<Pulse height='h-[200px] md:h-[300px]' />
+				) : chartData?.length === 0 ? (
+					<div className='flex flex-col items-center justify-center h-[80%] md:h-[90%]'>
+						{icons.Events}
+						<h3 className='text-[1.25rem] sm:text-[2rem] text-black-950 font-bold text-center mt-6'>
+							There are no events at this time
+						</h3>
+					</div>
 				) : (
 					<ChartContainer config={chartConfig} className='w-full'>
 						<BarChart accessibilityLayer data={chartData}>
