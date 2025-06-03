@@ -50,7 +50,10 @@ const PayoutHistory = () => {
 			</div>
 
 			<Dialog open={openBankDetailsModal} onOpenChange={setOpenBankDetailsModal}>
-				<BankDetailsForm onClose={() => setOpenBankDetailsModal(false)} />
+				<BankDetailsForm
+					isOpen={openBankDetailsModal}
+					onClose={() => setOpenBankDetailsModal(false)}
+				/>
 			</Dialog>
 		</div>
 	);
