@@ -6,6 +6,7 @@ import { Dialog } from '@/components/ui/dialog';
 
 import Image from 'next/image';
 import BankDetailsForm from './bank-details-form';
+import WithdrawalForm from './withdrawal-form';
 
 const PayoutHistory = () => {
 	const bank_details = true;
@@ -13,11 +14,12 @@ const PayoutHistory = () => {
 	const payout_history = [];
 
 	const [openBankDetailsModal, setOpenBankDetailsModal] = useState(false);
+	const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
 
 	return (
 		<div className='mt-4 flex-1 bg-white'>
 			{/* empty states */}
-			<div className='flex flex-col items-center justify-center h-full'>
+			<div className='flex flex-col items-center justify-center h-full py-8'>
 				{!bank_details ? (
 					<div className='flex flex-col items-center'>
 						<Image
@@ -60,7 +62,32 @@ const PayoutHistory = () => {
 						</p>
 					</div>
 				) : (
-					payout_history.length === 0 && bank_details && <div></div>
+					payout_history.length === 0 &&
+					bank_details && (
+						<div className='flex flex-col items-center'>
+							<Image
+								src='/icons/no-money.svg'
+								width={136}
+								height={136}
+								alt='Bank Icon'
+								className='max-md:h-[90px]'
+							/>
+							<h2 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold mt-4'>
+								You have not made any withdrawal
+							</h2>
+
+							<p className='text-[#4D4D4D] text-base mt-2'>
+								To initiate a transaction, click on the withdraw button
+							</p>
+
+							<Button
+								variant={'primary'}
+								className='max-w-[16.625rem] w-full mt-4'
+								onClick={() => setOpenWithdrawalModal(true)}>
+								Withdraw
+							</Button>
+						</div>
+					)
 				)}
 			</div>
 
@@ -68,6 +95,12 @@ const PayoutHistory = () => {
 				<BankDetailsForm
 					isOpen={openBankDetailsModal}
 					onClose={() => setOpenBankDetailsModal(false)}
+				/>
+			</Dialog>
+			<Dialog open={openWithdrawalModal} onOpenChange={setOpenWithdrawalModal}>
+				<WithdrawalForm
+					isOpen={openWithdrawalModal}
+					onClose={() => setOpenWithdrawalModal(false)}
 				/>
 			</Dialog>
 		</div>

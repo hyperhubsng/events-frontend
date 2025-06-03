@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
@@ -24,10 +25,10 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import LoadingButton from '@/components/loading-button';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+
+import LoadingButton from '@/components/loading-button';
+import Image from 'next/image';
 
 const formSchema = z.object({
 	bank: z.string().min(1, { message }),
