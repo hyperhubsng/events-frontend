@@ -1,12 +1,13 @@
 import { Metadata } from 'next';
 
-const title = 'Hyperhubs';
-const description = 'This is the hyperhubs events admin app';
+const title = 'Crowdsync';
+const description =
+	'This is the Crowdsync admin dashboard, where you can manage your events, view analytics, and more.';
 const url = '';
 
 export const metaDataOptions: Metadata = {
 	generator: 'Next.js',
-	applicationName: 'Hyperhubs',
+	applicationName: 'Crowdsync',
 	referrer: 'origin-when-cross-origin',
 	keywords: [],
 	authors: [{ name: 'Kelvin Ochubili', url: 'https://twitter.com/iykekelvins' }],
@@ -21,19 +22,19 @@ export const metaDataOptions: Metadata = {
 		title,
 		description,
 		url,
-		siteName: 'Hyperhubs',
+		siteName: 'Crowdsync',
 		images: [
 			{
 				url: `/opengraph-image.png`,
 				width: 800,
 				height: 600,
-				alt: 'Hyperhubs',
+				alt: 'Crowdsync',
 			},
 			{
 				url: `/opengraph-image.png`,
 				width: 1800,
 				height: 1600,
-				alt: 'Hyperhubs',
+				alt: 'Crowdsync',
 			},
 		],
 		locale: 'en_US',
@@ -55,7 +56,7 @@ export const metaDataOptions: Metadata = {
 		creator: '@iykekelvins',
 		images: {
 			url: `/opengraph-image.png`,
-			alt: 'Hyperhubs',
+			alt: 'Crowdsync',
 		},
 	},
 };

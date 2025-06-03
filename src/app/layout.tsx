@@ -21,10 +21,11 @@ const modak = Modak({
 
 export const metadata: Metadata = {
 	title: {
-		default: 'HyperHubs Admin App',
-		template: '%s | HyperHubs Admin',
+		default: 'Crowdcync Hive Admin Dashboard',
+		template: '%s | Crowdsync',
 	},
-	description: 'This is the hyperhubs events admin app',
+	description:
+		'This is the Crowdsync admin dashboard, where you can manage your events, view analytics, and more.',
 	metadataBase: new URL('https://main.d1hpcnrwcj0f1c.amplifyapp.com'),
 	...metaDataOptions,
 };

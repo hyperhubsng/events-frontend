@@ -1,6 +1,8 @@
 'use client';
 
 import { useGetAnalyticsQuery } from '@/features/dashboard/dashboardApi';
+import { useAppSelector } from '@/lib/hooks';
+import { selectUser } from '@/features/auth/authSlice';
 import { Skeleton } from '@/components/ui/skeleton';
 import { icons } from '@/components/icons';
 
@@ -8,6 +10,8 @@ import InfoCard from '@/components/info-card';
 
 const Cards = () => {
 	const { data: analytics, isLoading } = useGetAnalyticsQuery();
+
+	const user = useAppSelector(selectUser);
 
 	const card_info = [
 		{
@@ -33,17 +37,31 @@ const Cards = () => {
 	];
 
 	return (
-		<div className='grid grid-cols-2 min-[1200px]:grid-cols-4 gap-4'>
-			{isLoading
-				? Array(4)
-						.fill({})
-						.map((_, i) => (
-							<Skeleton
-								className='h-[53px] rounded-[4px] md:h-[93px] md:rounded-[8px]'
-								key={i}
-							/>
-						))
-				: card_info.map((card) => <InfoCard key={card.title} {...card} />)}
+		<div
+			className={`grid grid-cols-2 gap-4 ${
+				user?.userType?.includes('admin') ? 'min-[1200px]:grid-cols-4' : ''
+			}`}>
+			{isLoading ? (
+				Array(4)
+					.fill({})
+					.map((_, i) => (
+						<Skeleton
+							className='h-[53px] rounded-[4px] md:h-[93px] md:rounded-[8px]'
+							key={i}
+						/>
+					))
+			) : (
+				<>
+					{user?.userType?.includes('admin') ? (
+						card_info.map((card) => <InfoCard key={card.title} {...card} />)
+					) : (
+						<>
+							<InfoCard {...card_info[0]} />
+							<InfoCard {...card_info[2]} />
+						</>
+					)}
+				</>
+			)}
 		</div>
 	);
 };
