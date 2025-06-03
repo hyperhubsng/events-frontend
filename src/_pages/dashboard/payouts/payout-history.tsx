@@ -8,7 +8,7 @@ import Image from 'next/image';
 import BankDetailsForm from './bank-details-form';
 
 const PayoutHistory = () => {
-	const bank_details = false;
+	const bank_details = true;
 	const bank_verification = null;
 	const payout_history = [];
 
@@ -43,7 +43,22 @@ const PayoutHistory = () => {
 						</Button>
 					</div>
 				) : bank_verification === 'pending' && bank_details ? (
-					<div></div>
+					<div className='flex flex-col items-center'>
+						<Image
+							src='/icons/policy.svg'
+							width={136}
+							height={136}
+							alt='Bank Icon'
+							className='max-md:h-[90px]'
+						/>
+						<h2 className='text-[#101010] text-[1.25rem] md:text-2xl lg:text-[1.75rem] text-center font-semibold mt-4'>
+							Bank Verification Pending
+						</h2>
+
+						<p className='text-[#4D4D4D] text-base mt-1'>
+							Verification typically takes 1-2 business days.
+						</p>
+					</div>
 				) : (
 					payout_history.length === 0 && bank_details && <div></div>
 				)}
